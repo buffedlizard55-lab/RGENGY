@@ -9,9 +9,9 @@ What RGENGY cannot do yet, what would have to be true to do it, and what to buil
 | id | severity | status | limitation |
 | --- | --- | --- | --- |
 | [L-01](09-irregularities.md#l01) | info | UNUSED IDENTIFIER | Identifier L-01 is deliberately unused |
-| [L-02](09-irregularities.md#l02) | critical | OPEN | No outbound network access in the build environment |
+| [L-02](09-irregularities.md#l02) | warning | OPEN | No raw-socket network access from the build sandbox; operator rules coverage is now partial, not absent |
 | [L-03](09-irregularities.md#l03) | warning | OPEN | The WNBA roster templates are unconfirmed |
-| [L-04](09-irregularities.md#l04) | warning | OPEN | NFL team-defence and kicker scoring tiers were never retrieved |
+| [L-04](09-irregularities.md#l04) | warning | OPEN | DraftKings team-defence tiers remain unaudited; FanDuel's are operator-documented but not yet modelled |
 | [L-05](09-irregularities.md#l05) | warning | OPEN | RotoGrinders' paywalled features could not be inspected at all |
 | [L-06](09-irregularities.md#l06) | warning | OPEN | Player outcomes are simulated from a normal approximation, not a per-stat model |
 
@@ -23,13 +23,13 @@ No limitation in this register or in the source tree cites L-01. The id was cons
 
 **Current mitigation.** Declared here so the L-nn sequence can be read as complete.
 
-### L-02 - No outbound network access in the build environment
+### L-02 - No raw-socket network access from the build sandbox; operator rules coverage is now partial, not absent
 
-Raw HTTPS fetches from this workspace fail with a TLS/SSL EOF error. The pages retrieved during the audit were read through a proxy that can reach rotogrinders.com; fanduel.com is additionally geo-blocked, and both operators keep their authoritative scoring pages inside their logged-in apps.
+Raw HTTPS fetches from the build workspace fail with a TLS/SSL EOF error, so the runtime pipeline still cannot fetch live feeds from inside the sandbox. The first audit also recorded that 'no operator scoring page could be retrieved' - that half is now OUTDATED: the second audit pass (2026-09-22) verified, through the platform's document-retrieval channel, that FanDuel publishes its full DFS scoring rules publicly at https://www.fanduel.com/rules, and that DraftKings publishes operator- domain scoring articles on dknetwork.draftkings.com (NHL 2025-09-30, NFL 2025-08-27, NBA 2025-10-17, MLB 2020-05-29). DraftKings' canonical in-app rules page remains unretrieved, and those operator articles are editorial pages rather than the contractual rules - hence 'partial', not 'complete'.
 
-**Consequence.** No scoring value in this repository is marked `confirmed_by_operator`, because no operator scoring page could be retrieved. Every value rests on secondary sources. The live feeds cannot be exercised here, so the pipeline is tested against synthetic and cached inputs and the slate stage honestly reports `unavailable` rather than substituting invented games.
+**Consequence.** Live feeds still cannot be exercised from the sandbox, so the pipeline is tested against synthetic and cached inputs and the slate stage honestly reports `unavailable` rather than substituting invented games. Scoring coverage, however, is materially stronger than the first pass claimed: large parts of five tables are now marked `confirmed_by_operator`.
 
-**Current mitigation.** `rgengy probe` and `rgengy verify` exist to be run from a networked machine; they stamp each endpoint with its live status and write verification.json. The GitHub Pages workflow runs them on every build so the published site reflects the live state rather than the audit state. `data/` is gitignored and regenerated.
+**Current mitigation.** `rgengy probe` and `rgengy verify` exist to be run from a networked machine; they stamp each endpoint - and, added in this pass, every URL cited by the scoring tables - with its live status and write verification.json. The GitHub Pages workflow runs them on every build so the published site reflects the live state rather than the audit state. `data/` is gitignored and regenerated.
 
 ### L-03 - The WNBA roster templates are unconfirmed
 
@@ -39,13 +39,13 @@ No source for the WNBA roster shape was retrieved during the audit. The template
 
 **Current mitigation.** `models.default_roster()` returns the `not-audited` status and a note beginning UNCONFIRMED for both, and tests/test_models.py asserts that any template with no sources must be marked `not-audited` and must say UNCONFIRMED - so the templates cannot be quietly upgraded without a source being added.
 
-### L-04 - NFL team-defence and kicker scoring tiers were never retrieved
+### L-04 - DraftKings team-defence tiers remain unaudited; FanDuel's are operator-documented but not yet modelled
 
-DraftKings team-defence scoring was not retrieved from any source during the audit. The shipped values follow the long-standing convention (points allowed and yardage tiers, sacks, turnovers, defensive touchdowns) but are marked `not-audited`.
+The first pass could not retrieve DraftKings team-defence scoring from any source. The second audit pass (2026-09-22) improved the FanDuel half: FanDuel's public rules page (https://www.fanduel.com/rules, Football/Defense section) documents sacks = 1, fumble recovered = 2, interception = 2, safety = 2, blocked punt = 2, kick/punt return TD = 6, extra-point return = 2, and the exact points-allowed tiers (0 -> 10, 1-6 -> 7, 7-13 -> 4, 14-20 -> 1, 21-27 -> 0, 28-34 -> -1, 35+ -> -4) plus the formula FanDuel uses to compute points allowed. A secondary comparison table (dailyfantasysports101) shows DraftKings DST tiers identical to FanDuel's, but no DraftKings operator document for DST was retrieved. The shipped `dst_pts_allowed` coefficient is still 0.0 because RGENGY's engine models points allowed as a single expected value, not as a tier lookup.
 
-**Consequence.** DST and KPTS projections carry an unknown error. The NFL grid's KPTS column is left null rather than filled from unaudited tiers.
+**Consequence.** DraftKings DST and kicker-projection error remains unknown (L-04 as originally filed). For FanDuel, the per-event DST coefficients are now operator-confirmed, but the tiered points-allowed scoring - often the largest DST term - is still not applied, so FanDuel DST FPTS remains understated by an unknown amount.
 
-**Current mitigation.** The seven `dst_*` keys are `not-audited` in both NFL tables, so `quality.check_scoring_coverage` escalates them to a warning whenever a DST is actually projected. Under `--strict` the pipeline excludes unaudited coefficients from published totals.
+**Current mitigation.** The FanDuel per-event keys are marked `confirmed_by_operator: true`. The operator tier table is stored verbatim in the FanDuel table JSON under `operator_tier_tables.dst_points_allowed` so no one has to re-retrieve it, and `dst_pts_allowed` stays 0.0 / intentionally_zero until the engine grows a tier lookup (roadmap: 'Model FanDuel's tiered DST points-allowed scoring'). Under `--strict` the unaudited DraftKings DST keys stay excluded from published totals.
 
 ### L-05 - RotoGrinders' paywalled features could not be inspected at all
 
@@ -77,15 +77,23 @@ These are not defects and not verified facts: they are the places where RGENGY p
 
 Ordered by how much of the gap to RotoGrinders' data quality each one closes. Priority reflects the severity of the finding it retires, not the effort involved.
 
-### 1. Retrieve the operators' own scoring pages
+### 1. Retrieve DraftKings' canonical in-app scoring rules
 
-**Priority: critical.**
+**Priority: high.**
 
-No coefficient in this repository is `confirmed_by_operator` (L-02). Every value rests on secondary sources, and three are actively contradicted (IR-05, IR-06, IR-16). DraftKings and FanDuel both keep their authoritative tables inside their logged-in apps, so this needs an authenticated session or a direct operator relationship.
+FanDuel's public rules page (fanduel.com/rules) and DraftKings' Network articles are now retrieved and operator-confirm large parts of five tables (see IR-06, IR-08, IR-09, IR-10, IR-18). What is still missing is DraftKings' canonical rules page inside its logged-in app, which is the document of record: it would settle the two values the operator articles leave ambiguous (MLB caught stealing, IR-04; the article's own 4.0-vs-4.5 win inconsistency, IR-26) and confirm the DraftKings DST tiers that currently rest on a secondary source (L-04). This needs an authenticated session or a direct operator relationship.
 
-**Payoff.** Settles IR-04, IR-05, IR-06, IR-08, IR-10, IR-16, L-04.
+**Payoff.** Retires the last two open scoring irregularities and upgrades L-04 to fully operator-sourced.
 
-### 2. Fit the ownership model on real ownership data
+### 2. Model FanDuel's tiered DST points-allowed scoring
+
+**Priority: high.**
+
+FanDuel's rules page documents the exact points-allowed tiers (0->10, 1-6->7, 7-13->4, 14-20->1, 21-27->0, 28-34->-1, 35+->-4) and the formula for points allowed; the tier table is stored verbatim in the FanDuel table JSON under `operator_tier_tables`. The engine still models points allowed as a single expected value, so `dst_pts_allowed` ships at 0.0 and FanDuel DST projections are understated by an unknown amount.
+
+**Payoff.** Turns the largest missing DST term from a flagged gap into a scored coefficient on FanDuel.
+
+### 3. Fit the ownership model on real ownership data
 
 **Priority: high.**
 
@@ -93,21 +101,13 @@ pOWN is a softmax choice model with an uncalibrated beta (IR-13). RotoGrinders' 
 
 **Payoff.** Turns the ownership stage from `degraded` to `complete`.
 
-### 3. Replace the normal-approximation simulator with a correlated event model
+### 4. Replace the normal-approximation simulator with a correlated event model
 
 **Priority: high.**
 
 Player outcomes are drawn from a normal built on the mean and the floor/ceiling band (L-06). Real output is a sum of discrete correlated events, so tail behaviour is understated and a 4-home-run game cannot occur. Needs historical play-by-play to fit per-stat distributions and their correlations.
 
 **Payoff.** Makes simulated top-1 rates usable for large-field GPP decisions.
-
-### 4. Verify the live player-stat endpoints
-
-**Priority: high.**
-
-The slate endpoints are live-verified but the per-player season-stat endpoints are marked `unverified` (L-02). `rgengy probe` exists to check their shape; until it has been run from a networked machine, `run()` refuses to synthesise season stats and says so.
-
-**Payoff.** Unblocks real projections end to end instead of caller-supplied data.
 
 ### 5. Transcribe the NBA and NHL grid headers
 
@@ -121,7 +121,7 @@ The slate endpoints are live-verified but the per-player season-stat endpoints a
 
 **Priority: medium.**
 
-Both WNBA templates have zero sources and are marked `not-audited` (L-03); they were assumed to be the NBA shape reduced to six slots. A wrong template produces lineups the operator rejects outright (the IR-17 failure class).
+Both WNBA templates have zero sources and are marked `not-audited` (L-03); they were assumed to be the NBA shape reduced to six slots. A wrong template produces lineups the operator rejects outright (the IR-17 failure class). WNBA *scoring* is no longer a gap - the FanDuel basketball table covers WNBA and DraftKings' own Pick6 WNBA page corroborates the DK values - but the roster shapes remain unconfirmed.
 
 **Payoff.** Removes the only roster template that could produce an illegal lineup.
 
@@ -129,7 +129,7 @@ Both WNBA templates have zero sources and are marked `not-audited` (L-03); they 
 
 **Priority: medium.**
 
-The floor/ceiling ratios come from six free-tier rows (IR-12), one sport, one site, one slate. The paid tier would give a sample large enough to fit per-position bands and to test whether the ratios are stable across slates.
+The floor/ceiling ratios come from six free-tier rows (IR-12, IR-25), one sport, one site, one slate. The paid tier would give a sample large enough to fit per-position bands and to test whether the ratios are stable across slates.
 
 **Payoff.** Would let `rg_band` become a defensible default rather than an opt-in curiosity.
 

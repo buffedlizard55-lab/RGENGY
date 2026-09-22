@@ -21,8 +21,12 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
-from rgengy import __version__, pipeline, scoring, sources
-from rgengy.http import FetchLog, FetchError, get_json
+from rgengy import __version__, findings, pipeline, scoring, sources
+from rgengy.http import (DEFAULT_TIMEOUT, FetchLog, FetchError, _build_request, _throttle,
+                         get_json)
+import urllib.error
+import urllib.parse
+import urllib.request
 
 
 # ---------------------------------------------------------------------------
@@ -151,6 +155,61 @@ def cmd_verify(args: argparse.Namespace) -> int:
         results.append(record)
 
     ok = sum(1 for r in results if r.get("ok"))
+
+    # ------------------------------------------------------------------
+    # Cited-source checks: every URL the scoring tables, the endpoint
+    # registry and the findings register cite as evidence, checked for
+    # liveness (HTTP status only). A dead citation is exactly how silent
+    # hallucination creeps into a registry, so every build re-walks them.
+    # Failures are recorded in the report; they do not change the exit code
+    # (an endpoint going dark must not take the docs down - the register
+    # records last-known state).
+    # ------------------------------------------------------------------
+    cited: List[Dict[str, str]] = []
+    seen: set = set()
+
+    def _add(url: Optional[str], why: str) -> None:
+        if not url or url in seen or not str(url).startswith("http"):
+            return
+        seen.add(url)
+        cited.append({"url": url, "cited_as": why})
+
+    for key in scoring.available():
+        sport, site = key.split(":")
+        table = scoring.load(sport, site)
+        for stat, spec in table.payload.get("values", {}).items():
+            for u in spec.get("sources", []):
+                _add(u, f"scoring:{key}:{stat}")
+        for u in table.meta.get("sources_consulted", []) or []:
+            _add(u, f"scoring:{key}:meta")
+        for u in (table.payload.get("operator_tier_tables") or {}).get(
+                "dst_points_allowed", {}).get("source", "") and []:
+            _add(u, f"scoring:{key}:tiers")
+    for ep in sources.ENDPOINTS:
+        _add(ep.docs_url, f"endpoint-docs:{ep.key}")
+        _add(ep.terms_url, f"endpoint-terms:{ep.key}")
+    for f in findings.to_dict()["findings"]:
+        for u in f.get("sources", ()):
+            _add(u, f"finding:{f['id']}")
+
+    source_results: List[Dict[str, Any]] = []
+    for entry in cited:
+        _throttle(urllib.parse.urlsplit(entry["url"]).netloc)
+        record: Dict[str, Any] = dict(entry)
+        try:
+            req = _build_request(entry["url"])
+            with urllib.request.urlopen(req, timeout=DEFAULT_TIMEOUT) as resp:
+                code = resp.getcode()
+                resp.read(64)  # a small read keeps the connection well-behaved
+            record.update({"http_status": code, "ok": 200 <= code < 300})
+        except urllib.error.HTTPError as exc:
+            record.update({"http_status": exc.code, "ok": False, "error": f"HTTP {exc.code}"})
+        except Exception as exc:
+            record.update({"http_status": None, "ok": False,
+                           "error": f"{type(exc).__name__}: {exc}"})
+        source_results.append(record)
+
+    src_ok = sum(1 for r in source_results if r.get("ok"))
     report = {
         "tool": "rgengy verify",
         "version": __version__,
@@ -158,12 +217,15 @@ def cmd_verify(args: argparse.Namespace) -> int:
         "endpoints_tested": len(results),
         "endpoints_ok": ok,
         "endpoints_failed": len(results) - ok,
+        "cited_urls_checked": len(source_results),
+        "cited_urls_ok": src_ok,
+        "cited_urls_failed": len(source_results) - src_ok,
         "results": results,
+        "cited_urls": source_results,
     }
     _emit(report, args.out)
-    if not args.out:
-        pass
-    print(f"\n{ok}/{len(results)} endpoints reachable", file=sys.stderr)
+    print(f"\n{ok}/{len(results)} endpoints reachable; "
+          f"{src_ok}/{len(source_results)} cited URLs live", file=sys.stderr)
     return 0 if ok == len(results) else 1
 
 

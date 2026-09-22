@@ -119,13 +119,16 @@ ENDPOINTS: List[Endpoint] = [
         provider="MLB Advanced Media (MLBAM)",
         official=True,
         auth="none",
-        verification_status="unverified",
-        verified_on=None,
+        verification_status="live-verified",
+        verified_on=AUDIT_DATE,
         docs_url="https://statsapi.mlb.com/",
         terms_url=MLB_COPYRIGHT,
-        notes="Endpoint family confirmed present at statsapi.mlb.com, but this exact path/parameter set was "
-              "NOT retrieved during the audit. The pipeline calls it through safe_json() and reports a "
-              "degraded run if the shape differs. MUST be confirmed before the engine output is trusted.",
+        notes="LIVE-VERIFIED 2026-09-22 (second audit pass): GET /api/v1/teams/110/stats?stats=season"
+              "&group=hitting&season=2026 (team id 110 taken from the same day's verified schedule) "
+              "returned HTTP 200 with a copyright block and a full 2026 hitting split (gamesPlayed, "
+              "runs, doubles, triples, homeRuns, strikeOuts, baseOnBalls, hits, hitByPitch, avg, "
+              "atBats, obp, slg, ops, caughtStealing, stolenBases, rbi, totalBases, ...). The same "
+              "shape is expected for group=pitching.",
         replaces=["RG team offensive/defensive ratings"],
     ),
     Endpoint(
@@ -135,11 +138,14 @@ ENDPOINTS: List[Endpoint] = [
         provider="MLB Advanced Media (MLBAM)",
         official=True,
         auth="none",
-        verification_status="unverified",
-        verified_on=None,
+        verification_status="live-verified",
+        verified_on=AUDIT_DATE,
         docs_url="https://statsapi.mlb.com/",
         terms_url=MLB_COPYRIGHT,
-        notes="Same caveat as mlb.team_stats.",
+        notes="LIVE-VERIFIED 2026-09-22 (second audit pass): GET /api/v1/people/608331/stats?stats=season"
+              "&group=pitching&season=2026 (person id 608331 taken from the same day's verified "
+              "probable-pitcher hydrate) returned HTTP 200 with a full pitching split (inningsPitched, "
+              "strikeOuts, earnedRuns, homeRuns, baseOnBalls, hits, wins, losses, era, whip, ...).",
         replaces=["RG player stat inputs", "PlateIQ season stats"],
     ),
     Endpoint(
@@ -149,14 +155,17 @@ ENDPOINTS: List[Endpoint] = [
         provider="MLB Advanced Media (MLBAM)",
         official=True,
         auth="none",
-        verification_status="unverified",
-        verified_on=None,
+        verification_status="live-verified",
+        verified_on=AUDIT_DATE,
         docs_url="https://statsapi.mlb.com/",
         terms_url=MLB_COPYRIGHT,
-        notes="Needed for ballpark latitude/longitude so the NWS weather grid can be resolved. Not retrieved "
-              "during the audit; a hard-coded venue coordinate table is NOT shipped, because inventing "
-              "coordinates would violate the no-hallucination rule. Without this endpoint the weather layer "
-              "reports 'venue coordinates unavailable' and skips the adjustment.",
+        notes="LIVE-VERIFIED 2026-09-22 (second audit pass): GET /api/v1/venues/2395 (venue id taken "
+              "from the same day's verified schedule) returned HTTP 200 with "
+              "{id: 2395, name: 'Oracle Park', active: true, season: '2026'}. NOTE: this endpoint "
+              "returns the venue NAME only - it does NOT return latitude/longitude, so it cannot by "
+              "itself resolve the NWS weather grid. Without a coordinate source the weather layer "
+              "reports 'venue coordinates unavailable' and skips the adjustment (no coordinate table "
+              "is hard-coded, because inventing coordinates would violate the no-hallucination rule).",
         replaces=["WeatherEdge venue lookup"],
     ),
     Endpoint(
@@ -214,16 +223,24 @@ ENDPOINTS: List[Endpoint] = [
     ),
     Endpoint(
         key="nhl.club_schedule",
-        name="NHL Web API - club schedule",
-        url_template="https://api-web.nhle.com/v1/club/schedule/{club}/{season}",
+        name="NHL Web API - club season schedule",
+        url_template="https://api-web.nhle.com/v1/club-schedule-season/{club}/{season}",
         provider="National Hockey League",
         official=True,
         auth="none",
-        verification_status="documented",
-        verified_on=None,
+        verification_status="live-verified",
+        verified_on=AUDIT_DATE,
         docs_url="https://api-web.nhle.com/",
         terms_url="https://www.nhl.com/info/terms-of-service",
-        notes="Same API family as the verified scoreboard endpoint but not individually retrieved during the audit.",
+        notes="CORRECTED AND LIVE-VERIFIED 2026-09-22 (second audit pass, IR-24). The template this "
+              "registry shipped in the first pass (/v1/club/schedule/{club}/{season}) returned HTTP 404 "
+              "when actually fetched, as did the /v1/club-schedule/{club}/{season} variant. The correct "
+              "route, confirmed live, is /v1/club-schedule-season/{club}/{season}: GET .../TOR/20262027 "
+              "returned HTTP 200 with {previousSeason: 20252026, currentSeason: 20262027, clubTimezone, "
+              "clubUTCOffset, games[] containing id, season, gameType, gameDate, venue.default, "
+              "startTimeUTC, easternUTCOffset, venueTimezone, gameState, gameScheduleState, tvBroadcasts[], "
+              "awayTeam/homeTeam {id, commonName, placeNameWithPreposition, abbrev, logo, score}, "
+              "periodDescriptor, gameOutcome, gameCenterLink}.",
         replaces=["RG NHL schedule"],
     ),
     Endpoint(
@@ -233,11 +250,14 @@ ENDPOINTS: List[Endpoint] = [
         provider="National Hockey League",
         official=True,
         auth="none",
-        verification_status="documented",
-        verified_on=None,
+        verification_status="live-verified",
+        verified_on=AUDIT_DATE,
         docs_url="https://api-web.nhle.com/",
         terms_url="https://www.nhl.com/info/terms-of-service",
-        notes="Not individually retrieved during the audit.",
+        notes="LIVE-VERIFIED 2026-09-22 (second audit pass): GET /v1/player/8478402/landing returned "
+              "HTTP 200 with playerId, isActive, currentTeamId/Abbrev, name, position, "
+              "featuredStats (season 20252026 regular-season and playoff splits), careerTotals "
+              "(including plusMinus and faceoffWinningPctg), last5Games[] and seasonTotals[].",
         replaces=["RG NHL player stats"],
     ),
     Endpoint(
@@ -302,11 +322,16 @@ ENDPOINTS: List[Endpoint] = [
         verified_on=AUDIT_DATE,
         docs_url="https://rotogrinders.com/",
         terms_url="https://rotogrinders.com/terms",
-        notes="Retrieved 2026-09-22 for mlb, nfl and wnba. These pages show a FREE six-row teaser above a "
-              "paywall. RGENGY reads the *column headers* only, to define the output schema it must match. "
-              "It never automates this endpoint: robots.txt disallows /api/ and /app, and reproducing "
-              "paywalled rows would breach the site's terms. Columns are transcribed in "
-              "docs/04-data-schema-catalog.md.",
+        notes="Retrieved 2026-09-22 for mlb, nfl and wnba, and re-verified the same day during the "
+              "second audit pass. These pages show a FREE six-row teaser above a paywall. Re-observed "
+              "on the second pass: MLB grid = 49 columns, NFL = 38, WNBA = 33 (unchanged); the six "
+              "free MLB rows updated continuously (FPTS stamped 'updated 29 minutes ago' at retrieval); "
+              "OBFPTS/FPTS spanned 1.076-1.126 across the fresh rows; LEV was 9 on all six again; "
+              "PRIZEPICKS equalled FPTS on all six again while UNDERDOG differed; WIND rendered as "
+              "'COLOut6' and TEMPDESC as 'neutraltemp'. RGENGY reads the *column headers* only, to "
+              "define the output schema it must match. It never automates this endpoint: robots.txt "
+              "disallows /api/ and /app, and reproducing paywalled rows would breach the site's terms. "
+              "Columns are transcribed in docs/04-rg-findings.md.",
         replaces=[],
     ),
     Endpoint(
@@ -320,8 +345,9 @@ ENDPOINTS: List[Endpoint] = [
         verified_on=AUDIT_DATE,
         docs_url=None,
         terms_url="https://rotogrinders.com/terms",
-        notes="Retrieved 2026-09-22. Disallows /app, /grind-downs/, /api/ and *.csv for all user agents; "
-              "declares sitemap at https://rotogrinders.com/sitemaps.xml. This is why RGENGY does not "
+        notes="Retrieved 2026-09-22 and re-verified the same day during the second audit pass. "
+              "Disallows, for all user agents: /app, ?, */edit, /grind-downs/, /api/ and .csv; declares "
+              "sitemap at https://rotogrinders.com/sitemaps.xml. This is why RGENGY does not "
               "automate any RotoGrinders endpoint.",
         replaces=[],
     ),

@@ -104,12 +104,16 @@ def build_data_sources() -> str:
     for status, n in sorted(summary["by_status"].items(), key=lambda kv: -kv[1]):
         out.append(f"| `{status}` | {n} | {STATUS_BLURB.get(status, '')} |")
     out.append("")
+    operator_total = scoring.audit()["operator_confirmed_total"]
     out.append(
-        "> **L-02.** The audit environment had no outbound network access for raw fetches, so\n"
-        "> *no scoring value in this repository is marked `confirmed_by_operator`* - both\n"
-        "> operators keep their authoritative scoring pages inside their logged-in apps.\n"
-        "> `rgengy probe` and `rgengy verify` exist to be run from a networked machine and stamp\n"
-        "> each endpoint with its live status.\n")
+        "> **L-02 (updated 2026-09-22).** The build sandbox still has no raw-socket network "
+        "access, but the operator-evidence picture changed in the second audit pass: FanDuel's "
+        "public rules page (fanduel.com/rules) and DraftKings' own Network scoring articles were "
+        f"retrieved, so **{operator_total} scoring values are now marked `confirmed_by_operator`**. "
+        "DraftKings' canonical in-app rules page remains unretrieved, and the values still resting "
+        "on secondary evidence (MLB caught stealing, the DraftKings DST block, IR-04/IR-05/L-04) "
+        "are labelled per value. `rgengy probe` and `rgengy verify` stamp each endpoint - and "
+        "every cited URL - with its live status on every CI build.\n")
 
     by_provider: Dict[str, List[Dict[str, Any]]] = {}
     for r in rows:
@@ -193,7 +197,10 @@ def build_scoring() -> str:
         out.append(f"| contest format | {_md_escape(str(meta.get('contest_format'))) } |")
         out.append(f"| salary cap | {meta.get('salary_cap')} |")
         out.append(f"| audit date | {meta.get('audit_date')} |")
-        out.append(f"| operator-confirmed | **{meta.get('confirmed_by_operator')}** (L-02) |")
+        n_op = sum(1 for spec in values.values() if spec.get("confirmed_by_operator"))
+        op_label = (f"**True** - {n_op}/{len(values)} values" if meta.get("confirmed_by_operator")
+                    else f"False - {n_op}/{len(values)} values")
+        out.append(f"| operator-confirmed | {op_label} |")
         out.append(f"| coefficients | {len(values)} |")
         out.append(f"| disputed | {n_disputed} |")
         out.append(f"| not audited | {n_unaudited} |")
@@ -612,12 +619,22 @@ def build_irregularities() -> str:
 # ---------------------------------------------------------------------------
 
 FUTURE_WORK = [
-    ("Retrieve the operators' own scoring pages", "critical",
-     "No coefficient in this repository is `confirmed_by_operator` (L-02). Every value rests on "
-     "secondary sources, and three are actively contradicted (IR-05, IR-06, IR-16). DraftKings and "
-     "FanDuel both keep their authoritative tables inside their logged-in apps, so this needs an "
-     "authenticated session or a direct operator relationship.",
-     "Settles IR-04, IR-05, IR-06, IR-08, IR-10, IR-16, L-04."),
+    ("Retrieve DraftKings' canonical in-app scoring rules", "high",
+     "FanDuel's public rules page (fanduel.com/rules) and DraftKings' Network articles are now "
+     "retrieved and operator-confirm large parts of five tables (see IR-06, IR-08, IR-09, IR-10, "
+     "IR-18). What is still missing is DraftKings' canonical rules page inside its logged-in app, "
+     "which is the document of record: it would settle the two values the operator articles leave "
+     "ambiguous (MLB caught stealing, IR-04; the article's own 4.0-vs-4.5 win inconsistency, "
+     "IR-26) and confirm the DraftKings DST tiers that currently rest on a secondary source "
+     "(L-04). This needs an authenticated session or a direct operator relationship.",
+     "Retires the last two open scoring irregularities and upgrades L-04 to fully operator-sourced."),
+    ("Model FanDuel's tiered DST points-allowed scoring", "high",
+     "FanDuel's rules page documents the exact points-allowed tiers (0->10, 1-6->7, 7-13->4, "
+     "14-20->1, 21-27->0, 28-34->-1, 35+->-4) and the formula for points allowed; the tier table "
+     "is stored verbatim in the FanDuel table JSON under `operator_tier_tables`. The engine still "
+     "models points allowed as a single expected value, so `dst_pts_allowed` ships at 0.0 and "
+     "FanDuel DST projections are understated by an unknown amount.",
+     "Turns the largest missing DST term from a flagged gap into a scored coefficient on FanDuel."),
     ("Fit the ownership model on real ownership data", "high",
      "pOWN is a softmax choice model with an uncalibrated beta (IR-13). RotoGrinders' is "
      "gradient-boosted over historical DraftKings ownership. `ownership.calibrate_beta()` already "
@@ -630,11 +647,6 @@ FUTURE_WORK = [
      "4-home-run game cannot occur. Needs historical play-by-play to fit per-stat distributions "
      "and their correlations.",
      "Makes simulated top-1 rates usable for large-field GPP decisions."),
-    ("Verify the live player-stat endpoints", "high",
-     "The slate endpoints are live-verified but the per-player season-stat endpoints are marked "
-     "`unverified` (L-02). `rgengy probe` exists to check their shape; until it has been run from "
-     "a networked machine, `run()` refuses to synthesise season stats and says so.",
-     "Unblocks real projections end to end instead of caller-supplied data."),
     ("Transcribe the NBA and NHL grid headers", "medium",
      "`RG_GRID_COLUMNS` covers MLB, NFL and WNBA only (IR-22). Without the NBA and NHL headers the "
      "grid artefacts for those sports cannot be diffed against RotoGrinders' and are labelled as "
@@ -643,12 +655,14 @@ FUTURE_WORK = [
     ("Confirm the WNBA roster templates", "medium",
      "Both WNBA templates have zero sources and are marked `not-audited` (L-03); they were assumed "
      "to be the NBA shape reduced to six slots. A wrong template produces lineups the operator "
-     "rejects outright (the IR-17 failure class).",
+     "rejects outright (the IR-17 failure class). WNBA *scoring* is no longer a gap - the FanDuel "
+     "basketball table covers WNBA and DraftKings' own Pick6 WNBA page corroborates the DK values - "
+     "but the roster shapes remain unconfirmed.",
      "Removes the only roster template that could produce an illegal lineup."),
     ("Enlarge the RotoGrinders calibration sample", "medium",
-     "The floor/ceiling ratios come from six free-tier rows (IR-12), one sport, one site, one "
-     "slate. The paid tier would give a sample large enough to fit per-position bands and to test "
-     "whether the ratios are stable across slates.",
+     "The floor/ceiling ratios come from six free-tier rows (IR-12, IR-25), one sport, one site, "
+     "one slate. The paid tier would give a sample large enough to fit per-position bands and to "
+     "test whether the ratios are stable across slates.",
      "Would let `rg_band` become a defensible default rather than an opt-in curiosity."),
     ("Licence a weather feed with a validated run-scoring sensitivity", "low",
      "Air density is computed exactly from the retrieved pressure, temperature and humidity, but "

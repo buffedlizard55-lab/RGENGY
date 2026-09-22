@@ -57,11 +57,21 @@ FLOOR_Z = 1.0
 CEIL_Z = 2.0
 
 #: Multiplicative floor/ceiling bands measured from RotoGrinders' six public
-#: MLB rows on 2026-09-22 (n=6 - a very small sample, flagged as IR-12).
+#: MLB rows on 2026-09-22 (a very small sample, flagged as IR-12).
 #: Computed by ``scripts/analyze_rg_public_grid.py``; reproduced here so the
 #: ``rg_band`` mode is deterministic without re-reading the fixture.
-RG_OBSERVED_FLOOR_RATIO = 0.3030
+#:
+#: PROVENANCE NOTE (IR-25): the floor ratio is the mean over the FIVE rows with
+#: a non-zero floor - one row published FLOOR = 0 (a display artefact; zero
+#: floors also appeared on the NFL grid the same day) and is excluded
+#: explicitly. The first pass shipped 0.3030 with a claimed sample size of 6;
+#: the all-rows mean is 0.2525 and the honest five-row mean is 0.30296.
+RG_OBSERVED_FLOOR_RATIO = 0.30296
+RG_OBSERVED_FLOOR_SAMPLE_SIZE = 5
 RG_OBSERVED_CEIL_RATIO = 2.2229
+RG_OBSERVED_CEIL_SAMPLE_SIZE = 6
+#: Retained under its original name for backwards compatibility with anything
+#: that printed it; the per-band sizes above supersede it.
 RG_OBSERVED_SAMPLE_SIZE = 6
 RG_OBSERVED_SOURCE = "https://rotogrinders.com/projected-stats/mlb (retrieved 2026-09-22)"
 

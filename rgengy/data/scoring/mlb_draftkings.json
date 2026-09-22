@@ -6,37 +6,324 @@
     "salary_cap": 50000,
     "confirmed_by_operator": false,
     "audit_date": "2026-09-22",
-    "audit_method": "Three independent secondary sources agree on every value listed. DraftKings' own scoring page is inside the logged-in app and could not be retrieved, so no value is marked operator-confirmed.",
+    "audit_method": "DraftKings' own MLB scoring article (dknetwork.draftkings.com, 'Beginner MLB DFS: Scoring', retrieved 2026-09-22) now operator-confirms every non-zero value in this table: hitters 1B +3, 2B +5, 3B +8, HR +10, RBI +2, R +2, BB +2, HBP +2, Sac Fly +1.25, Sac Hit +1.25, SB +5; pitchers IP +2.25, K +2, W +4, ER -2, Hit Against -0.6, BB Against -0.6, Hit Batsman -0.6, CG +2.5, CGSO +2.5, No-Hitter +5. Two values stay unconfirmed: caught stealing (-2, single secondary source, IR-04) and the quality-start bonus (0 vs +4 conflict, IR-05). One value stays disputed-by-registration: none. The operator article itself is internally inconsistent on the win value (table +4 vs prose 4.5) - see IR-26.",
     "sources_consulted": [
+      "https://dknetwork.draftkings.com/2020/05/29/beginner-mlb-dfs-scoring/",
       "https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444",
       "https://fantasyteamadvice.com/mlb/fantasy-calculator",
       "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/",
       "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/",
       "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
     ],
-    "notes": "'cs' (caught stealing, -2) is reported by only one source and is therefore marked disputed."
+    "notes": "'cs' (caught stealing, -2) is reported by only one source and is therefore marked disputed. Second audit pass (2026-09-22): operator article added; sac-fly / sac-hit / CG / CGSO / no-hitter bonuses operator-confirmed; 'cs' and 'qs' remain the table's two open questions."
   },
   "values": {
-    "1b": {"value": 3.0, "verification_status": "multi-source-consistent", "agreement": 5, "disputed": false, "confirmed_by_operator": false, "sources": ["https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444", "https://fantasyteamadvice.com/mlb/fantasy-calculator", "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/", "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/", "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"]},
-    "2b": {"value": 5.0, "verification_status": "multi-source-consistent", "agreement": 5, "disputed": false, "confirmed_by_operator": false, "sources": ["https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444", "https://fantasyteamadvice.com/mlb/fantasy-calculator", "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/", "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/", "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"]},
-    "3b": {"value": 8.0, "verification_status": "multi-source-consistent", "agreement": 5, "disputed": false, "confirmed_by_operator": false, "sources": ["https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444", "https://fantasyteamadvice.com/mlb/fantasy-calculator", "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/", "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/", "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"]},
-    "hr": {"value": 10.0, "verification_status": "multi-source-consistent", "agreement": 5, "disputed": false, "confirmed_by_operator": false, "sources": ["https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444", "https://fantasyteamadvice.com/mlb/fantasy-calculator", "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/", "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/", "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"]},
-    "rbi": {"value": 2.0, "verification_status": "multi-source-consistent", "agreement": 5, "disputed": false, "confirmed_by_operator": false, "sources": ["https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444", "https://fantasyteamadvice.com/mlb/fantasy-calculator", "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/", "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/", "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"]},
-    "r": {"value": 2.0, "verification_status": "multi-source-consistent", "agreement": 5, "disputed": false, "confirmed_by_operator": false, "sources": ["https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444", "https://fantasyteamadvice.com/mlb/fantasy-calculator", "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/", "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/", "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"]},
-    "bb": {"value": 2.0, "verification_status": "multi-source-consistent", "agreement": 5, "disputed": false, "confirmed_by_operator": false, "sources": ["https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444", "https://fantasyteamadvice.com/mlb/fantasy-calculator", "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/", "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/", "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"]},
-    "hbp": {"value": 2.0, "verification_status": "multi-source-consistent", "agreement": 4, "disputed": false, "confirmed_by_operator": false, "sources": ["https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444", "https://fantasyteamadvice.com/mlb/fantasy-calculator", "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/", "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"]},
-    "sb": {"value": 5.0, "verification_status": "multi-source-consistent", "agreement": 5, "disputed": false, "confirmed_by_operator": false, "sources": ["https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444", "https://fantasyteamadvice.com/mlb/fantasy-calculator", "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/", "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/", "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"]},
-    "cs": {"value": -2.0, "verification_status": "single-source", "agreement": 1, "disputed": true, "confirmed_by_operator": false, "sources": ["https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444"], "note": "Only RotoWire lists Caught Stealing = -2 for DraftKings. The 2026 fantasyteamadvice calculator and the DK/FD comparison tables omit it. FLAGGED in docs/09-irregularities.md (IR-04)."},
-    "ip": {"value": 2.25, "verification_status": "multi-source-consistent", "agreement": 5, "disputed": false, "confirmed_by_operator": false, "sources": ["https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444", "https://fantasyteamadvice.com/mlb/fantasy-calculator", "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/", "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/", "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"]},
-    "k": {"value": 2.0, "verification_status": "multi-source-consistent", "agreement": 5, "disputed": false, "confirmed_by_operator": false, "sources": ["https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444", "https://fantasyteamadvice.com/mlb/fantasy-calculator", "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/", "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/", "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"]},
-    "win": {"value": 4.0, "verification_status": "multi-source-consistent", "agreement": 5, "disputed": false, "confirmed_by_operator": false, "sources": ["https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444", "https://fantasyteamadvice.com/mlb/fantasy-calculator", "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/", "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/", "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"]},
-    "er": {"value": -2.0, "verification_status": "multi-source-consistent", "agreement": 5, "disputed": false, "confirmed_by_operator": false, "sources": ["https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444", "https://fantasyteamadvice.com/mlb/fantasy-calculator", "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/", "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/", "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"]},
-    "ha": {"value": -0.6, "verification_status": "multi-source-consistent", "agreement": 4, "disputed": false, "confirmed_by_operator": false, "sources": ["https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444", "https://fantasyteamadvice.com/mlb/fantasy-calculator", "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/", "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"]},
-    "bba": {"value": -0.6, "verification_status": "multi-source-consistent", "agreement": 4, "disputed": false, "confirmed_by_operator": false, "sources": ["https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444", "https://fantasyteamadvice.com/mlb/fantasy-calculator", "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/", "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"]},
-    "hbpa": {"value": -0.6, "verification_status": "multi-source-consistent", "agreement": 4, "disputed": false, "confirmed_by_operator": false, "sources": ["https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444", "https://fantasyteamadvice.com/mlb/fantasy-calculator", "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/", "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"]},
-    "cg": {"value": 2.5, "verification_status": "multi-source-consistent", "agreement": 4, "disputed": false, "confirmed_by_operator": false, "sources": ["https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444", "https://fantasyteamadvice.com/mlb/fantasy-calculator", "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/", "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"]},
-    "cgso": {"value": 2.5, "verification_status": "multi-source-consistent", "agreement": 4, "disputed": false, "confirmed_by_operator": false, "sources": ["https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444", "https://fantasyteamadvice.com/mlb/fantasy-calculator", "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/", "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"], "note": "Additive with 'cg'; a complete-game shutout earns both bonuses."},
-    "nohitter": {"value": 5.0, "verification_status": "multi-source-consistent", "agreement": 3, "disputed": false, "confirmed_by_operator": false, "sources": ["https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444", "https://fantasyteamadvice.com/mlb/fantasy-calculator", "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"]},
-    "qs": {"value": 0.0, "verification_status": "disputed", "agreement": 2, "disputed": true, "confirmed_by_operator": false, "sources": ["https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/", "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/", "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/"], "note": "sportsfanfocus and dailyfantasysports101 both show DraftKings Quality Start = 0 (i.e. no bonus); runpuresports lists '+4' under its DraftKings heading. Set to 0 and FLAGGED as IR-05 in docs/09-irregularities.md."}
+    "1b": {
+      "value": 3.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 5,
+      "disputed": false,
+      "confirmed_by_operator": true,
+      "sources": [
+        "https://dknetwork.draftkings.com/2020/05/29/beginner-mlb-dfs-scoring/",
+        "https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
+      ]
+    },
+    "2b": {
+      "value": 5.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 5,
+      "disputed": false,
+      "confirmed_by_operator": true,
+      "sources": [
+        "https://dknetwork.draftkings.com/2020/05/29/beginner-mlb-dfs-scoring/",
+        "https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
+      ]
+    },
+    "3b": {
+      "value": 8.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 5,
+      "disputed": false,
+      "confirmed_by_operator": true,
+      "sources": [
+        "https://dknetwork.draftkings.com/2020/05/29/beginner-mlb-dfs-scoring/",
+        "https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
+      ]
+    },
+    "hr": {
+      "value": 10.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 5,
+      "disputed": false,
+      "confirmed_by_operator": true,
+      "sources": [
+        "https://dknetwork.draftkings.com/2020/05/29/beginner-mlb-dfs-scoring/",
+        "https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
+      ]
+    },
+    "rbi": {
+      "value": 2.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 5,
+      "disputed": false,
+      "confirmed_by_operator": true,
+      "sources": [
+        "https://dknetwork.draftkings.com/2020/05/29/beginner-mlb-dfs-scoring/",
+        "https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
+      ]
+    },
+    "r": {
+      "value": 2.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 5,
+      "disputed": false,
+      "confirmed_by_operator": true,
+      "sources": [
+        "https://dknetwork.draftkings.com/2020/05/29/beginner-mlb-dfs-scoring/",
+        "https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
+      ]
+    },
+    "bb": {
+      "value": 2.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 5,
+      "disputed": false,
+      "confirmed_by_operator": true,
+      "sources": [
+        "https://dknetwork.draftkings.com/2020/05/29/beginner-mlb-dfs-scoring/",
+        "https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
+      ]
+    },
+    "hbp": {
+      "value": 2.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 4,
+      "disputed": false,
+      "confirmed_by_operator": true,
+      "sources": [
+        "https://dknetwork.draftkings.com/2020/05/29/beginner-mlb-dfs-scoring/",
+        "https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+      ]
+    },
+    "sb": {
+      "value": 5.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 5,
+      "disputed": false,
+      "confirmed_by_operator": true,
+      "sources": [
+        "https://dknetwork.draftkings.com/2020/05/29/beginner-mlb-dfs-scoring/",
+        "https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
+      ]
+    },
+    "cs": {
+      "value": -2.0,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": true,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444"
+      ],
+      "note": "Only RotoWire lists Caught Stealing = -2 for DraftKings. The 2026 fantasyteamadvice calculator and the DK/FD comparison tables omit it. FLAGGED in docs/09-irregularities.md (IR-04). Second audit pass: DraftKings' own MLB scoring article lists NO caught-stealing penalty either, so the operator document neither confirms nor refutes -2 (IR-04)."
+    },
+    "ip": {
+      "value": 2.25,
+      "verification_status": "multi-source-consistent",
+      "agreement": 5,
+      "disputed": false,
+      "confirmed_by_operator": true,
+      "sources": [
+        "https://dknetwork.draftkings.com/2020/05/29/beginner-mlb-dfs-scoring/",
+        "https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
+      ]
+    },
+    "k": {
+      "value": 2.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 5,
+      "disputed": false,
+      "confirmed_by_operator": true,
+      "sources": [
+        "https://dknetwork.draftkings.com/2020/05/29/beginner-mlb-dfs-scoring/",
+        "https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
+      ]
+    },
+    "win": {
+      "value": 4.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 5,
+      "disputed": false,
+      "confirmed_by_operator": true,
+      "sources": [
+        "https://dknetwork.draftkings.com/2020/05/29/beginner-mlb-dfs-scoring/",
+        "https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
+      ],
+      "note": "Operator table (DraftKings Network MLB scoring article) lists 'Win: +4 Pts'; its own prose later says wins are 'a nice chunk of points at 4.5' - the article contradicts itself (IR-26). The table value 4.0 is shipped, matching every secondary source."
+    },
+    "er": {
+      "value": -2.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 5,
+      "disputed": false,
+      "confirmed_by_operator": true,
+      "sources": [
+        "https://dknetwork.draftkings.com/2020/05/29/beginner-mlb-dfs-scoring/",
+        "https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
+      ]
+    },
+    "ha": {
+      "value": -0.6,
+      "verification_status": "multi-source-consistent",
+      "agreement": 4,
+      "disputed": false,
+      "confirmed_by_operator": true,
+      "sources": [
+        "https://dknetwork.draftkings.com/2020/05/29/beginner-mlb-dfs-scoring/",
+        "https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+      ],
+      "note": "Operator article prints 'Hit Against: 0.6 Pts' without the sign; its own negative-points section confirms walks/hit-batters are -0.6 and every secondary source gives -0.6, so the sign is read as negative."
+    },
+    "bba": {
+      "value": -0.6,
+      "verification_status": "multi-source-consistent",
+      "agreement": 4,
+      "disputed": false,
+      "confirmed_by_operator": true,
+      "sources": [
+        "https://dknetwork.draftkings.com/2020/05/29/beginner-mlb-dfs-scoring/",
+        "https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+      ]
+    },
+    "hbpa": {
+      "value": -0.6,
+      "verification_status": "multi-source-consistent",
+      "agreement": 4,
+      "disputed": false,
+      "confirmed_by_operator": true,
+      "sources": [
+        "https://dknetwork.draftkings.com/2020/05/29/beginner-mlb-dfs-scoring/",
+        "https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+      ],
+      "note": "Operator article lists 'Hit Batsman: -0.6 Pts' under pitchers, matching this value."
+    },
+    "cg": {
+      "value": 2.5,
+      "verification_status": "multi-source-consistent",
+      "agreement": 4,
+      "disputed": false,
+      "confirmed_by_operator": true,
+      "sources": [
+        "https://dknetwork.draftkings.com/2020/05/29/beginner-mlb-dfs-scoring/",
+        "https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
+      ],
+      "note": "Operator article: 'Complete Game: +2.5 Pts' / 'Complete Game Shutout: +2.5 Pts'."
+    },
+    "cgso": {
+      "value": 2.5,
+      "verification_status": "multi-source-consistent",
+      "agreement": 4,
+      "disputed": false,
+      "confirmed_by_operator": true,
+      "sources": [
+        "https://dknetwork.draftkings.com/2020/05/29/beginner-mlb-dfs-scoring/",
+        "https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
+      ],
+      "note": "Additive with 'cg'; a complete-game shutout earns both bonuses. Operator article: 'Complete Game: +2.5 Pts' / 'Complete Game Shutout: +2.5 Pts'."
+    },
+    "nohitter": {
+      "value": 5.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 3,
+      "disputed": false,
+      "confirmed_by_operator": true,
+      "sources": [
+        "https://dknetwork.draftkings.com/2020/05/29/beginner-mlb-dfs-scoring/",
+        "https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
+      ],
+      "note": "Operator article: 'No Hitter: +5 Pts'."
+    },
+    "qs": {
+      "value": 0.0,
+      "verification_status": "disputed",
+      "agreement": 2,
+      "disputed": true,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/",
+        "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/"
+      ],
+      "note": "sportsfanfocus and dailyfantasysports101 both show DraftKings Quality Start = 0 (i.e. no bonus); runpuresports lists '+4' under its DraftKings heading. Set to 0 and FLAGGED as IR-05 in docs/09-irregularities.md. Second audit pass: the operator MLB article lists complete-game (+2.5), complete-game-shutout (+2.5) and no-hitter (+5) bonuses but NO quality-start bonus, which supports the 0.0 reading without proving it (IR-05)."
+    }
   }
 }

@@ -6,111 +6,112 @@
     "salary_cap": 50000,
     "confirmed_by_operator": false,
     "audit_date": "2026-09-22",
-    "audit_method": "No WNBA scoring page was retrieved during this audit. Stat keys are derived from the columns RotoGrinders publishes on its WNBA grid; point values are NOT audited and are set to 0 so the engine cannot silently produce a wrong total.",
+    "audit_method": "PROVISIONAL - single operator-family source. DraftKings' own WNBA scoring page (pick6.draftkings.com/rules-and-scoring-wnba, retrieved 2026-09-22) publishes Point +1, Made 3pt +0.5, Rebound +1.25, Assist +1.5, Steal +2, Block +2, Turnover -0.5, Double-Double +1.5, Triple-Double +3 - identical to the operator-confirmed DraftKings NBA classic table. CAVEAT: that page is for DraftKings PICK6, a different product from DraftKings DFS classic, so these values are NOT marked confirmed_by_operator; they are recorded here because the first pass shipped all zeros, which made WNBA projections impossible, and an operator-published WNBA table beats an empty one provided it is labelled provisional.",
     "sources_consulted": [
+      "https://pick6.draftkings.com/pick6-rules-and-scoring-wnba",
       "https://rotogrinders.com/projected-stats/wnba"
     ],
-    "notes": "All values are 0.0 and status 'not-audited' on purpose: the WNBA table must be filled from the operator's own scoring page before it is used. See docs/10-roadmap-and-limitations.md item L-03."
+    "notes": "Every value is 'single-source' from a DraftKings property that publishes WNBA scoring for a DIFFERENT product (Pick6). Treat the totals as provisional until a DraftKings WNBA classic scoring page is retrieved. The WNBA *roster* templates remain unaudited (L-03) - scoring and roster provenance are tracked separately."
   },
   "values": {
     "pts": {
-      "value": 0.0,
-      "verification_status": "not-audited",
+      "value": 1.0,
+      "verification_status": "single-source",
       "agreement": 1,
       "disputed": false,
       "confirmed_by_operator": false,
       "sources": [
-        "https://rotogrinders.com/projected-stats/wnba"
+        "https://pick6.draftkings.com/pick6-rules-and-scoring-wnba"
       ],
-      "note": "Column present on the RotoGrinders WNBA grid; point value not audited."
+      "note": "Operator Pick6 page; provisional for DFS classic (see meta)."
     },
     "three_pm": {
-      "value": 0.0,
-      "verification_status": "not-audited",
+      "value": 0.5,
+      "verification_status": "single-source",
       "agreement": 1,
       "disputed": false,
       "confirmed_by_operator": false,
       "sources": [
-        "https://rotogrinders.com/projected-stats/wnba"
+        "https://pick6.draftkings.com/pick6-rules-and-scoring-wnba"
       ],
-      "note": "Column present on the RotoGrinders WNBA grid; point value not audited."
+      "note": "Operator Pick6 page; provisional for DFS classic."
     },
     "reb": {
-      "value": 0.0,
-      "verification_status": "not-audited",
+      "value": 1.25,
+      "verification_status": "single-source",
       "agreement": 1,
       "disputed": false,
       "confirmed_by_operator": false,
       "sources": [
-        "https://rotogrinders.com/projected-stats/wnba"
+        "https://pick6.draftkings.com/pick6-rules-and-scoring-wnba"
       ],
-      "note": "Column present on the RotoGrinders WNBA grid; point value not audited."
+      "note": "Operator Pick6 page; provisional for DFS classic."
     },
     "ast": {
-      "value": 0.0,
-      "verification_status": "not-audited",
+      "value": 1.5,
+      "verification_status": "single-source",
       "agreement": 1,
       "disputed": false,
       "confirmed_by_operator": false,
       "sources": [
-        "https://rotogrinders.com/projected-stats/wnba"
+        "https://pick6.draftkings.com/pick6-rules-and-scoring-wnba"
       ],
-      "note": "Column present on the RotoGrinders WNBA grid; point value not audited."
+      "note": "Operator Pick6 page; provisional for DFS classic."
     },
     "stl": {
-      "value": 0.0,
-      "verification_status": "not-audited",
+      "value": 2.0,
+      "verification_status": "single-source",
       "agreement": 1,
       "disputed": false,
       "confirmed_by_operator": false,
       "sources": [
-        "https://rotogrinders.com/projected-stats/wnba"
+        "https://pick6.draftkings.com/pick6-rules-and-scoring-wnba"
       ],
-      "note": "Column present on the RotoGrinders WNBA grid; point value not audited."
+      "note": "Operator Pick6 page; provisional for DFS classic."
     },
     "blk": {
-      "value": 0.0,
-      "verification_status": "not-audited",
+      "value": 2.0,
+      "verification_status": "single-source",
       "agreement": 1,
       "disputed": false,
       "confirmed_by_operator": false,
       "sources": [
-        "https://rotogrinders.com/projected-stats/wnba"
+        "https://pick6.draftkings.com/pick6-rules-and-scoring-wnba"
       ],
-      "note": "Column present on the RotoGrinders WNBA grid; point value not audited."
+      "note": "Operator Pick6 page; provisional for DFS classic."
     },
     "to": {
-      "value": 0.0,
-      "verification_status": "not-audited",
+      "value": -0.5,
+      "verification_status": "single-source",
       "agreement": 1,
       "disputed": false,
       "confirmed_by_operator": false,
       "sources": [
-        "https://rotogrinders.com/projected-stats/wnba"
+        "https://pick6.draftkings.com/pick6-rules-and-scoring-wnba"
       ],
-      "note": "Column present on the RotoGrinders WNBA grid; point value not audited."
+      "note": "Operator Pick6 page; provisional for DFS classic."
     },
     "dd": {
-      "value": 0.0,
-      "verification_status": "not-audited",
+      "value": 1.5,
+      "verification_status": "single-source",
       "agreement": 1,
       "disputed": false,
       "confirmed_by_operator": false,
       "sources": [
-        "https://rotogrinders.com/projected-stats/wnba"
+        "https://pick6.draftkings.com/pick6-rules-and-scoring-wnba"
       ],
-      "note": "Column present on the RotoGrinders WNBA grid; point value not audited."
+      "note": "Max 1 per player. Operator Pick6 page; provisional for DFS classic."
     },
     "td": {
-      "value": 0.0,
-      "verification_status": "not-audited",
+      "value": 3.0,
+      "verification_status": "single-source",
       "agreement": 1,
       "disputed": false,
       "confirmed_by_operator": false,
       "sources": [
-        "https://rotogrinders.com/projected-stats/wnba"
+        "https://pick6.draftkings.com/pick6-rules-and-scoring-wnba"
       ],
-      "note": "Column present on the RotoGrinders WNBA grid; point value not audited."
+      "note": "Max 1 per player. Operator Pick6 page; provisional for DFS classic."
     }
   }
 }

@@ -45,12 +45,14 @@ asserted from memory.
    reproduce.
 3. **16 data endpoints are registered, 14 of them official league feeds**, with a
    verification status each. Zero require an API key. See [02](02-data-sources.md).
-4. **29 findings are on the register** - 23 irregularities and 6 limitations, of
-   which 6 were defects in RGENGY itself and are now resolved and pinned by tests.
-   See [09](09-irregularities.md).
-5. **No operator scoring page could be retrieved** (both are inside logged-in
-   apps), so *no coefficient is marked `confirmed_by_operator`*. That is limitation
-   **L-02** and it is the single largest constraint on this project.
+4. **32 findings are on the register** - 26 irregularities and 6 limitations,
+   including 3 defects in RGENGY itself found by the second audit pass, all fixed
+   and pinned by tests. See [09](09-irregularities.md).
+5. **122 coefficients are operator-confirmed** (updated 2026-09-22). FanDuel's
+   public rules page and DraftKings' own Network scoring articles were retrieved
+   and matched against the tables - every non-zero value in 7 of the 11 tables is
+   operator-sourced. The rest (MLB caught stealing, the DraftKings DST block) are
+   labelled per value; that residual gap is limitation **L-02**.
 
 ## What RGENGY deliberately does not do
 

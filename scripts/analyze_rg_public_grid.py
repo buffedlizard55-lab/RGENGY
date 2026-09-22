@@ -257,12 +257,22 @@ def analyze(fixture: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     }
 
     # -- 8. derived calibration constants for the engine --------------------
+    all_floor = [float(r["FLOOR"]) / float(r["FPTS"]) for r in rows if float(r["FPTS"])]
     out["engine_constants"] = {
         "RG_OBSERVED_FLOOR_RATIO": out["floor_ratio"]["mean"],
+        "RG_OBSERVED_FLOOR_SAMPLE_SIZE": out["floor_ratio"]["n"],
         "RG_OBSERVED_CEIL_RATIO": out["ceil_ratio"]["mean"],
+        "RG_OBSERVED_CEIL_SAMPLE_SIZE": out["ceil_ratio"]["n"],
+        # IR-25: the first pass shipped the five-row mean with a claimed sample
+        # size of six. Both means are now published side by side so the
+        # exclusion is visible instead of silent.
+        "RG_OBSERVED_FLOOR_RATIO_ALL_ROWS": round(sum(all_floor) / len(all_floor), 5)
+        if all_floor else None,
         "sample_size_warning": (
-            f"n={out['floor_ratio']['n']} for the floor ratio and n={out['ceil_ratio']['n']} for the "
-            "ceiling ratio, all from ONE team in ONE game at Coors Field on ONE date. These constants "
+            f"n={out['floor_ratio']['n']} for the floor ratio (non-zero floors only; "
+            f"{len(out['floor_ratio']['excluded'])} row(s) published FLOOR=0 and are excluded, "
+            f"see IR-25) and n={out['ceil_ratio']['n']} for the ceiling ratio, all from ONE team "
+            "in ONE game at Coors Field on ONE date. These constants "
             "are used only as a sanity band, never as the primary projection mechanism; "
             "rgengy.engines defaults to deriving bands from its own outcome distribution."),
     }
