@@ -1,0 +1,295 @@
+{
+  "meta": {
+    "sport": "nfl",
+    "site": "fanduel",
+    "contest_format": "Classic (full slate)",
+    "salary_cap": 60000,
+    "confirmed_by_operator": false,
+    "audit_date": "2026-09-22",
+    "audit_method": "Re-audited in pass 2. Roster is QB, 2 RB, 3 WR, TE, FLEX(RB/WR/TE/K), DST = 9 slots; the kicker is reachable through the flex, which is why FanDuel carries kicker coefficients and DraftKings does not. Flex eligibility is disputed between two 2026 sources (IR-16).",
+    "sources_consulted": [
+      "https://rotogrinders.com/projected-stats/nfl",
+      "https://www.stokastic.com/articles/nfl-dfs/stokastic-sims-vs-sabersim-vs-rotogrinders-nfl-2026",
+      "https://fantasyteamadvisors.com/nfl-dfs-strategy/",
+      "https://occupyfantasy.com/daily-fantasy-football-strategy-draftkings-fanduel-dfs/",
+      "https://fantasyfootballers.org/featured/draftkings-vs-fanduel/",
+      "https://www.sportsbettingdime.com/news/nfl/nfl-dfs-week-2-lineup-draftkings-picks-for-sunday/"
+    ],
+    "notes": "Pass 1 gave FanDuel the 100RU / 100RE / 300PA bonuses and DraftKings none. fantasyfootballers (2026-08-15) states the reverse, so the bonuses are now 0.0 here and 3.0 on DraftKings (IR-18). FanDuel's points-allowed tiers for team defence were not retrieved and remain a flagged gap."
+  },
+  "values": {
+    "pa_yds": {
+      "value": 0.04,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://occupyfantasy.com/daily-fantasy-football-strategy-draftkings-fanduel-dfs/",
+        "https://fantasyteamadvisors.com/nfl-dfs-strategy/"
+      ],
+      "note": "Confirmed by occupyfantasy (2026-09-10): '1 point per 25 passing yards, 1 point per 10 yards rushing, 4 points per passing TD, and 6 points per rushing/receiving TD' - identical on both sites. 1 per 25 yards = 0.04 per yard; 1 per 10 yards = 0.1 per yard."
+    },
+    "pa_td": {
+      "value": 4.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://occupyfantasy.com/daily-fantasy-football-strategy-draftkings-fanduel-dfs/",
+        "https://fantasyteamadvisors.com/nfl-dfs-strategy/"
+      ],
+      "note": "Confirmed by occupyfantasy (2026-09-10): '1 point per 25 passing yards, 1 point per 10 yards rushing, 4 points per passing TD, and 6 points per rushing/receiving TD' - identical on both sites. 1 per 25 yards = 0.04 per yard; 1 per 10 yards = 0.1 per yard."
+    },
+    "pa_int": {
+      "value": -1.0,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://occupyfantasy.com/daily-fantasy-football-strategy-draftkings-fanduel-dfs/"
+      ],
+      "note": "Standard interception penalty."
+    },
+    "pa_cmp": {
+      "value": 0.0,
+      "verification_status": "not-applicable",
+      "agreement": 0,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [],
+      "intentionally_zero": true,
+      "note": "Neither site pays per completion. Pinned at 0.0 on purpose: this stat is an alternative REPRESENTATION of production already scored by another key in this table, and applying both would double count. See IR-15."
+    },
+    "ru_yds": {
+      "value": 0.1,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://occupyfantasy.com/daily-fantasy-football-strategy-draftkings-fanduel-dfs/",
+        "https://fantasyteamadvisors.com/nfl-dfs-strategy/"
+      ],
+      "note": "Confirmed by occupyfantasy (2026-09-10): '1 point per 25 passing yards, 1 point per 10 yards rushing, 4 points per passing TD, and 6 points per rushing/receiving TD' - identical on both sites. 1 per 25 yards = 0.04 per yard; 1 per 10 yards = 0.1 per yard."
+    },
+    "ru_td": {
+      "value": 6.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://occupyfantasy.com/daily-fantasy-football-strategy-draftkings-fanduel-dfs/",
+        "https://fantasyteamadvisors.com/nfl-dfs-strategy/"
+      ],
+      "note": "Confirmed by occupyfantasy (2026-09-10): '1 point per 25 passing yards, 1 point per 10 yards rushing, 4 points per passing TD, and 6 points per rushing/receiving TD' - identical on both sites. 1 per 25 yards = 0.04 per yard; 1 per 10 yards = 0.1 per yard."
+    },
+    "rec": {
+      "value": 0.5,
+      "verification_status": "multi-source-consistent",
+      "agreement": 3,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://fantasyteamadvisors.com/nfl-dfs-strategy/",
+        "https://occupyfantasy.com/daily-fantasy-football-strategy-draftkings-fanduel-dfs/",
+        "https://fantasyfootballers.org/featured/draftkings-vs-fanduel/"
+      ],
+      "note": "FanDuel is HALF PPR: 'FanDuel uses half-point PPR scoring (0.5 points per reception)' - fantasyteamadvisors, 2026-08-05."
+    },
+    "rec_yds": {
+      "value": 0.1,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://occupyfantasy.com/daily-fantasy-football-strategy-draftkings-fanduel-dfs/",
+        "https://fantasyteamadvisors.com/nfl-dfs-strategy/"
+      ],
+      "note": "Confirmed by occupyfantasy (2026-09-10): '1 point per 25 passing yards, 1 point per 10 yards rushing, 4 points per passing TD, and 6 points per rushing/receiving TD' - identical on both sites. 1 per 25 yards = 0.04 per yard; 1 per 10 yards = 0.1 per yard."
+    },
+    "rec_td": {
+      "value": 6.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://occupyfantasy.com/daily-fantasy-football-strategy-draftkings-fanduel-dfs/",
+        "https://fantasyteamadvisors.com/nfl-dfs-strategy/"
+      ],
+      "note": "Confirmed by occupyfantasy (2026-09-10): '1 point per 25 passing yards, 1 point per 10 yards rushing, 4 points per passing TD, and 6 points per rushing/receiving TD' - identical on both sites. 1 per 25 yards = 0.04 per yard; 1 per 10 yards = 0.1 per yard."
+    },
+    "two_pt": {
+      "value": 2.0,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://occupyfantasy.com/daily-fantasy-football-strategy-draftkings-fanduel-dfs/"
+      ],
+      "note": "2-point conversion."
+    },
+    "fum_lost": {
+      "value": -2.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://fantasyfootballers.org/featured/draftkings-vs-fanduel/",
+        "https://occupyfantasy.com/daily-fantasy-football-strategy-draftkings-fanduel-dfs/"
+      ],
+      "note": "Harsher than DraftKings' -1 (fantasyfootballers, 2026-08-15)."
+    },
+    "100ru": {
+      "value": 0.0,
+      "verification_status": "not-applicable",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://fantasyfootballers.org/featured/draftkings-vs-fanduel/"
+      ],
+      "intentionally_zero": true,
+      "note": "CORRECTED IN PASS 2 (was 3.0). '100+ Rushing Yards: DraftKings 3, FanDuel 0' - FanDuel pays no yardage milestones. The 100RU column on RotoGrinders' grid is a DraftKings-site artefact. Pinned at 0.0 on purpose: this stat is an alternative REPRESENTATION of production already scored by another key in this table, and applying both would double count. See IR-15."
+    },
+    "100rec": {
+      "value": 0.0,
+      "verification_status": "not-applicable",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://fantasyfootballers.org/featured/draftkings-vs-fanduel/"
+      ],
+      "intentionally_zero": true,
+      "note": "CORRECTED IN PASS 2 (was 3.0). No FanDuel 100-yard receiving bonus. Pinned at 0.0 on purpose: this stat is an alternative REPRESENTATION of production already scored by another key in this table, and applying both would double count. See IR-15."
+    },
+    "300pa": {
+      "value": 0.0,
+      "verification_status": "not-applicable",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://fantasyfootballers.org/featured/draftkings-vs-fanduel/"
+      ],
+      "intentionally_zero": true,
+      "note": "CORRECTED IN PASS 2 (was 3.0). No FanDuel 300-yard passing bonus. Pinned at 0.0 on purpose: this stat is an alternative REPRESENTATION of production already scored by another key in this table, and applying both would double count. See IR-15."
+    },
+    "fg_0_39": {
+      "value": 3.0,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://fantasyfootballers.org/featured/draftkings-vs-fanduel/"
+      ],
+      "note": "'0-39 yard Field Goal: DraftKings 0, FanDuel 3'."
+    },
+    "fg_40_49": {
+      "value": 4.0,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://fantasyfootballers.org/featured/draftkings-vs-fanduel/"
+      ],
+      "note": "'40-49 yard Field Goal: DraftKings 0, FanDuel 4'."
+    },
+    "fg_50p": {
+      "value": 5.0,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://fantasyfootballers.org/featured/draftkings-vs-fanduel/"
+      ],
+      "note": "'50+ yard Field Goal: DraftKings 0, FanDuel 5'."
+    },
+    "pat": {
+      "value": 1.0,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://fantasyfootballers.org/featured/draftkings-vs-fanduel/"
+      ],
+      "note": "CORRECTED IN PASS 2 (was 2.0). 'Extra Point Kick: DraftKings 0, FanDuel 1'."
+    },
+    "dst_sack": {
+      "value": 1.0,
+      "verification_status": "not-audited",
+      "agreement": 0,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [],
+      "note": "See the DraftKings table's 'dst_sack' note; limitation L-04."
+    },
+    "dst_int": {
+      "value": 2.0,
+      "verification_status": "not-audited",
+      "agreement": 0,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [],
+      "note": "See 'dst_sack'."
+    },
+    "dst_fum_rec": {
+      "value": 2.0,
+      "verification_status": "not-audited",
+      "agreement": 0,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [],
+      "note": "See 'dst_sack'."
+    },
+    "dst_td": {
+      "value": 2.0,
+      "verification_status": "not-audited",
+      "agreement": 0,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [],
+      "note": "See 'dst_sack'."
+    },
+    "dst_safety": {
+      "value": 2.0,
+      "verification_status": "not-audited",
+      "agreement": 0,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [],
+      "note": "See 'dst_sack'."
+    },
+    "dst_block": {
+      "value": 2.0,
+      "verification_status": "not-audited",
+      "agreement": 0,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [],
+      "note": "See 'dst_sack'."
+    },
+    "dst_pts_allowed": {
+      "value": 0.0,
+      "verification_status": "not-audited",
+      "agreement": 0,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [],
+      "intentionally_zero": true,
+      "note": "GAP: FanDuel scores team defence on points allowed in tiers; no tier table was retrieved. Limitation L-04. Pinned at 0.0 on purpose: this stat is an alternative REPRESENTATION of production already scored by another key in this table, and applying both would double count. See IR-15."
+    }
+  }
+}

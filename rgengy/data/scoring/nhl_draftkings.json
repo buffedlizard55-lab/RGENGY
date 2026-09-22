@@ -1,0 +1,238 @@
+{
+  "meta": {
+    "sport": "nhl",
+    "site": "draftkings",
+    "contest_format": "Classic (full slate)",
+    "salary_cap": 50000,
+    "confirmed_by_operator": false,
+    "audit_date": "2026-09-22",
+    "audit_method": "Two mutually exclusive DraftKings NHL scoring tables were retrieved in pass 1: the 2014/2016 table (Goal 3, Assist 2, SOG 0.5, BLK 0.5, Goalie Win 3, Save 0.2, GA -1, SO 2) and the 2024 FTN table (Goal 8.5, Assist 5, SOG 1.5, BLK 1.3, Goalie Win 6, Save 0.7, GA -3.5, SO 4, OTL 2, plus threshold bonuses). In pass 2 the 2024 scheme was independently confirmed by DraftKings' own network site, so the conflict is RESOLVED and the values are marked multi-source-consistent with the historical table recorded as superseded.",
+    "sources_consulted": [
+      "https://www.reddit.com/r/hockey/comments/2iop7w/is_anyone_doing_nhl_fanduel/",
+      "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey",
+      "https://www.dailyfaceoff.com/news/draftkings-fantasy-hockey-cheat-sheet-march-9th",
+      "https://dknetwork.draftkings.com/2025-09-30/nhl-daily-fantasy-101-how-to-play-dfs-on-draftkings/",
+      "https://occupyfantasy.com/nhl-dfs-strategy-guide/"
+    ],
+    "notes": "IRREGULARITY IR-09 (RESOLVED in pass 2). DraftKings Network (dknetwork.draftkings.com, DraftKings' own editorial property) published the identical table on 2025-09-30. Because it comes from the operator's own domain, the 2024/2025 scheme is now considered confirmed for the current season and the 2014 scheme is treated as historical rather than as a live contradiction. IMPORTANT SCORING INTERACTION: a goal also counts as a shot on goal, so a goal is worth 8.5 + 1.5 = 10.0 points. DraftKings Network states this explicitly with a worked example ('Center: +8.5 Pts (Goal) +1.5 (Shot on Goal) = 10 Pts'). The 'sog' projection fed to this table must therefore INCLUDE goals; there is no separate goal-shot coefficient. Pass 1 wrongly added a 'sog_goal' key for this, which would have double-counted every goal - it is removed (IR-14)."
+  },
+  "values": {
+    "g": {
+      "value": 8.5,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://dknetwork.draftkings.com/2025-09-30/nhl-daily-fantasy-101-how-to-play-dfs-on-draftkings/",
+        "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey",
+        "https://www.reddit.com/r/hockey/comments/2iop7w/is_anyone_doing_nhl_fanduel/",
+        "https://www.dailyfaceoff.com/news/draftkings-fantasy-hockey-cheat-sheet-march-9th"
+      ],
+      "note": "2025 DraftKings Network and 2024 FTN agree on 8.5; the 2014-era table said 3."
+    },
+    "a": {
+      "value": 5.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://dknetwork.draftkings.com/2025-09-30/nhl-daily-fantasy-101-how-to-play-dfs-on-draftkings/",
+        "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey",
+        "https://www.reddit.com/r/hockey/comments/2iop7w/is_anyone_doing_nhl_fanduel/",
+        "https://www.dailyfaceoff.com/news/draftkings-fantasy-hockey-cheat-sheet-march-9th"
+      ],
+      "note": "2025 DraftKings Network and 2024 FTN agree on 5; the 2014-era table said 2."
+    },
+    "sog": {
+      "value": 1.5,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://dknetwork.draftkings.com/2025-09-30/nhl-daily-fantasy-101-how-to-play-dfs-on-draftkings/",
+        "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey",
+        "https://www.reddit.com/r/hockey/comments/2iop7w/is_anyone_doing_nhl_fanduel/",
+        "https://www.dailyfaceoff.com/news/draftkings-fantasy-hockey-cheat-sheet-march-9th"
+      ],
+      "note": "2025 DraftKings Network and 2024 FTN agree on 1.5; the 2014-era table said 0.5. A GOAL ALSO COUNTS AS A SHOT ON GOAL, so a goal scores 8.5 + 1.5 = 10.0."
+    },
+    "blk": {
+      "value": 1.3,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://dknetwork.draftkings.com/2025-09-30/nhl-daily-fantasy-101-how-to-play-dfs-on-draftkings/",
+        "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey",
+        "https://www.reddit.com/r/hockey/comments/2iop7w/is_anyone_doing_nhl_fanduel/",
+        "https://www.dailyfaceoff.com/news/draftkings-fantasy-hockey-cheat-sheet-march-9th"
+      ],
+      "note": "2025 DraftKings Network and 2024 FTN agree on 1.3; the 2014-era table said 0.5."
+    },
+    "shp": {
+      "value": 2.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey",
+        "https://www.reddit.com/r/hockey/comments/2iop7w/is_anyone_doing_nhl_fanduel/"
+      ],
+      "note": "Short-handed goal/assist bonus; both sources agree."
+    },
+    "shootout_goal": {
+      "value": 1.5,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://dknetwork.draftkings.com/2025-09-30/nhl-daily-fantasy-101-how-to-play-dfs-on-draftkings/"
+      ],
+      "note": "'Shootout Goal +1.5 Pts' - DraftKings Network 2025-09-30. Renamed from 'sog_goal' in pass 2: the old name suggested 'a shot on goal that is a goal', which would double count every goal (a goal already scores under both 'g' and 'sog'). IR-14. Not modelled by the hockey engine because shootout results are not in the box-score feeds."
+    },
+    "ppp": {
+      "value": 0.0,
+      "verification_status": "not-applicable",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://dknetwork.draftkings.com/2025-09-30/nhl-daily-fantasy-101-how-to-play-dfs-on-draftkings/"
+      ],
+      "intentionally_zero": true,
+      "note": "DraftKings has NO power-play point bonus; the +2 is for SHORT-HANDED points only ('shp'). FanDuel does pay +0.5 per power-play point, so the key exists in the shared stat vocabulary. Pinned at 0.0 on purpose: this stat is an alternative REPRESENTATION of production already scored by another key in this table, and applying both would double count. See IR-15."
+    },
+    "hat_trick": {
+      "value": 3.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://dknetwork.draftkings.com/2025-09-30/nhl-daily-fantasy-101-how-to-play-dfs-on-draftkings/",
+        "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey"
+      ],
+      "note": "'Hat Trick Bonus +3 Pts' - DraftKings Network 2025-09-30. The 2014-era table said 1.5 and is superseded."
+    },
+    "g5_sog": {
+      "value": 3.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://dknetwork.draftkings.com/2025-09-30/nhl-daily-fantasy-101-how-to-play-dfs-on-draftkings/",
+        "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey"
+      ],
+      "note": "Threshold bonus: '5+ Shots +3 Pts'."
+    },
+    "g3_blk": {
+      "value": 3.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://dknetwork.draftkings.com/2025-09-30/nhl-daily-fantasy-101-how-to-play-dfs-on-draftkings/",
+        "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey"
+      ],
+      "note": "Threshold bonus: '3+ Blocked Shots +3 Pts'."
+    },
+    "g3_pts": {
+      "value": 3.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://dknetwork.draftkings.com/2025-09-30/nhl-daily-fantasy-101-how-to-play-dfs-on-draftkings/",
+        "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey"
+      ],
+      "note": "Threshold bonus: '3+ Points +3 Pts'."
+    },
+    "win_goalie": {
+      "value": 6.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://dknetwork.draftkings.com/2025-09-30/nhl-daily-fantasy-101-how-to-play-dfs-on-draftkings/",
+        "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey",
+        "https://www.reddit.com/r/hockey/comments/2iop7w/is_anyone_doing_nhl_fanduel/",
+        "https://www.dailyfaceoff.com/news/draftkings-fantasy-hockey-cheat-sheet-march-9th"
+      ],
+      "note": "2025 DraftKings Network and 2024 FTN agree on 6; the 2014-era table said 3."
+    },
+    "sv": {
+      "value": 0.7,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://dknetwork.draftkings.com/2025-09-30/nhl-daily-fantasy-101-how-to-play-dfs-on-draftkings/",
+        "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey",
+        "https://www.reddit.com/r/hockey/comments/2iop7w/is_anyone_doing_nhl_fanduel/",
+        "https://www.dailyfaceoff.com/news/draftkings-fantasy-hockey-cheat-sheet-march-9th"
+      ],
+      "note": "2025 DraftKings Network and 2024 FTN agree on 0.7; the 2014-era table said 0.2."
+    },
+    "ga": {
+      "value": -3.5,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://dknetwork.draftkings.com/2025-09-30/nhl-daily-fantasy-101-how-to-play-dfs-on-draftkings/",
+        "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey",
+        "https://www.reddit.com/r/hockey/comments/2iop7w/is_anyone_doing_nhl_fanduel/",
+        "https://www.dailyfaceoff.com/news/draftkings-fantasy-hockey-cheat-sheet-march-9th"
+      ],
+      "note": "2025 DraftKings Network and 2024 FTN agree on -3.5; the 2014-era table said -1."
+    },
+    "so": {
+      "value": 4.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://dknetwork.draftkings.com/2025-09-30/nhl-daily-fantasy-101-how-to-play-dfs-on-draftkings/",
+        "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey",
+        "https://www.reddit.com/r/hockey/comments/2iop7w/is_anyone_doing_nhl_fanduel/",
+        "https://www.dailyfaceoff.com/news/draftkings-fantasy-hockey-cheat-sheet-march-9th"
+      ],
+      "note": "Shutout bonus. 2025 DraftKings Network and 2024 FTN agree on 4; the 2014-era table said 2. DraftKings Network adds: shootout goals do not prevent a shutout."
+    },
+    "otl": {
+      "value": 2.0,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://dknetwork.draftkings.com/2025-09-30/nhl-daily-fantasy-101-how-to-play-dfs-on-draftkings/"
+      ],
+      "note": "Goalie overtime-loss bonus, 'Overtime Loss +2 Pts'."
+    },
+    "sv35": {
+      "value": 3.0,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://dknetwork.draftkings.com/2025-09-30/nhl-daily-fantasy-101-how-to-play-dfs-on-draftkings/"
+      ],
+      "note": "Goalie threshold bonus: '35+ Saves +3 Pts'."
+    }
+  }
+}

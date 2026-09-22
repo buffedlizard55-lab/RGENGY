@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- GENERATED FILE - DO NOT EDIT: rendered by scripts/build_site.py from the committed registries. -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>00-index &middot; RGENGY</title>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="layout">
+<div class="sidebar">
+  <div class="brand">RGENGY</div>
+  <div class="tagline">An auditable rebuild of RotoGrinders' projection data quality</div>
+  <nav aria-label="Explore the data">
+    <div class="navhead">Explore</div>
+    <a class="navhead" href="index.html">Dashboard</a><a href="sources.html">Data sources</a><a href="scoring.html">Scoring tables</a><a href="findings.html">Findings register</a><a href="rosters.html">Roster templates</a><a href="grid.html">Grid schema</a><a href="checks.html">Quality gates</a>
+  </nav>
+  <div class="sep"></div>
+  <nav aria-label="Documentation">
+    <div class="navhead">Documentation</div>
+    <a href="00-index.html" aria-current="page">Overview</a><a href="01-method.html">Method</a><a href="02-data-sources.html">Data sources</a><a href="03-scoring-verification.html">Scoring</a><a href="04-rg-findings.html">RotoGrinders findings</a><a href="05-projection-engines.html">Projection engines</a><a href="06-optimizer-and-simulator.html">Optimizer &amp; simulator</a><a href="07-grid-schema.html">Grid schema</a><a href="08-quality-gates.html">Quality gates</a><a href="09-irregularities.html">Irregularities</a><a href="10-roadmap-and-limitations.html">Limitations &amp; roadmap</a>
+  </nav>
+  <div class="sep"></div>
+  <div class="meta">
+    Audit date 2026-09-22<br>
+    16 endpoints &middot;
+    11 scoring tables<br>
+    29 findings (17 open)<br>
+    459 tests passing
+  </div>
+</div>
+<main class="content" id="main">
+<h1 id="rgengy-documentation-index">RGENGY - documentation index</h1>
+<p>An open, auditable rebuild of the <em>data quality</em> behind <a href="https://rotogrinders.com/" target="_blank" rel="noopener noreferrer">RotoGrinders</a>' projection system: what it uses, where that data comes from, what could be verified from official sources, and what could not.</p>
+<p>Audit date <strong>2026-09-22</strong>. Everything in <code>docs/</code> is either generated from a committed registry or is narrative that cites one. No number in these files is asserted from memory.</p>
+<hr>
+<h2 id="read-these-first">Read these first</h2>
+<div class="table-wrap"><table><thead><tr><th>doc</th><th>what it answers</th></tr></thead><tbody><tr><td><a href="01-method.html">01 - Method</a></td><td>How the audit was run, and the rules every claim had to satisfy</td></tr><tr><td><a href="02-data-sources.html">02 - Data sources</a></td><td><strong>Every external input</strong>, with provider, official/unofficial, auth, verification status and links</td></tr><tr><td><a href="04-rg-findings.html">04 - RotoGrinders findings</a></td><td>What was reverse-engineered from the live grid, with the arithmetic</td></tr><tr><td><a href="09-irregularities.html">09 - Irregularities</a></td><td><strong>Everything wrong, conflicting or unverifiable</strong> that was found</td></tr><tr><td><a href="10-roadmap-and-limitations.html">10 - Limitations and remaining work</a></td><td>What RGENGY cannot do yet, and the prioritised work to close it</td></tr></tbody></table></div>
+<h2 id="reference">Reference</h2>
+<div class="table-wrap"><table><thead><tr><th>doc</th><th>what it covers</th></tr></thead><tbody><tr><td><a href="03-scoring-verification.html">03 - Scoring verification</a></td><td>All 11 scoring tables: every coefficient, its evidence class and its source URLs</td></tr><tr><td><a href="05-projection-engines.html">05 - Projection engines</a></td><td>Rate x opportunity x environment, bands, win probability</td></tr><tr><td><a href="06-optimizer-and-simulator.html">06 - Optimizer and simulator</a></td><td>Roster construction, exposure, payouts, field simulation</td></tr><tr><td><a href="07-grid-schema.html">07 - Grid schema</a></td><td>RotoGrinders' column set and which columns RGENGY fills, and why not the rest</td></tr><tr><td><a href="08-quality-gates.html">08 - Quality gates</a></td><td>The checks that stop an indefensible number being published</td></tr></tbody></table></div>
+<hr>
+<h2 id="the-headline-results">The headline results</h2>
+<ol>
+<li><strong>The scoring table is externally validated.</strong> RGENGY's independently sourced</li>
+</ol>
+<p>DraftKings MLB coefficients, applied to RotoGrinders' own published stat projections, reproduce RotoGrinders' published FPTS for all six free rows within <strong>0.07 FPTS</strong> (0.56% worst case). See <a href="04-rg-findings.html">04 §1</a>.</p>
+<ol>
+<li><strong><code>FPTS/$</code> is reproduced exactly.</strong></li>
+</ol>
+<p><code>FPTS/$ == FPTS / (SALARY / 1000)</code>, max error 0.0036 over six rows - pure 2dp display rounding. It is the only RotoGrinders analytic column RGENGY claims to reproduce.</p>
+<ol>
+<li><strong>16 data endpoints are registered, 14 of them official league feeds</strong>, with a</li>
+</ol>
+<p>verification status each. Zero require an API key. See <a href="02-data-sources.html">02</a>.</p>
+<ol>
+<li><strong>29 findings are on the register</strong> - 23 irregularities and 6 limitations, of</li>
+</ol>
+<p>which 6 were defects in RGENGY itself and are now resolved and pinned by tests. See <a href="09-irregularities.html">09</a>.</p>
+<ol>
+<li><strong>No operator scoring page could be retrieved</strong> (both are inside logged-in</li>
+</ol>
+<p>apps), so <em>no coefficient is marked <code>confirmed_by_operator</code></em>. That is limitation <strong>L-02</strong> and it is the single largest constraint on this project.</p>
+<h2 id="what-rgengy-deliberately-does-not-do">What RGENGY deliberately does not do</h2>
+<ul>
+<li>It does not publish a number under a RotoGrinders column heading unless it can</li>
+</ul>
+<p>show the derivation. Columns it cannot fill are <code>null</code> <strong>with a written reason</strong> (<a href="07-grid-schema.html">07</a>).</p>
+<ul>
+<li>It does not invent a win probability. Every one carries the method that produced</li>
+</ul>
+<p>it, and "unavailable" is a legal answer (IR-23).</p>
+<ul>
+<li>It does not drop a player it cannot project. They stay at 0.0, flagged, because</li>
+</ul>
+<p>dropping them turns one missing sample into "no lineup exists" (IR-19).</p>
+<ul>
+<li>It does not apply an unvalidated sensitivity. The weather/air-density adjustment</li>
+</ul>
+<p>is computed exactly and then multiplied by a coefficient of <strong>0</strong> until someone fits one (docs/05).</p>
+<h2 id="running-it">Running it</h2>
+<pre><code class="language-bash">python3 -m rgengy sources            # the endpoint register with verification status
+python3 -m rgengy probe              # re-check live endpoint shapes (needs network)
+python3 -m rgengy verify             # write verification.json
+python3 -m rgengy scoring --sport mlb --site draftkings
+python3 -m rgengy run --sport mlb --date 2026-09-22 --site draftkings
+python3 -m rgengy demo --sport mlb   # synthetic, stamped SYNTHETIC end to end
+
+python3 -m unittest discover -s tests -t tests      # the full suite
+python3 scripts/build_docs.py --check               # docs/site data not stale</code></pre>
+<p><code>data/</code> is gitignored: every artefact is reproducible from the seeded inputs plus the committed scoring tables and endpoint registry, and the GitHub Pages workflow regenerates it on each build so the published site cannot disagree with the code.</p>
+<div class="pagefoot">
+  Generated 2026-09-22T00:00:00Z by <code>scripts/build_site.py</code> from the committed
+  registries. Nothing on this site is hand-copied: every number is rendered from
+  <code>rgengy/sources.py</code>, <code>rgengy/data/scoring/*.json</code> or
+  <code>rgengy/findings.py</code>.
+</div>
+</main>
+</div>
+<script src="app.js" defer></script>
+</body>
+</html>

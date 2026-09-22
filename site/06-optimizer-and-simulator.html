@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- GENERATED FILE - DO NOT EDIT: rendered by scripts/build_site.py from the committed registries. -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>06-optimizer-and-simulator &middot; RGENGY</title>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="layout">
+<div class="sidebar">
+  <div class="brand">RGENGY</div>
+  <div class="tagline">An auditable rebuild of RotoGrinders' projection data quality</div>
+  <nav aria-label="Explore the data">
+    <div class="navhead">Explore</div>
+    <a class="navhead" href="index.html">Dashboard</a><a href="sources.html">Data sources</a><a href="scoring.html">Scoring tables</a><a href="findings.html">Findings register</a><a href="rosters.html">Roster templates</a><a href="grid.html">Grid schema</a><a href="checks.html">Quality gates</a>
+  </nav>
+  <div class="sep"></div>
+  <nav aria-label="Documentation">
+    <div class="navhead">Documentation</div>
+    <a href="00-index.html">Overview</a><a href="01-method.html">Method</a><a href="02-data-sources.html">Data sources</a><a href="03-scoring-verification.html">Scoring</a><a href="04-rg-findings.html">RotoGrinders findings</a><a href="05-projection-engines.html">Projection engines</a><a href="06-optimizer-and-simulator.html" aria-current="page">Optimizer &amp; simulator</a><a href="07-grid-schema.html">Grid schema</a><a href="08-quality-gates.html">Quality gates</a><a href="09-irregularities.html">Irregularities</a><a href="10-roadmap-and-limitations.html">Limitations &amp; roadmap</a>
+  </nav>
+  <div class="sep"></div>
+  <div class="meta">
+    Audit date 2026-09-22<br>
+    16 endpoints &middot;
+    11 scoring tables<br>
+    29 findings (17 open)<br>
+    459 tests passing
+  </div>
+</div>
+<main class="content" id="main">
+<h1 id="06-optimizer-and-simulator">06 - Optimizer and simulator</h1>
+<p>Two independent stages that both have to be <em>right</em>, not merely plausible: a lineup an operator would reject is worthless however good its projection looks, and a contest simulation whose invariants do not hold is worse than no simulation.</p>
+<hr>
+<h2 id="optimizer">Optimizer</h2>
+<p><code>rgengy/optimizer.py</code>. A grouped knapsack solved exactly by dynamic programming over salary, with the positional-eligibility structure handled by a flex/fixed slot partition.</p>
+<pre><code>optimize(players, sport, site, salary_cap=None, salary_step=100,
+         flex_candidates=8, max_flex_enumerations=400, rules=None) -&gt; OptimizerResult
+
+optimize_multi(..., n_lineups=10, max_exposure=1.0, jitter=0.12,
+               rng_seed=20260922) -&gt; dict</code></pre>
+<h3 id="how-it-solves">How it solves</h3>
+<ol>
+<li><strong><code>_split_slots(rules, pool)</code></strong> partitions the roster into <em>flex</em> slots (whose</li>
+</ol>
+<p>eligibility overlaps another slot's) and <em>fixed</em> slots (mutually exclusive). It repeatedly moves the single slot that removes the most conflicting pairs, stopping as soon as the rest are independent. For DraftKings MLB that is one flex slot (UTIL); for DraftKings NBA it is UTIL, G and F.</p>
+<ol>
+<li><strong>Flex assignments</strong> are enumerated as combinations, deduplicated by player id,</li>
+</ol>
+<p>scored by summed projected points, and the best <code>max_flex_enumerations</code> are solved. Truncation is reported through <code>exact=False</code> and <code>bound_note</code>, never hidden.</p>
+<ol>
+<li><strong>Fixed slots</strong> are solved exactly by <code>_group_knapsack</code> (one DP per slot group,</li>
+</ol>
+<p>iterating the chosen-count downwards so a player is used at most once within a group) and combined by <code>_convolve</code> into a single salary/value curve.</p>
+<ol>
+<li>The best complete assignment wins. <code>_value()</code> returns <strong>raw</strong> projected points,</li>
+</ol>
+<p>so the objective is the operator's own scoring, not a value-per-dollar proxy.</p>
+<h3 id="the-conflict-test-must-be-over-the-pool">The conflict test must be over the pool</h3>
+<p>This was the most serious defect found in pass 3. Two slots are only safe to solve independently when <strong>no available player is eligible for both</strong>. Testing whether their <em>eligibility sets</em> intersect looks equivalent and is not:</p>
+<div class="table-wrap"><table><thead><tr><th>slot</th><th>eligible</th></tr></thead><tbody><tr><td><code>C/1B</code></td><td>C, 1B</td></tr><tr><td><code>OF</code></td><td>OF, LF, CF, RF</td></tr></tbody></table></div>
+<p>Those sets are disjoint - but a player listed at both <code>1B</code> and <code>OF</code> matches both slots. With the label-only test both stayed "fixed", each group knapsack picked that player independently, and the published roster contained him <strong>twice</strong>, with his points counted twice. Every operator rejects that lineup.</p>
+<p><code>_overlap_pairs(rules, members, pool)</code> now flags a conflict when any player in the pool matches both slots. The consequence is honest: the number of flex slots is <strong>data-dependent</strong>, because it depends on how many multi-position players the slate actually contains, and the resulting enumeration truncation is reported rather than absorbed.</p>
+<p>Two guards back this up:</p>
+<ul>
+<li><code>_solve_fixed</code> re-checks for duplicate ids among its chosen players and returns</li>
+</ul>
+<p><code>None</code> (an infeasible solve) rather than emitting a duplicated roster;</p>
+<ul>
+<li><code>_assert_valid_roster()</code> runs before <code>optimize()</code> returns and <strong>raises</strong> if the</li>
+</ul>
+<p>winning lineup contains a duplicate or exceeds the cap. An invalid roster that reaches a user looks exactly like a valid one, and its projected points are inflated, so this is a hard failure by design.</p>
+<p><code>tests/test_optimizer.py::TestRosterUniqueness</code> reproduces the exact defect: a pool containing one <code>1B</code>/<code>OF</code> player, asserted to produce no duplicates in any lineup, plus direct tests that <code>_overlap_pairs</code> sees the two slots as disjoint without a pool and conflicting with one.</p>
+<h3 id="optimality-is-checked-against-brute-force">Optimality is checked against brute force</h3>
+<p>The suite enumerates every legal roster for a small pool and asserts the DP finds the same total. Note <code>n = sum(rule.count for rule in rules)</code>, not <code>len(rules)</code> - DraftKings NFL is six <em>rules</em> covering nine <em>slots</em>.</p>
+<h3 id="infeasibility-is-reported-completely">Infeasibility is reported completely</h3>
+<p><code>optimize()</code> always returns an <code>OptimizerResult</code>; it never returns <code>None</code> and never raises for an infeasible slate. <code>infeasible_reason</code> names <strong>every</strong> unfilled slot and how many eligible candidates each had. It originally named only the first gap, so a user would fix one slot and immediately hit the next - a frustrating loop that tells them nothing about the real shape of the problem. <code>unfilled_slots</code> carries the same detail structurally.</p>
+<p>The pipeline propagates it: the optimizer stage reason and a run warning both carry the full explanation plus the pool size and the salary cap, instead of a bare "no feasible lineup could be built".</p>
+<h3 id="multiple-lineups">Multiple lineups</h3>
+<p>Lineup 1 is the exact optimum. Each later lineup perturbs every player's projected points by up to +/- <code>jitter</code> (12%) with a <strong>seeded</strong> PRNG (<code>rng_seed=20260922</code>), so a run is reproducible bit for bit. Duplicates of an earlier lineup are dropped, and no player may exceed <code>max_exposure</code> (a fraction of <code>n_lineups</code>).</p>
+<p>The output states plainly that lineups 2..N are <strong>diversification variants and not independent optima</strong> - <code>bound_note</code> says so on each one. Presenting a jittered variant as a second optimum would be a claim RGENGY cannot support.</p>
+<h3 id="the-slot-breakdown-must-account-for-every-player">The slot breakdown must account for every player</h3>
+<p><code>slots</code> maps each roster label to the players filling it. A second pass-3 defect: <code>zip(flex_rules, picked)</code> paired one flex member per <em>rule</em>, but <code>picked</code> is the flex members flattened in rule order, <code>rule.count</code> at a time. With a 3-count <code>OF</code> flex slot the breakdown named one outfielder, so it accounted for 8 of the 10 players in the roster - a report that misrepresents which player fills which slot. It now slices <code>picked</code> by <code>rule.count</code>, and raises if the breakdown's total does not equal the roster size.</p>
+<hr>
+<h2 id="simulator">Simulator</h2>
+<p><code>rgengy/simulator.py</code>. Builds a synthetic field, samples outcomes, and reports cash / top-10 / top-1 rates.</p>
+<pre><code>simulate_contest(lineups, player_pool, sport, site, n_sims=2000, field_size=200,
+                 sharp_fraction=0.5, entry_fee=15.0, seed=20260922,
+                 user_mode="poisson", field_mode="normal", payout=None, rules=None)</code></pre>
+<p><code>lineups</code> is the <strong>list</strong> from <code>optimize_multi(...)['lineups']</code>. Passing the whole dict used to fail with a confusing <code>AttributeError</code> deep inside the sampling loop; it now raises a <code>TypeError</code> naming the mistake, and mode validation happens before the empty-lineups short circuit so a bad <code>user_mode</code> is reported even when there is nothing to simulate.</p>
+<h3 id="payouts">Payouts</h3>
+<p><code>PayoutStructure(entry_fee, payout_fractions)</code> maps a rank threshold to a multiple. <code>multiple_for_rank(rank, field_size)</code> uses the smallest satisfied threshold.</p>
+<p>Two edge cases that were both wrong at some point:</p>
+<ul>
+<li><strong>Tiny fields.</strong> When the field is too small for any threshold to match, rank 1</li>
+</ul>
+<p>gets the largest reachable multiple (or the maximum overall if none is reachable), flagged via <code>extrapolated_for_small_field</code>. The fallback originally applied to <em>every</em> rank, which paid 200x to <strong>last place</strong>. It now applies only to rank 1; every other rank gets 0.0 when no threshold matches.</p>
+<ul>
+<li><strong>Rounding.</strong> All rates are rounded to 6 decimal places. They previously mixed</li>
+</ul>
+<p>4dp and 6dp, which broke the invariant that <code>cash rate &gt;= top-10 rate &gt;= top-1 rate</code> - the ordering a user actually reads, violated by nothing but display rounding.</p>
+<h3 id="the-field-must-not-contain-the-user">The field must not contain the user</h3>
+<p>On a small pool the "sharp" portion of the field collapsed onto the user's own roster, producing a <strong>100% cash rate</strong> from self-competition. <code>build_field()</code> now removes any field entry identical to one of the user's rosters and reports the count in <code>field_duplicates_removed</code>, so the number is visible rather than quietly absorbed.</p>
+<h3 id="known-limitation">Known limitation</h3>
+<p>Player outcomes are drawn from a normal approximation built on the projected mean and a standard deviation derived from the floor/ceiling band (<strong>L-06</strong>). Real fantasy output is a sum of discrete, correlated events, so tail behaviour is understated: a normal draw cannot produce a four-home-run game. The cash / top-10 / top-1 <em>ordering</em> is preserved, but the magnitudes are not trustworthy for large-field GPP decisions. Fixing it needs a per-stat correlated event model, which needs historical play-by-play - see <a href="10-roadmap-and-limitations.html">10 - remaining work</a>.</p>
+<div class="pagefoot">
+  Generated 2026-09-22T00:00:00Z by <code>scripts/build_site.py</code> from the committed
+  registries. Nothing on this site is hand-copied: every number is rendered from
+  <code>rgengy/sources.py</code>, <code>rgengy/data/scoring/*.json</code> or
+  <code>rgengy/findings.py</code>.
+</div>
+</main>
+</div>
+<script src="app.js" defer></script>
+</body>
+</html>

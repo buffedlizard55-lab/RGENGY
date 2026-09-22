@@ -1,0 +1,115 @@
+name: Pages
+
+# Publishes site/ to GitHub Pages.
+#
+# The generated artefacts are deliberately NOT committed for prose, but they ARE
+# rebuilt here on every push so that what is published always matches the code on
+# main. `data/` is gitignored: it is reproducible from the seeded demo plus the
+# committed scoring tables and endpoint registry, and committing it would let the
+# published site silently disagree with the code that generates it.
+#
+# The build fails rather than publishing if:
+#   * any test fails;
+#   * the committed docs/ or site/ are stale relative to the generators;
+#   * the findings register disagrees with the ids cited in the tree.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # NOTE: SOURCE_DATE_EPOCH is deliberately NOT set here. Committed generated
+      # output is pinned to the audit date by scripts/build_docs.generated_at(), so
+      # it is already reproducible without an env var - and injecting a commit-time
+      # stamp would make the staleness checks below compare against a timestamp the
+      # committed artefacts were never built with, failing every build.
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Test suite
+        run: python -m unittest discover -s tests -t tests -v
+
+      - name: Generated docs are up to date
+        run: python scripts/build_docs.py --check
+
+      - name: Generated site is up to date
+        run: python scripts/build_site.py --check
+
+      - name: Verify the endpoint register
+        # Runner has network access, unlike the audit sandbox, so this stamps each
+        # endpoint with its live status and writes verification.json into the site.
+        # It is allowed to fail: an endpoint going dark must not take the docs down,
+        # and the register already records the last verified state.
+        continue-on-error: true
+        run: |
+          mkdir -p site/data
+          python -m rgengy.cli verify --out site/data/verification.json \
+            || echo "::warning::endpoint verification incomplete"
+
+      - name: Regenerate the demo artefacts
+        # Seeded, so byte-identical run to run. Stamped SYNTHETIC end to end.
+        run: |
+          mkdir -p data/demo site/data/demo
+          for sport in mlb nba nfl nhl wnba; do
+            python -m rgengy.cli demo --sport "$sport" --out data/demo \
+              || echo "::warning::demo for $sport did not complete"
+          done
+          cp data/demo/*.json site/data/demo/ 2>/dev/null || true
+          python - <<'PY'
+          import json, pathlib
+          # An index so the published site can list the demo artefacts without
+          # hard-coding file names that depend on which sports built cleanly.
+          out = []
+          for f in sorted(pathlib.Path("site/data/demo").glob("*.json")):
+              doc = json.loads(f.read_text())
+              out.append({
+                  "file": f"demo/{f.name}",
+                  "sport": doc.get("sport"), "site": doc.get("site"),
+                  "date": doc.get("date"),
+                  "overall_status": doc.get("overall_status"),
+                  "is_grid": f.name.endswith(".grid.json"),
+              })
+          pathlib.Path("site/data/demo/index.json").write_text(json.dumps(out, indent=2) + "\n")
+          print(f"indexed {len(out)} demo artefacts")
+          PY
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

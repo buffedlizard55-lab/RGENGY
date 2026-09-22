@@ -1,0 +1,45 @@
+# ---------------------------------------------------------------------------
+# RGENGY - generated artefacts are never committed.
+#
+# Everything under data/ is produced by `rgengy run` / `rgengy demo` /
+# `rgengy verify` and is fully reproducible from the seeded inputs plus the
+# committed scoring tables and endpoint registry.  Committing it would mean the
+# published site could silently disagree with the code that generates it.  The
+# GitHub Pages workflow regenerates it on every build instead.
+# ---------------------------------------------------------------------------
+# Anchored to the repo root: an unanchored `data/` also matches site/data/,
+# which holds the generated JSON the published site is rendered from and which
+# IS committed so that `build_site.py --check` can detect drift.
+/data/
+.rgengy-cache/
+/verification.json
+
+# The site's structured data IS committed (so `build_site.py --check` can detect
+# drift), but the artefacts the Pages workflow regenerates on every build are not:
+# they are seeded and reproducible, and committing them would let the published
+# site disagree with the code that produces it.
+site/data/demo/
+site/data/verification.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Node (used only by the docs/site tooling)
+node_modules/
+site/_site/
+site/dist/
+
+# Editors / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
