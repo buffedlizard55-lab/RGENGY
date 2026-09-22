@@ -557,7 +557,8 @@ def _sidebar(current: str, data: Dict[str, Any]) -> str:
                           ("findings.html", "Findings register"),
                           ("rosters.html", "Roster templates"),
                           ("grid.html", "Grid schema"),
-                          ("checks.html", "Quality gates")):
+                          ("checks.html", "Quality gates"),
+                          ("verification.html", "Live verification")):
         explore.append(link(target, label))
     docs = [link(fname[:-3] + ".html", label) for fname, label in DOC_ORDER]
     return f"""<div class="sidebar">
@@ -1061,6 +1062,50 @@ fabrication.</blockquote>
 {''.join(blocks)}"""
 
 
+def build_verification_page(data: Dict[str, Any]) -> str:
+    counts = data["findings"]["counts"]
+    return f"""<h1>Live verification</h1>
+<p>Every claim in this repository cites a URL, and every one of those URLs is re-checked on each
+CI build by <code>rgengy verify</code>: all {len(data['sources']['endpoints'])} registered
+endpoints, plus every source cited by the scoring tables, the endpoint registry and the findings
+register. The table below is rendered in your browser from the report the latest Pages build wrote
+to <code>data/verification.json</code> &mdash; so what you see is the state of the live web at the
+last build, not a hand-maintained list.</p>
+<blockquote><strong>How to read it.</strong> A <span class="badge ok">200</span> means the citation
+was live at build time. A <span class="badge warning">bot-blocked</span> result (HTTP 403/429) means
+the page answered but refused the CI runner &mdash; anti-bot protection, not a dead link; open the
+URL yourself to confirm. A <span class="badge critical">dead-or-moved</span> result (404) is a
+citation that must be repaired, and it is treated as a defect in this repository
+(the register records each one and its fix).</blockquote>
+<div id="verify-summary" class="verify-summary" aria-live="polite">Loading the latest verification report&hellip;</div>
+<h2>Registered endpoints</h2>
+<div class="filters">
+  <input type="search" placeholder="Filter endpoints&hellip;" aria-label="Filter endpoints">
+  <span class="count"></span>
+</div>
+<div class="table-wrap"><table id="verify-endpoints">
+<thead><tr><th>endpoint</th><th>status</th><th>declared</th><th>tested URL</th></tr></thead>
+<tbody><tr><td colspan="4">Loading&hellip;</td></tr></tbody></table></div>
+<h2>Cited URLs</h2>
+<p>Every source the scoring tables, endpoint registry and findings register cite. Filter by
+classification to see only the citations that need attention.</p>
+<div class="filters">
+  <input type="search" placeholder="Filter cited URLs&hellip;" aria-label="Filter cited URLs">
+  <button type="button" data-filter="bot-blocked" aria-pressed="false">bot-blocked</button>
+  <button type="button" data-filter="dead-or-moved" aria-pressed="false">dead-or-moved</button>
+  <button type="button" data-filter="network-error" aria-pressed="false">network-error</button>
+  <span class="count"></span>
+</div>
+<div class="table-wrap"><table id="verify-cited">
+<thead><tr><th>cited as</th><th>classification</th><th>HTTP</th><th>URL</th></tr></thead>
+<tbody><tr><td colspan="4">Loading&hellip;</td></tr></tbody></table></div>
+<p style="color:var(--muted);font-size:0.85rem">If both tables say the report is missing, this copy
+of the site was built without a <code>rgengy verify</code> run &mdash; run
+<code>python3 -m rgengy verify --out site/data/verification.json</code> and rebuild, or check the
+CI logs. The <a href="sources.html">data sources register</a> always shows the audited status of
+every endpoint regardless.</p>"""
+
+
 def build_checks_page(data: Dict[str, Any]) -> str:
     rows = "".join(
         f'<tr data-tags="{"registered" if c["registered"] else "explicit"}">'
@@ -1129,6 +1174,9 @@ def render(data: Dict[str, Any]) -> Dict[Path, str]:
     out[SITE / "scoring.html"] = _page(
         "Scoring verification", "scoring.html", build_scoring_page(data), data,
         "Every fantasy scoring coefficient with its evidence class and source URLs.")
+    out[SITE / "verification.html"] = _page(
+        "Live verification", "verification.html", build_verification_page(data), data,
+        "The live status of every endpoint and every cited URL, re-checked on every CI build.")
     out[SITE / "findings.html"] = _page(
         "Irregularities", "findings.html", build_findings_page(data), data,
         "Everything wrong, conflicting or unverifiable found during the audit.")

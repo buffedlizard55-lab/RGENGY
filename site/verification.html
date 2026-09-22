@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- GENERATED FILE - DO NOT EDIT: rendered by scripts/build_site.py from the committed registries. -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live verification &middot; RGENGY</title>
+<meta name="description" content="The live status of every endpoint and every cited URL, re-checked on every CI build.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="layout">
+<div class="sidebar">
+  <div class="brand">RGENGY</div>
+  <div class="tagline">An auditable rebuild of RotoGrinders' projection data quality</div>
+  <nav aria-label="Explore the data">
+    <div class="navhead">Explore</div>
+    <a class="navhead" href="index.html">Dashboard</a><a href="sources.html">Data sources</a><a href="scoring.html">Scoring tables</a><a href="findings.html">Findings register</a><a href="rosters.html">Roster templates</a><a href="grid.html">Grid schema</a><a href="checks.html">Quality gates</a><a href="verification.html" aria-current="page">Live verification</a>
+  </nav>
+  <div class="sep"></div>
+  <nav aria-label="Documentation">
+    <div class="navhead">Documentation</div>
+    <a href="00-index.html">Overview</a><a href="01-method.html">Method</a><a href="02-data-sources.html">Data sources</a><a href="03-scoring-verification.html">Scoring</a><a href="04-rg-findings.html">RotoGrinders findings</a><a href="05-projection-engines.html">Projection engines</a><a href="06-optimizer-and-simulator.html">Optimizer &amp; simulator</a><a href="07-grid-schema.html">Grid schema</a><a href="08-quality-gates.html">Quality gates</a><a href="09-irregularities.html">Irregularities</a><a href="10-roadmap-and-limitations.html">Limitations &amp; roadmap</a>
+  </nav>
+  <div class="sep"></div>
+  <div class="meta">
+    Audit date 2026-09-22<br>
+    16 endpoints &middot;
+    11 scoring tables<br>
+    34 findings (17 open)<br>
+    460 tests passing
+  </div>
+</div>
+<main class="content" id="main">
+<h1>Live verification</h1>
+<p>Every claim in this repository cites a URL, and every one of those URLs is re-checked on each
+CI build by <code>rgengy verify</code>: all 16 registered
+endpoints, plus every source cited by the scoring tables, the endpoint registry and the findings
+register. The table below is rendered in your browser from the report the latest Pages build wrote
+to <code>data/verification.json</code> &mdash; so what you see is the state of the live web at the
+last build, not a hand-maintained list.</p>
+<blockquote><strong>How to read it.</strong> A <span class="badge ok">200</span> means the citation
+was live at build time. A <span class="badge warning">bot-blocked</span> result (HTTP 403/429) means
+the page answered but refused the CI runner &mdash; anti-bot protection, not a dead link; open the
+URL yourself to confirm. A <span class="badge critical">dead-or-moved</span> result (404) is a
+citation that must be repaired, and it is treated as a defect in this repository
+(the register records each one and its fix).</blockquote>
+<div id="verify-summary" class="verify-summary" aria-live="polite">Loading the latest verification report&hellip;</div>
+<h2>Registered endpoints</h2>
+<div class="filters">
+  <input type="search" placeholder="Filter endpoints&hellip;" aria-label="Filter endpoints">
+  <span class="count"></span>
+</div>
+<div class="table-wrap"><table id="verify-endpoints">
+<thead><tr><th>endpoint</th><th>status</th><th>declared</th><th>tested URL</th></tr></thead>
+<tbody><tr><td colspan="4">Loading&hellip;</td></tr></tbody></table></div>
+<h2>Cited URLs</h2>
+<p>Every source the scoring tables, endpoint registry and findings register cite. Filter by
+classification to see only the citations that need attention.</p>
+<div class="filters">
+  <input type="search" placeholder="Filter cited URLs&hellip;" aria-label="Filter cited URLs">
+  <button type="button" data-filter="bot-blocked" aria-pressed="false">bot-blocked</button>
+  <button type="button" data-filter="dead-or-moved" aria-pressed="false">dead-or-moved</button>
+  <button type="button" data-filter="network-error" aria-pressed="false">network-error</button>
+  <span class="count"></span>
+</div>
+<div class="table-wrap"><table id="verify-cited">
+<thead><tr><th>cited as</th><th>classification</th><th>HTTP</th><th>URL</th></tr></thead>
+<tbody><tr><td colspan="4">Loading&hellip;</td></tr></tbody></table></div>
+<p style="color:var(--muted);font-size:0.85rem">If both tables say the report is missing, this copy
+of the site was built without a <code>rgengy verify</code> run &mdash; run
+<code>python3 -m rgengy verify --out site/data/verification.json</code> and rebuild, or check the
+CI logs. The <a href="sources.html">data sources register</a> always shows the audited status of
+every endpoint regardless.</p>
+<div class="pagefoot">
+  Generated 2026-09-22T00:00:00Z by <code>scripts/build_site.py</code> from the committed
+  registries. Nothing on this site is hand-copied: every number is rendered from
+  <code>rgengy/sources.py</code>, <code>rgengy/data/scoring/*.json</code> or
+  <code>rgengy/findings.py</code>.
+</div>
+</main>
+</div>
+<script src="app.js" defer></script>
+</body>
+</html>

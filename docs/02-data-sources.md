@@ -159,7 +159,7 @@ Official league/government feed.
 | provider | National Hockey League (OFFICIAL) |
 | auth | `none` |
 | url | `https://api-web.nhle.com/v1/club-schedule-season/{club}/{season}` |
-| docs | [https://api-web.nhle.com/](https://api-web.nhle.com/) |
+| docs | [https://gitlab.com/dword4/nhlapi/-/blob/master/new-api.md](https://gitlab.com/dword4/nhlapi/-/blob/master/new-api.md) |
 | terms | [https://www.nhl.com/info/terms-of-service](https://www.nhl.com/info/terms-of-service) |
 | replaces (RotoGrinders) | RG NHL schedule |
 
@@ -174,7 +174,7 @@ Official league/government feed.
 | provider | National Hockey League (OFFICIAL) |
 | auth | `none` |
 | url | `https://api-web.nhle.com/v1/player/{player_id}/landing` |
-| docs | [https://api-web.nhle.com/](https://api-web.nhle.com/) |
+| docs | [https://gitlab.com/dword4/nhlapi/-/blob/master/new-api.md](https://gitlab.com/dword4/nhlapi/-/blob/master/new-api.md) |
 | terms | [https://www.nhl.com/info/terms-of-service](https://www.nhl.com/info/terms-of-service) |
 | replaces (RotoGrinders) | RG NHL player stats |
 
@@ -189,7 +189,7 @@ Official league/government feed.
 | provider | National Hockey League (OFFICIAL) |
 | auth | `none` |
 | url | `https://api-web.nhle.com/v1/scoreboard/{date}` |
-| docs | [https://api-web.nhle.com/](https://api-web.nhle.com/) |
+| docs | [https://gitlab.com/dword4/nhlapi/-/blob/master/new-api.md](https://gitlab.com/dword4/nhlapi/-/blob/master/new-api.md) |
 | terms | [https://www.nhl.com/info/terms-of-service](https://www.nhl.com/info/terms-of-service) |
 | replaces (RotoGrinders) | RG NHL slate/schedule |
 
@@ -209,7 +209,7 @@ Official league/government feed.
 | auth | `none` |
 | url | `https://rotogrinders.com/projected-stats/{sport}` |
 | docs | [https://rotogrinders.com/](https://rotogrinders.com/) |
-| terms | [https://rotogrinders.com/terms](https://rotogrinders.com/terms) |
+| terms | **none published** - see IR-01 |
 
 > Retrieved 2026-09-22 for mlb, nfl and wnba, and re-verified the same day during the second audit pass. These pages show a FREE six-row teaser above a paywall. Re-observed on the second pass: MLB grid = 49 columns, NFL = 38, WNBA = 33 (unchanged); the six free MLB rows updated continuously (FPTS stamped 'updated 29 minutes ago' at retrieval); OBFPTS/FPTS spanned 1.076-1.126 across the fresh rows; LEV was 9 on all six again; PRIZEPICKS equalled FPTS on all six again while UNDERDOG differed; WIND rendered as 'COLOut6' and TEMPDESC as 'neutraltemp'. RGENGY reads the *column headers* only, to define the output schema it must match. It never automates this endpoint: robots.txt disallows /api/ and /app, and reproducing paywalled rows would breach the site's terms. Columns are transcribed in docs/04-rg-findings.md.
 
@@ -222,7 +222,7 @@ Official league/government feed.
 | provider | RotoGrinders / Better Collective (OFFICIAL) |
 | auth | `none` |
 | url | `https://rotogrinders.com/robots.txt` |
-| terms | [https://rotogrinders.com/terms](https://rotogrinders.com/terms) |
+| terms | **none published** - see IR-01 |
 
 > Retrieved 2026-09-22 and re-verified the same day during the second audit pass. Disallows, for all user agents: /app, ?, */edit, /grind-downs/, /api/ and .csv; declares sitemap at https://rotogrinders.com/sitemaps.xml. This is why RGENGY does not automate any RotoGrinders endpoint.
 
@@ -235,7 +235,7 @@ Official league/government feed.
 | provider | RotoGrinders / Better Collective (OFFICIAL) |
 | auth | `none` |
 | url | `https://rotogrinders.com/sitemaps.xml` |
-| terms | [https://rotogrinders.com/terms](https://rotogrinders.com/terms) |
+| terms | **none published** - see IR-01 |
 
 > Retrieved 2026-09-22. Lists eight child sitemaps: sitemap.xml, articles.xml, authors.xml and per-sport player sitemaps for nfl, nba, mlb, nhl and pga. Confirms the five sports for which RotoGrinders publishes individual player URLs.
 

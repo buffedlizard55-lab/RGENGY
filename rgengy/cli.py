@@ -18,6 +18,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
@@ -143,13 +144,32 @@ def cmd_verify(args: argparse.Namespace) -> int:
                            "note": "reference-only endpoint; not fetched by --skip-reference"})
             results.append(record)
             continue
+        # Liveness is the HTTP status. JSON endpoints must additionally parse
+        # (a 200 HTML interstitial is not a working API); reference pages that
+        # are HTML/text by design (robots.txt, sitemaps, the RG grids) are
+        # judged on the status alone. Found by the first CI verify run (pass 3):
+        # get_json() marked rotogrinders' 200 HTML pages as failures.
+        started = time.monotonic()
+        req = _build_request(url)
         try:
-            _data, prov = get_json(url, log=log, use_cache=False)
-            record.update({"observed_status": prov.status, "fetched_at": prov.fetched_at,
-                           "elapsed_ms": prov.elapsed_ms, "ok": prov.ok})
-        except FetchError as exc:
-            record.update({"observed_status": exc.status, "ok": False, "error": str(exc.reason)})
-        except Exception as exc:  # non-JSON reference endpoint (robots.txt, sitemaps.xml)
+            _throttle(url)
+            with urllib.request.urlopen(req, timeout=DEFAULT_TIMEOUT) as resp:
+                status = resp.status
+                body = resp.read(20_000_000)
+                fetched_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+            elapsed_ms = int((time.monotonic() - started) * 1000)
+            record.update({"observed_status": status, "fetched_at": fetched_at,
+                           "elapsed_ms": elapsed_ms, "ok": 200 <= status < 400})
+            if not ep.key.startswith("rg."):
+                try:
+                    json.loads(body.decode("utf-8", "replace"))
+                except ValueError as exc:
+                    record.update({"ok": False,
+                                   "error": f"HTTP {status} but body is not valid JSON: {exc}"})
+        except urllib.error.HTTPError as exc:
+            record.update({"observed_status": exc.code, "ok": False,
+                           "error": f"HTTPError: {exc.reason}"})
+        except Exception as exc:
             record.update({"observed_status": None, "ok": False,
                            "error": f"{type(exc).__name__}: {exc}"})
         results.append(record)
@@ -182,9 +202,10 @@ def cmd_verify(args: argparse.Namespace) -> int:
                 _add(u, f"scoring:{key}:{stat}")
         for u in table.meta.get("sources_consulted", []) or []:
             _add(u, f"scoring:{key}:meta")
-        for u in (table.payload.get("operator_tier_tables") or {}).get(
-                "dst_points_allowed", {}).get("source", "") and []:
-            _add(u, f"scoring:{key}:tiers")
+        tiers = table.payload.get("operator_tier_tables") or {}
+        tier_src = (tiers.get("dst_points_allowed") or {}).get("source")
+        if tier_src:
+            _add(tier_src, f"scoring:{key}:operator_tier_tables")
     for ep in sources.ENDPOINTS:
         _add(ep.docs_url, f"endpoint-docs:{ep.key}")
         _add(ep.terms_url, f"endpoint-terms:{ep.key}")
@@ -207,9 +228,12 @@ def cmd_verify(args: argparse.Namespace) -> int:
         except Exception as exc:
             record.update({"http_status": None, "ok": False,
                            "error": f"{type(exc).__name__}: {exc}"})
+        record["classification"] = _classify(record)
         source_results.append(record)
 
     src_ok = sum(1 for r in source_results if r.get("ok"))
+    blocked = sum(1 for r in source_results if r.get("classification") == "bot-blocked")
+    dead = sum(1 for r in source_results if r.get("classification") == "dead-or-moved")
     report = {
         "tool": "rgengy verify",
         "version": __version__,
@@ -220,6 +244,8 @@ def cmd_verify(args: argparse.Namespace) -> int:
         "cited_urls_checked": len(source_results),
         "cited_urls_ok": src_ok,
         "cited_urls_failed": len(source_results) - src_ok,
+        "cited_urls_bot_blocked": blocked,
+        "cited_urls_dead": dead,
         "results": results,
         "cited_urls": source_results,
     }
@@ -227,6 +253,25 @@ def cmd_verify(args: argparse.Namespace) -> int:
     print(f"\n{ok}/{len(results)} endpoints reachable; "
           f"{src_ok}/{len(source_results)} cited URLs live", file=sys.stderr)
     return 0 if ok == len(results) else 1
+
+
+def _classify(record: Dict[str, Any]) -> str:
+    """Bucket a cited-URL check so bot-blocking is not conflated with rot.
+
+    A 403 from a cloud CI runner is usually anti-bot protection on an otherwise
+    healthy page; a 404 is a citation that must be repaired. The distinction
+    matters for how a reviewer reads verification.json.
+    """
+    code = record.get("http_status")
+    if record.get("ok"):
+        return "ok"
+    if code == 403 or code == 429:
+        return "bot-blocked"
+    if code in (404, 410):
+        return "dead-or-moved"
+    if code is None:
+        return "network-error"
+    return "http-error"
 
 
 def _example_url(ep: sources.Endpoint, date: str) -> str:
