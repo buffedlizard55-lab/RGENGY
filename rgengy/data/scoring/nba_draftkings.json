@@ -4,24 +4,26 @@
     "site": "draftkings",
     "contest_format": "Classic (full slate)",
     "salary_cap": 50000,
-    "confirmed_by_operator": false,
+    "confirmed_by_operator": true,
     "audit_date": "2026-09-22",
-    "audit_method": "DraftKings NBA values are identical across three independent sources retrieved 2026-09-22.",
+    "audit_method": "DraftKings NBA values were first agreed by three independent secondary sources (retrieved 2026-09-22) and are now OPERATOR-CONFIRMED: DraftKings' own 'NBA Daily Fantasy 101' article (dknetwork.draftkings.com, published 2025-10-17, retrieved 2026-09-22) lists every value in this table identically - Point +1, Made 3pt +0.5, Rebound +1.25, Assist +1.5, Steal +2, Block +2, Turnover -0.5, Double-Double +1.5 (max 1 per player), Triple-Double +3 (max 1 per player).",
     "sources_consulted": [
+      "https://dknetwork.draftkings.com/2025/10/17/nba-daily-fantasy-101-how-to-play-dfs-on-draftkings/",
       "https://www.rotowire.com/basketball/article/dfs-basketball-101-how-to-win-on-draftkings-19246",
       "https://dfsbuild.com/dfs-guide/nba-dfs-guide/",
       "https://teamriseorfall.com/nba-dfs-strategy-guide/"
     ],
-    "notes": "DraftKings scores counting stats plus a 3PM bonus and double-double / triple-double bonuses. Field-goal and free-throw makes are NOT scored separately (they are already inside 'pts')."
+    "notes": "DraftKings scores counting stats plus a 3PM bonus and double-double / triple-double bonuses. Field-goal and free-throw makes are NOT scored separately (they are already inside 'pts'). Every value matches the operator's own published article."
   },
   "values": {
     "pts": {
       "value": 1.0,
       "verification_status": "multi-source-consistent",
-      "agreement": 3,
+      "agreement": 4,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://dknetwork.draftkings.com/2025/10/17/nba-daily-fantasy-101-how-to-play-dfs-on-draftkings/",
         "https://www.rotowire.com/basketball/article/dfs-basketball-101-how-to-win-on-draftkings-19246",
         "https://dfsbuild.com/dfs-guide/nba-dfs-guide/",
         "https://teamriseorfall.com/nba-dfs-strategy-guide/"
@@ -30,10 +32,11 @@
     "three_pm": {
       "value": 0.5,
       "verification_status": "multi-source-consistent",
-      "agreement": 3,
+      "agreement": 4,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://dknetwork.draftkings.com/2025/10/17/nba-daily-fantasy-101-how-to-play-dfs-on-draftkings/",
         "https://www.rotowire.com/basketball/article/dfs-basketball-101-how-to-win-on-draftkings-19246",
         "https://dfsbuild.com/dfs-guide/nba-dfs-guide/",
         "https://teamriseorfall.com/nba-dfs-strategy-guide/"
@@ -42,10 +45,11 @@
     "reb": {
       "value": 1.25,
       "verification_status": "multi-source-consistent",
-      "agreement": 3,
+      "agreement": 4,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://dknetwork.draftkings.com/2025/10/17/nba-daily-fantasy-101-how-to-play-dfs-on-draftkings/",
         "https://www.rotowire.com/basketball/article/dfs-basketball-101-how-to-win-on-draftkings-19246",
         "https://dfsbuild.com/dfs-guide/nba-dfs-guide/",
         "https://teamriseorfall.com/nba-dfs-strategy-guide/"
@@ -54,10 +58,11 @@
     "ast": {
       "value": 1.5,
       "verification_status": "multi-source-consistent",
-      "agreement": 3,
+      "agreement": 4,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://dknetwork.draftkings.com/2025/10/17/nba-daily-fantasy-101-how-to-play-dfs-on-draftkings/",
         "https://www.rotowire.com/basketball/article/dfs-basketball-101-how-to-win-on-draftkings-19246",
         "https://dfsbuild.com/dfs-guide/nba-dfs-guide/",
         "https://teamriseorfall.com/nba-dfs-strategy-guide/"
@@ -66,10 +71,11 @@
     "stl": {
       "value": 2.0,
       "verification_status": "multi-source-consistent",
-      "agreement": 3,
+      "agreement": 4,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://dknetwork.draftkings.com/2025/10/17/nba-daily-fantasy-101-how-to-play-dfs-on-draftkings/",
         "https://www.rotowire.com/basketball/article/dfs-basketball-101-how-to-win-on-draftkings-19246",
         "https://dfsbuild.com/dfs-guide/nba-dfs-guide/",
         "https://teamriseorfall.com/nba-dfs-strategy-guide/"
@@ -78,10 +84,11 @@
     "blk": {
       "value": 2.0,
       "verification_status": "multi-source-consistent",
-      "agreement": 3,
+      "agreement": 4,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://dknetwork.draftkings.com/2025/10/17/nba-daily-fantasy-101-how-to-play-dfs-on-draftkings/",
         "https://www.rotowire.com/basketball/article/dfs-basketball-101-how-to-win-on-draftkings-19246",
         "https://dfsbuild.com/dfs-guide/nba-dfs-guide/",
         "https://teamriseorfall.com/nba-dfs-strategy-guide/"
@@ -90,10 +97,11 @@
     "to": {
       "value": -0.5,
       "verification_status": "multi-source-consistent",
-      "agreement": 3,
+      "agreement": 4,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://dknetwork.draftkings.com/2025/10/17/nba-daily-fantasy-101-how-to-play-dfs-on-draftkings/",
         "https://www.rotowire.com/basketball/article/dfs-basketball-101-how-to-win-on-draftkings-19246",
         "https://dfsbuild.com/dfs-guide/nba-dfs-guide/",
         "https://teamriseorfall.com/nba-dfs-strategy-guide/"
@@ -102,23 +110,25 @@
     "dd": {
       "value": 1.5,
       "verification_status": "multi-source-consistent",
-      "agreement": 3,
+      "agreement": 4,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://dknetwork.draftkings.com/2025/10/17/nba-daily-fantasy-101-how-to-play-dfs-on-draftkings/",
         "https://www.rotowire.com/basketball/article/dfs-basketball-101-how-to-win-on-draftkings-19246",
         "https://dfsbuild.com/dfs-guide/nba-dfs-guide/",
         "https://teamriseorfall.com/nba-dfs-strategy-guide/"
       ],
-      "note": "Max 1 per player."
+      "note": "Max 1 per player - stated verbatim on the operator's scoring table."
     },
     "td": {
       "value": 3.0,
       "verification_status": "multi-source-consistent",
-      "agreement": 3,
+      "agreement": 4,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://dknetwork.draftkings.com/2025/10/17/nba-daily-fantasy-101-how-to-play-dfs-on-draftkings/",
         "https://www.rotowire.com/basketball/article/dfs-basketball-101-how-to-win-on-draftkings-19246",
         "https://dfsbuild.com/dfs-guide/nba-dfs-guide/",
         "https://teamriseorfall.com/nba-dfs-strategy-guide/"

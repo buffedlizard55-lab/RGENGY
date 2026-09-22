@@ -4,135 +4,137 @@
     "site": "fanduel",
     "contest_format": "Classic (full slate)",
     "salary_cap": 40000,
-    "confirmed_by_operator": false,
+    "confirmed_by_operator": true,
     "audit_date": "2026-09-22",
-    "audit_method": "No WNBA scoring page was retrieved during this audit. Stat keys are derived from the columns RotoGrinders publishes on its WNBA grid; point values are NOT audited and are set to 0 so the engine cannot silently produce a wrong total.",
+    "audit_method": "OPERATOR-CONFIRMED (2026-09-22): FanDuel's public rules page (https://www.fanduel.com/rules, Basketball section - the same section links the WNBA training guide) publishes one basketball scoring table for NBA and WNBA: 3-pt FG=3, 2-pt FG=2, FT=1, Rebound=1.2, Assist=1.5, Block=3, Steal=3, Turnover=-1, with no double-double/triple-double bonus. The aggregate representation (1 point per point scored, no separate 3PM bonus) follows exactly as in the NBA table.",
     "sources_consulted": [
+      "https://www.fanduel.com/rules",
       "https://rotogrinders.com/projected-stats/wnba"
     ],
-    "notes": "All values are 0.0 and status 'not-audited' on purpose: the WNBA table must be filled from the operator's own scoring page before it is used. See docs/10-roadmap-and-limitations.md item L-03."
+    "notes": "This table was all zeros / not-audited in the first pass; it is now filled from FanDuel's own published basketball scoring, which the operator applies to WNBA (the WNBA training guide hangs off the same rules section). The WNBA *roster* templates remain unaudited (L-03) - scoring and roster provenance are tracked separately."
   },
   "values": {
     "pts": {
-      "value": 0.0,
-      "verification_status": "not-audited",
-      "agreement": 1,
+      "value": 1.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://www.fanduel.com/rules",
         "https://rotogrinders.com/projected-stats/wnba"
       ],
-      "note": "Point value not audited."
+      "note": "Operator basketball table (2-pt FG=2 / FT=1), WNBA included."
     },
     "three_pm": {
       "value": 0.0,
-      "verification_status": "not-audited",
-      "agreement": 1,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://www.fanduel.com/rules",
         "https://rotogrinders.com/projected-stats/wnba"
       ],
-      "note": "Point value not audited."
+      "note": "Operator 3-pt FG=3 TOTAL vs 2-pt FG=2 TOTAL => no incremental bonus under pts=1.0 (see nba:fanduel)."
     },
     "two_pm": {
       "value": 0.0,
-      "verification_status": "not-audited",
+      "verification_status": "not-applicable",
       "agreement": 1,
       "disputed": false,
       "confirmed_by_operator": false,
       "sources": [
-        "https://rotogrinders.com/projected-stats/wnba"
+        "https://www.fanduel.com/rules"
       ],
-      "note": "Point value not audited."
+      "intentionally_zero": true,
+      "note": "Made-shot value subsumed by pts=1.0. Pinned at 0.0 on purpose: this stat is an alternative REPRESENTATION of production already scored by another key in this table, and applying both would double count. See IR-15."
     },
     "ftm": {
       "value": 0.0,
-      "verification_status": "not-audited",
+      "verification_status": "not-applicable",
       "agreement": 1,
       "disputed": false,
       "confirmed_by_operator": false,
       "sources": [
-        "https://rotogrinders.com/projected-stats/wnba"
+        "https://www.fanduel.com/rules"
       ],
-      "note": "Point value not audited."
+      "intentionally_zero": true,
+      "note": "Made-shot value subsumed by pts=1.0. Pinned at 0.0 on purpose: this stat is an alternative REPRESENTATION of production already scored by another key in this table, and applying both would double count. See IR-15."
     },
     "reb": {
-      "value": 0.0,
-      "verification_status": "not-audited",
-      "agreement": 1,
+      "value": 1.2,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://www.fanduel.com/rules",
         "https://rotogrinders.com/projected-stats/wnba"
-      ],
-      "note": "Point value not audited."
+      ]
     },
     "ast": {
-      "value": 0.0,
-      "verification_status": "not-audited",
-      "agreement": 1,
+      "value": 1.5,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://www.fanduel.com/rules",
         "https://rotogrinders.com/projected-stats/wnba"
-      ],
-      "note": "Point value not audited."
+      ]
     },
     "stl": {
-      "value": 0.0,
-      "verification_status": "not-audited",
+      "value": 3.0,
+      "verification_status": "multi-source-consistent",
       "agreement": 1,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
-        "https://rotogrinders.com/projected-stats/wnba"
-      ],
-      "note": "Point value not audited."
+        "https://www.fanduel.com/rules"
+      ]
     },
     "blk": {
-      "value": 0.0,
-      "verification_status": "not-audited",
+      "value": 3.0,
+      "verification_status": "multi-source-consistent",
       "agreement": 1,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
-        "https://rotogrinders.com/projected-stats/wnba"
-      ],
-      "note": "Point value not audited."
+        "https://www.fanduel.com/rules"
+      ]
     },
     "to": {
-      "value": 0.0,
-      "verification_status": "not-audited",
+      "value": -1.0,
+      "verification_status": "multi-source-consistent",
       "agreement": 1,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
-        "https://rotogrinders.com/projected-stats/wnba"
-      ],
-      "note": "Point value not audited."
+        "https://www.fanduel.com/rules"
+      ]
     },
     "dd": {
       "value": 0.0,
-      "verification_status": "not-audited",
+      "verification_status": "multi-source-consistent",
       "agreement": 1,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
-        "https://rotogrinders.com/projected-stats/wnba"
+        "https://www.fanduel.com/rules"
       ],
-      "note": "Point value not audited."
+      "note": "No DD bonus in the operator's enumerated basketball scoring (IR-08)."
     },
     "td": {
       "value": 0.0,
-      "verification_status": "not-audited",
+      "verification_status": "multi-source-consistent",
       "agreement": 1,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
-        "https://rotogrinders.com/projected-stats/wnba"
+        "https://www.fanduel.com/rules"
       ],
-      "note": "Point value not audited."
+      "note": "No TD bonus in the operator's enumerated basketball scoring (IR-08)."
     }
   }
 }

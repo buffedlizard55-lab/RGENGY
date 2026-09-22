@@ -264,10 +264,34 @@ class TestDistributionsAndBands(unittest.TestCase):
         self.assertAlmostEqual(b["ceil"], 13.48 * engines.RG_OBSERVED_CEIL_RATIO, places=6)
 
     def test_rg_band_constants_match_the_fixture(self):
-        self.assertEqual(engines.RG_OBSERVED_FLOOR_RATIO, 0.3030)
-        self.assertEqual(engines.RG_OBSERVED_CEIL_RATIO, 2.2229)
+        # IR-25: the floor ratio is the mean over the FIVE rows with a non-zero
+        # floor (one row published FLOOR=0 and is excluded, documented); the
+        # ceiling is the all-rows mean over six.
+        self.assertAlmostEqual(engines.RG_OBSERVED_FLOOR_RATIO, 0.30296, places=5)
+        self.assertEqual(engines.RG_OBSERVED_FLOOR_SAMPLE_SIZE, 5)
+        self.assertAlmostEqual(engines.RG_OBSERVED_CEIL_RATIO, 2.2229, places=4)
+        self.assertEqual(engines.RG_OBSERVED_CEIL_SAMPLE_SIZE, 6)
         self.assertEqual(engines.RG_OBSERVED_SAMPLE_SIZE, 6)
         self.assertIn("rotogrinders.com", engines.RG_OBSERVED_SOURCE)
+
+    def test_rg_band_constants_recompute_from_the_fixture(self):
+        """The provenance chain fixture -> constant must reproduce (IR-25)."""
+        import json
+        from pathlib import Path
+        fixture = Path(__file__).parent / "fixtures" / "rg_public_mlb_grid_2026-09-22.json"
+        rows = json.loads(fixture.read_text())["rows"]
+        fr = [float(r["FLOOR"]) / float(r["FPTS"]) for r in rows
+              if float(r["FPTS"]) and float(r["FLOOR"]) > 0]
+        cr = [float(r["CEIL"]) / float(r["FPTS"]) for r in rows if float(r["FPTS"])]
+        self.assertEqual(len(fr), engines.RG_OBSERVED_FLOOR_SAMPLE_SIZE)
+        self.assertEqual(len(cr), engines.RG_OBSERVED_CEIL_SAMPLE_SIZE)
+        self.assertAlmostEqual(sum(fr) / len(fr), engines.RG_OBSERVED_FLOOR_RATIO, places=4)
+        self.assertAlmostEqual(sum(cr) / len(cr), engines.RG_OBSERVED_CEIL_RATIO, places=4)
+        # The all-rows floor mean is also pinned so the exclusion stays visible.
+        all_fr = [float(r["FLOOR"]) / float(r["FPTS"]) for r in rows if float(r["FPTS"])]
+        self.assertLess(sum(all_fr) / len(all_fr), engines.RG_OBSERVED_FLOOR_RATIO,
+                        "zero-floor rows lower the mean; if this flips, the exclusion "
+                        "rule or the fixture changed")
 
     def test_rg_band_reproduces_the_public_grid_row(self):
         """Ketel Marte: RG published FPTS 13.48, FLOOR 4.02, CEIL 29.63."""

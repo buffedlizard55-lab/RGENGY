@@ -8,16 +8,11 @@ Every external input RGENGY uses, with the provider, whether that provider is th
 
 | verification status | count | meaning |
 | --- | ---: | --- |
-| `live-verified` | 9 | retrieved and its response shape confirmed by inspection |
-| `unverified` | 3 | NOT retrieved during the audit - listed for completeness only |
-| `documented` | 3 | the provider documents it; it was not retrieved during the audit |
+| `live-verified` | 14 | retrieved and its response shape confirmed by inspection |
+| `documented` | 1 | the provider documents it; it was not retrieved during the audit |
 | `reachable` | 1 | reached successfully; response shape not fully confirmed |
 
-> **L-02.** The audit environment had no outbound network access for raw fetches, so
-> *no scoring value in this repository is marked `confirmed_by_operator`* - both
-> operators keep their authoritative scoring pages inside their logged-in apps.
-> `rgengy probe` and `rgengy verify` exist to be run from a networked machine and stamp
-> each endpoint with its live status.
+> **L-02 (updated 2026-09-22).** The build sandbox still has no raw-socket network access, but the operator-evidence picture changed in the second audit pass: FanDuel's public rules page (fanduel.com/rules) and DraftKings' own Network scoring articles were retrieved, so **122 scoring values are now marked `confirmed_by_operator`**. DraftKings' canonical in-app rules page remains unretrieved, and the values still resting on secondary evidence (MLB caught stealing, the DraftKings DST block, IR-04/IR-05/L-04) are labelled per value. `rgengy probe` and `rgengy verify` stamp each endpoint - and every cited URL - with its live status on every CI build.
 
 ## ESPN (undocumented public JSON API)
 
@@ -61,8 +56,8 @@ Official league/government feed.
 
 | | |
 | --- | --- |
-| status | `unverified` (NOT retrieved during the audit - listed for completeness only) |
-| verified on | never |
+| status | `live-verified` (retrieved and its response shape confirmed by inspection) |
+| verified on | 2026-09-22 |
 | provider | MLB Advanced Media (MLBAM) (OFFICIAL) |
 | auth | `none` |
 | url | `https://statsapi.mlb.com/api/v1/people/{person_id}/stats?stats=season&group={group}&season={season}` |
@@ -70,7 +65,7 @@ Official league/government feed.
 | terms | [http://gdx.mlb.com/components/copyright.txt](http://gdx.mlb.com/components/copyright.txt) |
 | replaces (RotoGrinders) | RG player stat inputs, PlateIQ season stats |
 
-> Same caveat as mlb.team_stats.
+> LIVE-VERIFIED 2026-09-22 (second audit pass): GET /api/v1/people/608331/stats?stats=season&group=pitching&season=2026 (person id 608331 taken from the same day's verified probable-pitcher hydrate) returned HTTP 200 with a full pitching split (inningsPitched, strikeOuts, earnedRuns, homeRuns, baseOnBalls, hits, wins, losses, era, whip, ...).
 
 ### `mlb.schedule` - MLB Stats API - schedule
 
@@ -106,8 +101,8 @@ Official league/government feed.
 
 | | |
 | --- | --- |
-| status | `unverified` (NOT retrieved during the audit - listed for completeness only) |
-| verified on | never |
+| status | `live-verified` (retrieved and its response shape confirmed by inspection) |
+| verified on | 2026-09-22 |
 | provider | MLB Advanced Media (MLBAM) (OFFICIAL) |
 | auth | `none` |
 | url | `https://statsapi.mlb.com/api/v1/teams/{team_id}/stats?stats=season&group={group}&season={season}` |
@@ -115,14 +110,14 @@ Official league/government feed.
 | terms | [http://gdx.mlb.com/components/copyright.txt](http://gdx.mlb.com/components/copyright.txt) |
 | replaces (RotoGrinders) | RG team offensive/defensive ratings |
 
-> Endpoint family confirmed present at statsapi.mlb.com, but this exact path/parameter set was NOT retrieved during the audit. The pipeline calls it through safe_json() and reports a degraded run if the shape differs. MUST be confirmed before the engine output is trusted.
+> LIVE-VERIFIED 2026-09-22 (second audit pass): GET /api/v1/teams/110/stats?stats=season&group=hitting&season=2026 (team id 110 taken from the same day's verified schedule) returned HTTP 200 with a copyright block and a full 2026 hitting split (gamesPlayed, runs, doubles, triples, homeRuns, strikeOuts, baseOnBalls, hits, hitByPitch, avg, atBats, obp, slg, ops, caughtStealing, stolenBases, rbi, totalBases, ...). The same shape is expected for group=pitching.
 
 ### `mlb.venue` - MLB Stats API - venues
 
 | | |
 | --- | --- |
-| status | `unverified` (NOT retrieved during the audit - listed for completeness only) |
-| verified on | never |
+| status | `live-verified` (retrieved and its response shape confirmed by inspection) |
+| verified on | 2026-09-22 |
 | provider | MLB Advanced Media (MLBAM) (OFFICIAL) |
 | auth | `none` |
 | url | `https://statsapi.mlb.com/api/v1/venues/{venue_id}` |
@@ -130,7 +125,7 @@ Official league/government feed.
 | terms | [http://gdx.mlb.com/components/copyright.txt](http://gdx.mlb.com/components/copyright.txt) |
 | replaces (RotoGrinders) | WeatherEdge venue lookup |
 
-> Needed for ballpark latitude/longitude so the NWS weather grid can be resolved. Not retrieved during the audit; a hard-coded venue coordinate table is NOT shipped, because inventing coordinates would violate the no-hallucination rule. Without this endpoint the weather layer reports 'venue coordinates unavailable' and skips the adjustment.
+> LIVE-VERIFIED 2026-09-22 (second audit pass): GET /api/v1/venues/2395 (venue id taken from the same day's verified schedule) returned HTTP 200 with {id: 2395, name: 'Oracle Park', active: true, season: '2026'}. NOTE: this endpoint returns the venue NAME only - it does NOT return latitude/longitude, so it cannot by itself resolve the NWS weather grid. Without a coordinate source the weather layer reports 'venue coordinates unavailable' and skips the adjustment (no coordinate table is hard-coded, because inventing coordinates would violate the no-hallucination rule).
 
 ## National Basketball Association
 
@@ -155,27 +150,27 @@ Official league/government feed.
 
 Official league/government feed.
 
-### `nhl.club_schedule` - NHL Web API - club schedule
+### `nhl.club_schedule` - NHL Web API - club season schedule
 
 | | |
 | --- | --- |
-| status | `documented` (the provider documents it; it was not retrieved during the audit) |
-| verified on | never |
+| status | `live-verified` (retrieved and its response shape confirmed by inspection) |
+| verified on | 2026-09-22 |
 | provider | National Hockey League (OFFICIAL) |
 | auth | `none` |
-| url | `https://api-web.nhle.com/v1/club/schedule/{club}/{season}` |
+| url | `https://api-web.nhle.com/v1/club-schedule-season/{club}/{season}` |
 | docs | [https://api-web.nhle.com/](https://api-web.nhle.com/) |
 | terms | [https://www.nhl.com/info/terms-of-service](https://www.nhl.com/info/terms-of-service) |
 | replaces (RotoGrinders) | RG NHL schedule |
 
-> Same API family as the verified scoreboard endpoint but not individually retrieved during the audit.
+> CORRECTED AND LIVE-VERIFIED 2026-09-22 (second audit pass, IR-24). The template this registry shipped in the first pass (/v1/club/schedule/{club}/{season}) returned HTTP 404 when actually fetched, as did the /v1/club-schedule/{club}/{season} variant. The correct route, confirmed live, is /v1/club-schedule-season/{club}/{season}: GET .../TOR/20262027 returned HTTP 200 with {previousSeason: 20252026, currentSeason: 20262027, clubTimezone, clubUTCOffset, games[] containing id, season, gameType, gameDate, venue.default, startTimeUTC, easternUTCOffset, venueTimezone, gameState, gameScheduleState, tvBroadcasts[], awayTeam/homeTeam {id, commonName, placeNameWithPreposition, abbrev, logo, score}, periodDescriptor, gameOutcome, gameCenterLink}.
 
 ### `nhl.player_landing` - NHL Web API - player landing page data
 
 | | |
 | --- | --- |
-| status | `documented` (the provider documents it; it was not retrieved during the audit) |
-| verified on | never |
+| status | `live-verified` (retrieved and its response shape confirmed by inspection) |
+| verified on | 2026-09-22 |
 | provider | National Hockey League (OFFICIAL) |
 | auth | `none` |
 | url | `https://api-web.nhle.com/v1/player/{player_id}/landing` |
@@ -183,7 +178,7 @@ Official league/government feed.
 | terms | [https://www.nhl.com/info/terms-of-service](https://www.nhl.com/info/terms-of-service) |
 | replaces (RotoGrinders) | RG NHL player stats |
 
-> Not individually retrieved during the audit.
+> LIVE-VERIFIED 2026-09-22 (second audit pass): GET /v1/player/8478402/landing returned HTTP 200 with playerId, isActive, currentTeamId/Abbrev, name, position, featuredStats (season 20252026 regular-season and playoff splits), careerTotals (including plusMinus and faceoffWinningPctg), last5Games[] and seasonTotals[].
 
 ### `nhl.scoreboard` - NHL Web API - scoreboard
 
@@ -216,7 +211,7 @@ Official league/government feed.
 | docs | [https://rotogrinders.com/](https://rotogrinders.com/) |
 | terms | [https://rotogrinders.com/terms](https://rotogrinders.com/terms) |
 
-> Retrieved 2026-09-22 for mlb, nfl and wnba. These pages show a FREE six-row teaser above a paywall. RGENGY reads the *column headers* only, to define the output schema it must match. It never automates this endpoint: robots.txt disallows /api/ and /app, and reproducing paywalled rows would breach the site's terms. Columns are transcribed in docs/04-data-schema-catalog.md.
+> Retrieved 2026-09-22 for mlb, nfl and wnba, and re-verified the same day during the second audit pass. These pages show a FREE six-row teaser above a paywall. Re-observed on the second pass: MLB grid = 49 columns, NFL = 38, WNBA = 33 (unchanged); the six free MLB rows updated continuously (FPTS stamped 'updated 29 minutes ago' at retrieval); OBFPTS/FPTS spanned 1.076-1.126 across the fresh rows; LEV was 9 on all six again; PRIZEPICKS equalled FPTS on all six again while UNDERDOG differed; WIND rendered as 'COLOut6' and TEMPDESC as 'neutraltemp'. RGENGY reads the *column headers* only, to define the output schema it must match. It never automates this endpoint: robots.txt disallows /api/ and /app, and reproducing paywalled rows would breach the site's terms. Columns are transcribed in docs/04-rg-findings.md.
 
 ### `rg.robots` - RotoGrinders robots.txt
 
@@ -229,7 +224,7 @@ Official league/government feed.
 | url | `https://rotogrinders.com/robots.txt` |
 | terms | [https://rotogrinders.com/terms](https://rotogrinders.com/terms) |
 
-> Retrieved 2026-09-22. Disallows /app, /grind-downs/, /api/ and *.csv for all user agents; declares sitemap at https://rotogrinders.com/sitemaps.xml. This is why RGENGY does not automate any RotoGrinders endpoint.
+> Retrieved 2026-09-22 and re-verified the same day during the second audit pass. Disallows, for all user agents: /app, ?, */edit, /grind-downs/, /api/ and .csv; declares sitemap at https://rotogrinders.com/sitemaps.xml. This is why RGENGY does not automate any RotoGrinders endpoint.
 
 ### `rg.sitemaps` - RotoGrinders sitemap index
 

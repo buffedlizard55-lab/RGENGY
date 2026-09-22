@@ -135,7 +135,13 @@ FINDINGS: List[Finding] = [
         detail=(
             "Only RotoWire lists Caught Stealing = -2 for DraftKings MLB. The 2026 "
             "fantasyteamadvice calculator and the DraftKings/FanDuel comparison tables omit it "
-            "entirely, which is not the same as contradicting it."),
+            "entirely, which is not the same as contradicting it. In the second audit pass "
+            "DraftKings' own MLB scoring article (DraftKings Network, retrieved 2026-09-22) was "
+            "checked specifically for this stat: it lists NO caught-stealing penalty either, so the "
+            "operator document neither confirms nor refutes RotoWire's -2. (A low-reliability "
+            "comparison site, rotopicks.com, claims DraftKings deducts 1 point per caught stealing, "
+            "but the same document also gives DraftKings pitching values that contradict the "
+            "operator's own page, so it is recorded only as noise.)"),
         impact="A hitter's FPTS may be overstated by up to 2 points per caught stealing.",
         action=(
             "The value is shipped as `verification_status: single-source`, `disputed: true`, "
@@ -151,7 +157,11 @@ FINDINGS: List[Finding] = [
         detail=(
             "sportsfanfocus and dailyfantasysports101 both show DraftKings Quality Start = 0 (no "
             "bonus); runpuresports lists +4 under its DraftKings heading. This is a genuine "
-            "contradiction, not an omission."),
+            "contradiction, not an omission. Second audit pass, 2026-09-22: DraftKings' own MLB "
+            "scoring article (DraftKings Network) was retrieved and lists complete-game (+2.5), "
+            "complete-game-shutout (+2.5) and no-hitter (+5) bonuses but NO quality-start bonus - "
+            "operator-page absence now supports the 0.0 reading, though absence is still not a "
+            "positive operator statement of zero."),
         impact=(
             "A starting pitcher's FPTS is understated by 4.0 if runpuresports is right. That is "
             "large relative to a pitcher's typical projection and would change roster selection."),
@@ -220,34 +230,52 @@ FINDINGS: List[Finding] = [
     # ------------------------------------------------------------------ IR-09
     Finding(
         id="IR-09", kind="irregularity", severity="info", status="resolved",
-        title="RESOLVED: DraftKings NHL goal value was missing",
+        title="RESOLVED: DraftKings NHL goal value was missing, then mis-documented",
         detail=(
-            "Pass 1 had no sourced value for a DraftKings NHL goal. DraftKings' own published "
-            "NHL DFS 101 article states goal = 10.0, which is an operator document rather than a "
-            "secondary summary."),
-        impact="Resolved. The value is now operator-sourced.",
+            "Pass 1 had no sourced value for a DraftKings NHL goal. Pass 2 adopted the operator "
+            "value from DraftKings' own NHL DFS 101 article (dknetwork.draftkings.com, an "
+            "operator property). CORRECTION in the third pass: the register text previously said "
+            "the operator article 'states goal = 10.0' - that was a documentation error. The "
+            "operator article states Goal = +8.5 Pts (and shows a worked example of a goal plus "
+            "its shot-on-goal totalling 10.0). The shipped table has been 8.5 all along, which "
+            "matches the operator document; only this register entry was wrong. The full operator "
+            "table (retrieved 2026-09-22) is: Goal +8.5, Assist +5, Shot on Goal +1.5, Blocked "
+            "Shot +1.3, Short-Handed Point bonus +2, Shootout Goal +1.5, Hat Trick +3, 5+ Shots "
+            "+3, 3+ Blocked Shots +3, 3+ Points +3; goalies: Win +6, Save +0.7, Goal Against -3.5, "
+            "Shutout +4, Overtime Loss +2, 35+ Saves +3."),
+        impact=(
+            "Resolved twice over: the value is operator-sourced, and the register itself is now "
+            "consistent with both the operator document and the shipped table."),
         action=(
-            "Adopted 10.0 from dknetwork.draftkings.com and recorded the operator URL in the "
-            "value's source list. This is one of the few values in the register backed by the "
-            "operator itself."),
+            "Adopted 8.5 from dknetwork.draftkings.com with the operator URL in the value's source "
+            "list, and every value in the nhl:draftkings table is now marked "
+            "`confirmed_by_operator: true` against that same document."),
         sources=["https://dknetwork.draftkings.com/2025-09-30/nhl-daily-fantasy-101"],
         refs=["rgengy/data/scoring/nhl_draftkings.json", "scripts/build_scoring_tables.py"]),
 
     # ------------------------------------------------------------------ IR-10
     Finding(
-        id="IR-10", kind="irregularity", severity="warning", status="open",
-        title="FanDuel NHL scoring rests on a single document, and FanDuel also scores +/-",
+        id="IR-10", kind="irregularity", severity="warning", status="resolved",
+        title="RESOLVED: FanDuel NHL scoring is now operator-confirmed; +/- is absent from the operator page",
         detail=(
-            "The FanDuel NHL table is sourced from exactly one document (ftnfantasy). FanDuel "
-            "additionally scores plus/minus, which DraftKings does not."),
+            "The FanDuel NHL table originally rested on exactly one document (ftnfantasy), and a "
+            "Reddit thread claimed FanDuel also scores plus/minus. RESOLVED in the second audit "
+            "pass (2026-09-22): FanDuel's public rules page (https://www.fanduel.com/rules, Hockey "
+            "section, retrieved that day) states Goals=12, Assists=8, Shots on Goal=1.6, Short "
+            "Handed Points=+2, Power Play Points=+0.5, Blocked Shots=1.6; goalies: Wins=12, Goals "
+            "Against=-4, Saves=0.8, Shutouts=8 - every one matches the shipped values, so the "
+            "single-source weakness is gone. The SAME page contradicts the plus/minus claim: no "
+            "plus/minus stat appears anywhere in the operator's enumerated hockey scoring."),
         impact=(
-            "`nhl:fanduel` is marked `single-source`, the weakest evidence class. The plus/minus "
-            "key is shipped as `not-audited` with a 0.0 coefficient, so FanDuel goalie and skater "
-            "FPTS is understated by an unknown amount."),
+            "Settled for every non-zero coefficient. The plus/minus key stays 0.0, but it can no "
+            "longer be described as a likely understatement: the operator's own published table "
+            "does not list plus/minus at all."),
         action=(
-            "`quality.check_scoring_coverage` escalates an unaudited zero on a stat that is "
-            "actually projected to a warning, so the understatement surfaces in every run report "
-            "instead of hiding inside a total."),
+            "Every nhl:fanduel value is marked `confirmed_by_operator: true` with the rules-page "
+            "URL; `plus_minus` stays `not-audited` at 0.0 with a note recording that the operator "
+            "page omits it and that scoring it would now be the change requiring evidence. The "
+            "operator note 'no points are awarded for goals or saves during shootouts' is recorded "
+            "in the table notes."),
         sources=["https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey"],
         refs=["rgengy/data/scoring/nhl_fanduel.json", "rgengy/quality.py"]),
 
@@ -388,18 +416,27 @@ FINDINGS: List[Finding] = [
     # ------------------------------------------------------------------ IR-18
     Finding(
         id="IR-18", kind="irregularity", severity="warning", status="resolved",
-        title="RESOLVED: NFL 100/300-yard bonuses were attributed to the wrong operator",
+        title="RESOLVED: the NFL 100/300-yard bonuses are scored by BOTH operators (FanDuel's own page)",
         detail=(
-            "Pass 1 applied the 100-yard rushing, 100-yard receiving and 300-yard passing bonuses "
-            "to both operators. DraftKings scores them (3.0); FanDuel does not. A 2026 source "
-            "states the reverse of what pass 1 assumed."),
+            "This finding has been reversed twice, which is itself the lesson. Pass 1 applied the "
+            "100-yard rushing, 100-yard receiving and 300-yard passing bonuses to both operators. "
+            "Pass 2 'corrected' FanDuel to 0.0 on the strength of two 2026 secondary sources "
+            "(fantasyfootballers, fantasyteamadvisors). In the second audit pass of this session "
+            "(2026-09-22) FanDuel's own public rules page (https://www.fanduel.com/rules, Football "
+            "section) was retrieved and it states: 100+ Receiving Yard Bonus = 3 Points, 100+ "
+            "Rushing Yard Bonus = 3 Points, 300+ Passing Yard Bonus = 3 Points. The operator page "
+            "outranks the secondary sources, so both operators score all three bonuses at 3.0, and "
+            "DraftKings' side is independently confirmed by its own NFL DFS 101 article "
+            "(dknetwork.draftkings.com, 2025-08-27)."),
         impact=(
-            "FanDuel NFL FPTS was overstated by up to 3.0 per qualifying player, which is enough "
-            "to reorder a slate."),
+            "The pass-2 change UNDERSTATED FanDuel NFL FPTS by up to 3.0 per qualifying player - "
+            "the exact error the pass-2 note warned about, committed in the opposite direction by "
+            "trusting secondary sources over the operator."),
         action=(
-            "The bonuses are 3.0 on `nfl:draftkings` and 0.0 on `nfl:fanduel`, with the conflict "
-            "and its resolution recorded in the table notes. This difference is the documented "
-            "basis of the DraftKings/FanDuel NFL scoring divergence."),
+            "`nfl:fanduel` ships 100ru / 100rec / 300pa = 3.0 marked `confirmed_by_operator: true` "
+            "with the rules-page URL. The rule this register draws from the double reversal: when "
+            "an operator page is reachable, it is retrieved and preferred even when multiple "
+            "recent secondary sources agree on the contrary value."),
         sources=["https://fantasyfootballers.org/featured/draftkings-vs-fanduel/",
                  "https://fantasyteamadvisors.com/nfl-dfs-strategy/",
                  "https://occupyfantasy.com/daily-fantasy-football-strategy-draftkings-fanduel-dfs/"],
@@ -470,10 +507,16 @@ FINDINGS: List[Finding] = [
         title="RotoGrinders' grid schema was only transcribed for three sports",
         detail=(
             f"Column headers were transcribed from the live site on {AUDIT_DATE} for MLB (49 "
-            "columns), NFL (38) and WNBA (33). The NBA and NHL grid headers were NOT transcribed, "
-            "so `models.RG_GRID_COLUMNS` deliberately omits them. TEAMOWN is a team-level roll-up "
-            "whose aggregation RotoGrinders does not publish, and the WNBA TOTAL column sits "
-            "beside SPREAD and O/U with no definition."),
+            "columns), NFL (38) and WNBA (33), and all three counts were re-verified against "
+            "fresh retrievals later the same day (second audit pass). The NBA and NHL grid "
+            "headers were NOT transcribed, so `models.RG_GRID_COLUMNS` deliberately omits them. "
+            "TEAMOWN is a team-level roll-up whose aggregation RotoGrinders does not publish. "
+            "The WNBA TOTAL column sits beside SPREAD and O/U with no published definition, but "
+            "its values are arithmetically consistent with the OPPONENT-side implied total "
+            "(O/U - SPREAD)/2 on every non-zero row of the re-verified slate (4 distinct games): "
+            "RGENGY records that consistency as an observation and still leaves TOTAL null, "
+            "because RotoGrinders publishes no formula and four rows prove nothing about the "
+            "general rule."),
         impact=(
             "Emitting an NBA or NHL grid under RotoGrinders' column headings would present "
             "RGENGY's own schema as a reproduction of theirs. Omitting a column silently would "
@@ -512,6 +555,73 @@ FINDINGS: List[Finding] = [
         sources=[RG_MLB_GRID],
         refs=["rgengy/engines.py", "rgengy/pipeline.py", "tests/test_engines.py"]),
 
+    # ------------------------------------------------------------------ IR-24
+    Finding(
+        id="IR-24", kind="irregularity", severity="warning", status="resolved",
+        title="RESOLVED: the registered NHL club-schedule endpoint 404'd when actually fetched",
+        detail=(
+            "The first pass registered the club schedule as "
+            "https://api-web.nhle.com/v1/club/schedule/{club}/{season} with status 'documented' - "
+            "a status meaning a third-party document described it, not that a response was ever "
+            "observed. The second audit pass (2026-09-22) fetched it: HTTP 404. The plausible "
+            "variant /v1/club-schedule/{club}/{season} also returned 404. The route that actually "
+            "exists and returned HTTP 200 with a full 20262027 season schedule is "
+            "/v1/club-schedule-season/{club}/{season}, which is now the registered template."),
+        impact=(
+            "`rgengy probe --endpoint nhl.club_schedule` would have reported a 404 for every club, "
+            "and any future caller of the endpoint would have inherited a dead URL that looked "
+            "audited."),
+        action=(
+            "Template corrected, endpoint live-verified with the observed response fields recorded "
+            "in the registry, and the lesson recorded: 'documented' is the weakest status in the "
+            "vocabulary, and this register treats a template that 404s under test as a defect, "
+            "not a footnote."),
+        sources=["https://api-web.nhle.com/v1/club-schedule-season/TOR/20262027"],
+        refs=["rgengy/sources.py", "rgengy/cli.py"]),
+
+    # ------------------------------------------------------------------ IR-25
+    Finding(
+        id="IR-25", kind="irregularity", severity="warning", status="resolved",
+        title="RESOLVED: the shipped floor-ratio constant did not match its own sample",
+        detail=(
+            "engines.py shipped RG_OBSERVED_FLOOR_RATIO = 0.3030 with "
+            "RG_OBSERVED_SAMPLE_SIZE = 6, and the register (IR-12) claimed 0.3030 was the mean "
+            "FLOOR/FPTS over the six audited rows. Recomputing from the committed fixture in the "
+            "second audit pass gives 0.2525 over all six rows and 0.30296 over the five rows with "
+            "a non-zero floor. The 0.3030 figure was therefore a five-row mean stored with a "
+            "six-row sample size - the row published with FLOOR = 0 had been silently excluded."),
+        impact=(
+            "The constant is only used by the opt-in `rg_band` mode, so no published projection "
+            "was wrong, but the provenance chain (fixture -> analysis -> constant -> register) did "
+            "not reproduce, which is exactly what this project exists to prevent."),
+        action=(
+            "The exclusion is now explicit: RG_OBSERVED_FLOOR_RATIO = 0.30296 with "
+            "RG_OBSERVED_FLOOR_SAMPLE_SIZE = 5, the ceiling keeps its all-rows mean (2.2229, "
+            "n = 6), `scripts/analyze_rg_public_grid.py` emits both the all-rows and non-zero "
+            "means and states the exclusion rule, and tests pin the constants to the fixture "
+            "arithmetic. Silent exclusion is replaced by documented exclusion."),
+        sources=[RG_MLB_GRID],
+        refs=["rgengy/engines.py", "scripts/analyze_rg_public_grid.py", "tests/test_engines.py"]),
+
+    # ------------------------------------------------------------------ IR-26
+    Finding(
+        id="IR-26", kind="irregularity", severity="info", status="open",
+        title="DraftKings' own MLB scoring article contradicts itself on the pitcher win value",
+        detail=(
+            "DraftKings Network's 'Beginner MLB DFS: Scoring' (retrieved 2026-09-22) lists "
+            "'Win: +4 Pts' in its scoring table, but its own strategy prose later says wins are "
+            "'a nice chunk of points at 4.5'. The two statements cannot both be right. The table "
+            "value of 4.0 is also the value every secondary source agrees on, so 4.0 is shipped."),
+        impact=(
+            "If 4.5 were correct, every DraftKings MLB pitcher projection is understated by 0.5 "
+            "per win - small next to the other coefficients but not zero."),
+        action=(
+            "The shipped value stays 4.0 (table beats prose, unanimous secondary agreement), the "
+            "conflict is recorded in the value's note, and it stays flagged here until DraftKings' "
+            "canonical in-app rules page can be retrieved."),
+        sources=["https://dknetwork.draftkings.com/2020/05/29/beginner-mlb-dfs-scoring/"],
+        refs=["scripts/build_scoring_tables.py"]),
+
     # ------------------------------------------------------------------- L-01
     Finding(
         id="L-01", kind="limitation", severity="info", status="unused-id",
@@ -528,25 +638,33 @@ FINDINGS: List[Finding] = [
 
     # ------------------------------------------------------------------- L-02
     Finding(
-        id="L-02", kind="limitation", severity="critical", status="open",
-        title="No outbound network access in the build environment",
+        id="L-02", kind="limitation", severity="warning", status="open",
+        title="No raw-socket network access from the build sandbox; operator rules coverage is now partial, not absent",
         detail=(
-            "Raw HTTPS fetches from this workspace fail with a TLS/SSL EOF error. The pages "
-            "retrieved during the audit were read through a proxy that can reach "
-            "rotogrinders.com; fanduel.com is additionally geo-blocked, and both operators keep "
-            "their authoritative scoring pages inside their logged-in apps."),
+            "Raw HTTPS fetches from the build workspace fail with a TLS/SSL EOF error, so the "
+            "runtime pipeline still cannot fetch live feeds from inside the sandbox. The first "
+            "audit also recorded that 'no operator scoring page could be retrieved' - that half "
+            "is now OUTDATED: the second audit pass (2026-09-22) verified, through the platform's "
+            "document-retrieval channel, that FanDuel publishes its full DFS scoring rules "
+            "publicly at https://www.fanduel.com/rules, and that DraftKings publishes operator- "
+            "domain scoring articles on dknetwork.draftkings.com (NHL 2025-09-30, NFL 2025-08-27, "
+            "NBA 2025-10-17, MLB 2020-05-29). DraftKings' canonical in-app rules page remains "
+            "unretrieved, and those operator articles are editorial pages rather than the "
+            "contractual rules - hence 'partial', not 'complete'."),
         impact=(
-            "No scoring value in this repository is marked `confirmed_by_operator`, because no "
-            "operator scoring page could be retrieved. Every value rests on secondary sources. The "
-            "live feeds cannot be exercised here, so the pipeline is tested against synthetic and "
-            "cached inputs and the slate stage honestly reports `unavailable` rather than "
-            "substituting invented games."),
+            "Live feeds still cannot be exercised from the sandbox, so the pipeline is tested "
+            "against synthetic and cached inputs and the slate stage honestly reports "
+            "`unavailable` rather than substituting invented games. Scoring coverage, however, "
+            "is materially stronger than the first pass claimed: large parts of five tables are "
+            "now marked `confirmed_by_operator`."),
         action=(
             "`rgengy probe` and `rgengy verify` exist to be run from a networked machine; they "
-            "stamp each endpoint with its live status and write verification.json. The GitHub "
-            "Pages workflow runs them on every build so the published site reflects the live "
-            "state rather than the audit state. `data/` is gitignored and regenerated."),
-        sources=["https://help.fanduel.com/", "https://www.draftkings.com/"],
+            "stamp each endpoint - and, added in this pass, every URL cited by the scoring "
+            "tables - with its live status and write verification.json. The GitHub Pages workflow "
+            "runs them on every build so the published site reflects the live state rather than "
+            "the audit state. `data/` is gitignored and regenerated."),
+        sources=["https://help.fanduel.com/", "https://www.draftkings.com/",
+                 "https://www.fanduel.com/rules"],
         refs=["rgengy/cli.py", "rgengy/sources.py", ".github/workflows/pages.yml"]),
 
     # ------------------------------------------------------------------- L-03
@@ -570,21 +688,36 @@ FINDINGS: List[Finding] = [
     # ------------------------------------------------------------------- L-04
     Finding(
         id="L-04", kind="limitation", severity="warning", status="open",
-        title="NFL team-defence and kicker scoring tiers were never retrieved",
+        title="DraftKings team-defence tiers remain unaudited; FanDuel's are operator-documented but not yet modelled",
         detail=(
-            "DraftKings team-defence scoring was not retrieved from any source during the audit. "
-            "The shipped values follow the long-standing convention (points allowed and yardage "
-            "tiers, sacks, turnovers, defensive touchdowns) but are marked `not-audited`."),
+            "The first pass could not retrieve DraftKings team-defence scoring from any source. "
+            "The second audit pass (2026-09-22) improved the FanDuel half: FanDuel's public rules "
+            "page (https://www.fanduel.com/rules, Football/Defense section) documents sacks = 1, "
+            "fumble recovered = 2, interception = 2, safety = 2, blocked punt = 2, kick/punt "
+            "return TD = 6, extra-point return = 2, and the exact points-allowed tiers "
+            "(0 -> 10, 1-6 -> 7, 7-13 -> 4, 14-20 -> 1, 21-27 -> 0, 28-34 -> -1, 35+ -> -4) plus "
+            "the formula FanDuel uses to compute points allowed. A secondary comparison table "
+            "(dailyfantasysports101) shows DraftKings DST tiers identical to FanDuel's, but no "
+            "DraftKings operator document for DST was retrieved. The shipped `dst_pts_allowed` "
+            "coefficient is still 0.0 because RGENGY's engine models points allowed as a single "
+            "expected value, not as a tier lookup."),
         impact=(
-            "DST and KPTS projections carry an unknown error. The NFL grid's KPTS column is left "
-            "null rather than filled from unaudited tiers."),
+            "DraftKings DST and kicker-projection error remains unknown (L-04 as originally "
+            "filed). For FanDuel, the per-event DST coefficients are now operator-confirmed, but "
+            "the tiered points-allowed scoring - often the largest DST term - is still not "
+            "applied, so FanDuel DST FPTS remains understated by an unknown amount."),
         action=(
-            "The seven `dst_*` keys are `not-audited` in both NFL tables, so "
-            "`quality.check_scoring_coverage` escalates them to a warning whenever a DST is "
-            "actually projected. Under `--strict` the pipeline excludes unaudited coefficients "
-            "from published totals."),
-        sources=["https://www.draftkings.com/"],
-        refs=["rgengy/data/scoring/nfl_draftkings.json", "rgengy/pipeline.py", "rgengy/quality.py"]),
+            "The FanDuel per-event keys are marked `confirmed_by_operator: true`. The operator "
+            "tier table is stored verbatim in the FanDuel table JSON under "
+            "`operator_tier_tables.dst_points_allowed` so no one has to re-retrieve it, and "
+            "`dst_pts_allowed` stays 0.0 / intentionally_zero until the engine grows a tier "
+            "lookup (roadmap: 'Model FanDuel's tiered DST points-allowed scoring'). Under "
+            "`--strict` the unaudited DraftKings DST keys stay excluded from published totals."),
+        sources=["https://www.fanduel.com/rules",
+                 "https://www.dailyfantasysports101.com/football/",
+                 "https://www.draftkings.com/"],
+        refs=["rgengy/data/scoring/nfl_draftkings.json", "rgengy/data/scoring/nfl_fanduel.json",
+              "rgengy/pipeline.py", "rgengy/quality.py"]),
 
     # ------------------------------------------------------------------- L-05
     Finding(
@@ -704,3 +837,4 @@ def to_dict() -> Dict[str, Any]:
         },
         "findings": [f.to_dict() for f in FINDINGS],
     }
+

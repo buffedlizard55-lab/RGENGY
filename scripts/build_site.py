@@ -35,6 +35,8 @@ from typing import Any, Dict, List, Optional, Tuple
 REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO))
 
+from rgengy import scoring  # noqa: E402  (path set up above)
+
 SITE = REPO / "site"
 DOCS = REPO / "docs"
 
@@ -712,13 +714,18 @@ def build_index(data: Dict[str, Any]) -> str:
         ))
 
     body.append("<h2>The largest constraint</h2>")
-    body.append("<blockquote><strong>L-02.</strong> The audit environment had no outbound network "
-                "access for raw fetches, FanDuel is geo-blocked, and <em>both operators keep their "
-                "authoritative scoring pages inside their logged-in apps</em>. No coefficient in "
-                "this repository is therefore marked <code>confirmed_by_operator</code> - every "
-                "value rests on secondary sources, and three are actively contradicted "
-                "(IR-05, IR-06, IR-16). <code>rgengy probe</code> and <code>rgengy verify</code> "
-                "exist to be run from a networked machine.</blockquote>")
+    op_total = scoring.audit()["operator_confirmed_total"]
+    body.append("<blockquote><strong>L-02 (updated 2026-09-22).</strong> The build sandbox still "
+                "has no raw-socket network access, but the operator-evidence picture improved in "
+                "the second audit pass: FanDuel's public rules page (fanduel.com/rules) and "
+                "DraftKings' own Network scoring articles were retrieved, so "
+                f"<strong>{op_total} scoring values are now marked "
+                "<code>confirmed_by_operator</code></strong> across seven of the eleven tables. "
+                "What remains secondary is labelled per value: MLB caught stealing and the "
+                "quality-start question (IR-04, IR-05), the DraftKings DST block (L-04), and "
+                "DraftKings' canonical in-app rules page itself. <code>rgengy probe</code> and "
+                "<code>rgengy verify</code> - which now re-checks every cited URL - run on every "
+                "CI build.</blockquote>")
 
     body.append("<h2>Findings by status</h2>")
     body.append(_table(
@@ -798,15 +805,19 @@ def build_sources_page(data: Dict[str, Any]) -> str:
         f'<button type="button" data-filter="{html.escape(st)}" aria-pressed="false">'
         f'{html.escape(st)} ({s["by_status"].get(st, 0)})</button>'
         for st in sorted(s["by_status"], key=lambda k: -s["by_status"][k]))
+    _audit = scoring.audit()
+    _op_total = _audit["operator_confirmed_total"]
+    _op_tables = sum(1 for t in _audit["tables"] if t["operator_confirmed"])
     return f"""<h1>Data sources</h1>
 <p>All {s['total_endpoints']} external inputs RGENGY uses, with the provider, whether that
 provider is the league itself, the authentication required, and what was actually verified on
 <strong>{s['audit_date']}</strong>. Rendered from <code>rgengy/sources.py</code>; see
 <a href="02-data-sources.html">the full generated register</a> for the per-endpoint field notes.</p>
-<blockquote><strong>L-02.</strong> No outbound network access was available for raw fetches during
-the audit, so <em>no scoring value in this repository is marked
-<code>confirmed_by_operator</code></em>. Both operators keep their authoritative scoring pages
-inside their logged-in apps.</blockquote>
+<blockquote><strong>L-02 (updated 2026-09-22).</strong> FanDuel's public rules page
+(fanduel.com/rules) and DraftKings' Network scoring articles were retrieved in the second audit
+pass, so <em>{_op_total} scoring values are now marked <code>confirmed_by_operator</code></em>
+across {_op_tables} tables; the values still resting on secondary evidence are labelled per value
+in the scoring pages.</blockquote>
 <div class="filters">
   <input type="search" placeholder="Filter by key, provider or URL&hellip;" aria-label="Filter endpoints">
   {filters}

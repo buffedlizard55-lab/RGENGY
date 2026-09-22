@@ -47,12 +47,26 @@ class TestAudit(unittest.TestCase):
              "nhl:draftkings", "nhl:fanduel",
              "wnba:draftkings", "wnba:fanduel"])
 
-    def test_no_value_claims_operator_confirmation(self):
-        """Honesty check: nothing was read from an operator's own page."""
+    def test_operator_confirmed_values_cite_operator_pages(self):
+        """A value may claim `confirmed_by_operator` ONLY with an operator URL.
+
+        Operator domains: draftkings.com (incl. dknetwork/pick6 subdomains),
+        fanduel.com. Everything else is secondary evidence by definition.
+        """
         audit = scoring.audit()
-        self.assertEqual(audit["operator_confirmed_total"], 0,
-                         "no operator scoring page was reachable, so no value may claim "
-                         "confirmed_by_operator")
+        self.assertGreater(audit["operator_confirmed_total"], 0,
+                           "operator pages were retrieved on 2026-09-22; if this drops to "
+                           "zero the operator provenance was lost")
+        operator_domains = ("draftkings.com", "fanduel.com")
+        for key in scoring.available():
+            sport, site = key.split(":")
+            for stat, spec in scoring.load(sport, site).payload.get("values", {}).items():
+                if not spec.get("confirmed_by_operator"):
+                    continue
+                srcs = " ".join(spec.get("sources", []))
+                self.assertTrue(any(d in srcs for d in operator_domains),
+                                f"{key}:{stat} claims confirmed_by_operator but cites no "
+                                f"operator URL (needs draftkings.com or fanduel.com)")
 
     def test_every_value_has_a_known_status(self):
         for key in scoring.available():
@@ -141,21 +155,35 @@ class TestHandComputedTotals(unittest.TestCase):
         self.assertEqual(t.get("pat"), 0.0, "DK classic has no kicker slot (IR-18)")
         self.assertEqual(t.get("fum_lost"), -1.0)
 
-    def test_fanduel_nfl_is_half_ppr_with_kicker_and_no_milestones(self):
+    def test_fanduel_nfl_is_half_ppr_with_kicker_and_operator_milestones(self):
         t = scoring.load("nfl", "fanduel")
         self.assertEqual(t.get("rec"), 0.5)
         self.assertEqual(t.get("pat"), 1.0)
         self.assertEqual(t.get("fg_50p"), 5.0)
-        self.assertEqual(t.get("100ru"), 0.0, "FanDuel pays no yardage milestones (IR-18)")
+        # IR-18, settled by FanDuel's own rules page (retrieved 2026-09-22):
+        # FanDuel DOES pay the 100/300-yard bonuses - both operators pay 3.0.
+        self.assertEqual(t.get("100ru"), 3.0)
+        self.assertEqual(t.get("100rec"), 3.0)
+        self.assertEqual(t.get("300pa"), 3.0)
         self.assertEqual(t.get("fum_lost"), -2.0)
 
-    def test_wnba_tables_are_deliberately_empty(self):
-        """Limitation L-03: no WNBA source was retrieved, so nothing is asserted."""
-        for site in ("draftkings", "fanduel"):
-            t = scoring.load("wnba", site)
-            self.assertTrue(all(v == 0.0 for v in t.points.values()),
-                            f"wnba:{site} must not carry unaudited point values")
-            self.assertEqual(len(t.not_audited), len(t.points))
+    def test_wnba_provenance_is_split_by_site(self):
+        """WNBA DK is provisional (operator Pick6 page, different product);
+        WNBA FD is operator-confirmed via the shared basketball rules table."""
+        dk = scoring.load("wnba", "draftkings")
+        fd = scoring.load("wnba", "fanduel")
+        self.assertFalse(dk.confirmed_by_operator,
+                         "Pick6 is a different product; WNBA DK stays provisional")
+        for stat, spec in dk.payload["values"].items():
+            self.assertEqual(spec["verification_status"], "single-source",
+                             f"wnba:draftkings:{stat} must stay single-source/provisional")
+            self.assertTrue(any("pick6.draftkings.com" in s for s in spec["sources"]),
+                            f"wnba:draftkings:{stat} must cite the operator Pick6 page")
+        self.assertTrue(fd.confirmed_by_operator)
+        for stat, spec in fd.payload["values"].items():
+            if float(spec["value"]) != 0.0:
+                self.assertTrue(spec.get("confirmed_by_operator"),
+                                f"wnba:fanduel:{stat} is non-zero but not operator-confirmed")
 
 
 class TestScoringTableApi(unittest.TestCase):

@@ -3,7 +3,7 @@
 The shapes here are deliberately close to the column schema that
 RotoGrinders publishes on its ``/projected-stats/{sport}`` grids, because that
 schema *is* the specification we are trying to match.  The exact columns
-observed on 2026-09-22 are transcribed in ``docs/04-data-schema-catalog.md``
+observed on 2026-09-22 are transcribed in ``docs/04-rg-findings.md``
 and mirrored by :data:`RG_GRID_COLUMNS` below.
 """
 

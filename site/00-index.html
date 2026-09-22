@@ -28,8 +28,8 @@
     Audit date 2026-09-22<br>
     16 endpoints &middot;
     11 scoring tables<br>
-    29 findings (17 open)<br>
-    459 tests passing
+    32 findings (17 open)<br>
+    460 tests passing
   </div>
 </div>
 <main class="content" id="main">
@@ -56,13 +56,13 @@
 </ol>
 <p>verification status each. Zero require an API key. See <a href="02-data-sources.html">02</a>.</p>
 <ol>
-<li><strong>29 findings are on the register</strong> - 23 irregularities and 6 limitations, of</li>
+<li><strong>32 findings are on the register</strong> - 26 irregularities and 6 limitations,</li>
 </ol>
-<p>which 6 were defects in RGENGY itself and are now resolved and pinned by tests. See <a href="09-irregularities.html">09</a>.</p>
+<p>including 3 defects in RGENGY itself found by the second audit pass, all fixed and pinned by tests. See <a href="09-irregularities.html">09</a>.</p>
 <ol>
-<li><strong>No operator scoring page could be retrieved</strong> (both are inside logged-in</li>
+<li><strong>122 coefficients are operator-confirmed</strong> (updated 2026-09-22). FanDuel's</li>
 </ol>
-<p>apps), so <em>no coefficient is marked <code>confirmed_by_operator</code></em>. That is limitation <strong>L-02</strong> and it is the single largest constraint on this project.</p>
+<p>public rules page and DraftKings' own Network scoring articles were retrieved and matched against the tables - every non-zero value in 7 of the 11 tables is operator-sourced. The rest (MLB caught stealing, the DraftKings DST block) are labelled per value; that residual gap is limitation <strong>L-02</strong>.</p>
 <h2 id="what-rgengy-deliberately-does-not-do">What RGENGY deliberately does not do</h2>
 <ul>
 <li>It does not publish a number under a RotoGrinders column heading unless it can</li>

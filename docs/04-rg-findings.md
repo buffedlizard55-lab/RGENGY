@@ -53,7 +53,7 @@ Because this identity is verified exactly, RGENGY **reproduces** the column and 
 
 > CEIL/FPTS (~2.2) is roughly 7x FLOOR/FPTS (~0.30), so RotoGrinders' bands are strongly asymmetric - upside is modelled far more widely than downside.
 
-These became `engines.RG_OBSERVED_FLOOR_RATIO = 0.303` and `engines.RG_OBSERVED_CEIL_RATIO = 2.2229`, used only by the opt-in `rg_band` mode. n=5 for the floor ratio and n=6 for the ceiling ratio, all from ONE team in ONE game at Coors Field on ONE date. These constants are used only as a sanity band, never as the primary projection mechanism; rgengy.engines defaults to deriving bands from its own outcome distribution. (IR-12)
+These became `engines.RG_OBSERVED_FLOOR_RATIO = 0.303` and `engines.RG_OBSERVED_CEIL_RATIO = 2.2229`, used only by the opt-in `rg_band` mode. n=5 for the floor ratio (non-zero floors only; 1 row(s) published FLOOR=0 and are excluded, see IR-25) and n=6 for the ceiling ratio, all from ONE team in ONE game at Coors Field on ONE date. These constants are used only as a sanity band, never as the primary projection mechanism; rgengy.engines defaults to deriving bands from its own outcome distribution. (IR-12)
 
 **Rows excluded from the floor fit, and why:**
 

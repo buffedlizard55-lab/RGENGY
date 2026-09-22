@@ -4,121 +4,139 @@
     "site": "fanduel",
     "contest_format": "Classic (full slate)",
     "salary_cap": 40000,
-    "confirmed_by_operator": false,
+    "confirmed_by_operator": true,
     "audit_date": "2026-09-22",
-    "audit_method": "Single source retrieved (FTN Fantasy, 2024-04-15). Every value is therefore 'single-source' and provisional.",
+    "audit_method": "OPERATOR-CONFIRMED (2026-09-22): FanDuel's public rules page (https://www.fanduel.com/rules, Hockey section, retrieved that day) states Goals=12, Assists=8, Shots on Goal=1.6, Short Handed Points=+2, Power Play Points=+0.5, Blocked Shots=1.6; goalies: Wins=12, Goals Against=-4, Saves=0.8, Shutouts=8. Every value matches FTN Fantasy's 2024 table exactly, so the single-source weakness is retired. The operator page also states that NO points are awarded for goals or saves during shootouts.",
     "sources_consulted": [
-      "https://www.reddit.com/r/hockey/comments/2iop7w/is_anyone_doing_nhl_fanduel/",
+      "https://dknetwork.draftkings.com/2025-09-30/nhl-daily-fantasy-101-how-to-play-dfs-on-draftkings/",
       "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey",
       "https://www.dailyfaceoff.com/news/draftkings-fantasy-hockey-cheat-sheet-march-9th",
-      "https://dknetwork.draftkings.com/2025-09-30/nhl-daily-fantasy-101-how-to-play-dfs-on-draftkings/",
+      "https://www.reddit.com/r/hockey/comments/2iop7w/is_anyone_doing_nhl_fanduel/",
+      "https://www.fanduel.com/rules",
       "https://occupyfantasy.com/nhl-dfs-strategy-guide/"
     ],
-    "notes": "IRREGULARITY IR-10: FanDuel NHL is sourced from exactly one document. FanDuel also scores +/-. The +/-' value is not present in that document and is set to 0 with status 'not-audited'."
+    "notes": "IRREGULARITY IR-10 (RESOLVED): every non-zero value is now operator-confirmed from fanduel.com/rules. The same page contradicts an earlier Reddit claim that FanDuel scores plus/minus: no plus/minus stat appears anywhere in the operator's enumerated hockey scoring, so `plus_minus` stays 0.0 / not-audited with operator absence as the recorded evidence - scoring it would now be the change that requires proof."
   },
   "values": {
     "g": {
       "value": 12.0,
-      "verification_status": "single-source",
-      "agreement": 1,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://www.fanduel.com/rules",
         "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey"
-      ]
+      ],
+      "note": "Operator page: 'Goals = 12pts'."
     },
     "a": {
       "value": 8.0,
-      "verification_status": "single-source",
-      "agreement": 1,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://www.fanduel.com/rules",
         "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey"
-      ]
+      ],
+      "note": "Operator page: 'Assists = 8pts'."
     },
     "sog": {
       "value": 1.6,
-      "verification_status": "single-source",
-      "agreement": 1,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://www.fanduel.com/rules",
         "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey"
-      ]
+      ],
+      "note": "Operator page: 'Shots on Goal = 1.6pts'."
     },
     "blk": {
       "value": 1.6,
-      "verification_status": "single-source",
-      "agreement": 1,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://www.fanduel.com/rules",
         "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey"
-      ]
+      ],
+      "note": "Operator page: 'Blocked Shots = 1.6pts'."
     },
     "shp": {
       "value": 2.0,
-      "verification_status": "single-source",
-      "agreement": 1,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://www.fanduel.com/rules",
         "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey"
       ],
-      "note": "Short-handed goal/assist."
+      "note": "Operator page: 'Short Handed Points = +2pts'."
     },
     "ppp": {
       "value": 0.5,
-      "verification_status": "single-source",
-      "agreement": 1,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://www.fanduel.com/rules",
         "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey"
       ],
-      "note": "Power-play goal/assist."
+      "note": "Operator page: 'Power Play Points = +0.5pts' (DraftKings pays none)."
     },
     "win_goalie": {
       "value": 12.0,
-      "verification_status": "single-source",
-      "agreement": 1,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://www.fanduel.com/rules",
         "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey"
-      ]
+      ],
+      "note": "Operator page: goalies 'Wins = 12pts'."
     },
     "so": {
       "value": 8.0,
-      "verification_status": "single-source",
-      "agreement": 1,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://www.fanduel.com/rules",
         "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey"
       ],
-      "note": "Goalie shutout."
+      "note": "Operator page: goalies 'Shutouts = 8pts'."
     },
     "sv": {
       "value": 0.8,
-      "verification_status": "single-source",
-      "agreement": 1,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://www.fanduel.com/rules",
         "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey"
-      ]
+      ],
+      "note": "Operator page: goalies 'Saves = 0.8pts'."
     },
     "ga": {
       "value": -4.0,
-      "verification_status": "single-source",
-      "agreement": 1,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://www.fanduel.com/rules",
         "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey"
-      ]
+      ],
+      "note": "Operator page: goalies 'Goals Against = -4pts'."
     },
     "plus_minus": {
       "value": 0.0,
@@ -127,7 +145,7 @@
       "disputed": false,
       "confirmed_by_operator": false,
       "sources": [],
-      "note": "FanDuel scores +/- (per the Reddit thread) but no point value was retrieved. Left at 0 and flagged."
+      "note": "ABSENT from FanDuel's own published hockey scoring table (checked 2026-09-22, IR-10). An earlier Reddit claim that FanDuel scores +/- is unconfirmed by the operator page. Left at 0 and flagged."
     }
   }
 }

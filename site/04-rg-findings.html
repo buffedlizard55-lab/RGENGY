@@ -28,8 +28,8 @@
     Audit date 2026-09-22<br>
     16 endpoints &middot;
     11 scoring tables<br>
-    29 findings (17 open)<br>
-    459 tests passing
+    32 findings (17 open)<br>
+    460 tests passing
   </div>
 </div>
 <main class="content" id="main">
@@ -49,7 +49,7 @@
 <h2 id="3-floor-and-ceiling-are-ratios-of-the-projection-and-strongly-asymmetric">3. Floor and ceiling are ratios of the projection, and strongly asymmetric</h2>
 <div class="table-wrap"><table><thead><tr><th>quantity</th><th style="text-align:right">n</th><th style="text-align:right">mean</th><th style="text-align:right">min</th><th style="text-align:right">max</th><th style="text-align:right">sd</th></tr></thead><tbody><tr><td><code>FLOOR / FPTS</code></td><td style="text-align:right">5</td><td style="text-align:right">0.303</td><td style="text-align:right">0.269</td><td style="text-align:right">0.3342</td><td style="text-align:right">0.0214</td></tr><tr><td><code>CEIL / FPTS</code></td><td style="text-align:right">6</td><td style="text-align:right">2.2229</td><td style="text-align:right">2.0571</td><td style="text-align:right">2.5295</td><td style="text-align:right">0.1749</td></tr></tbody></table></div>
 <blockquote>CEIL/FPTS (~2.2) is roughly 7x FLOOR/FPTS (~0.30), so RotoGrinders' bands are strongly asymmetric - upside is modelled far more widely than downside.</blockquote>
-<p>These became <code>engines.RG_OBSERVED_FLOOR_RATIO = 0.303</code> and <code>engines.RG_OBSERVED_CEIL_RATIO = 2.2229</code>, used only by the opt-in <code>rg_band</code> mode. n=5 for the floor ratio and n=6 for the ceiling ratio, all from ONE team in ONE game at Coors Field on ONE date. These constants are used only as a sanity band, never as the primary projection mechanism; rgengy.engines defaults to deriving bands from its own outcome distribution. (IR-12)</p>
+<p>These became <code>engines.RG_OBSERVED_FLOOR_RATIO = 0.303</code> and <code>engines.RG_OBSERVED_CEIL_RATIO = 2.2229</code>, used only by the opt-in <code>rg_band</code> mode. n=5 for the floor ratio (non-zero floors only; 1 row(s) published FLOOR=0 and are excluded, see IR-25) and n=6 for the ceiling ratio, all from ONE team in ONE game at Coors Field on ONE date. These constants are used only as a sanity band, never as the primary projection mechanism; rgengy.engines defaults to deriving bands from its own outcome distribution. (IR-12)</p>
 <p><strong>Rows excluded from the floor fit, and why:</strong></p>
 <ul>
 <li><strong>Jordan Lawlar</strong> (FPTS 9.89, FLOOR 0.0, CEIL 23.53) - FLOOR is 0 while FPTS and CEIL are both non-zero; every other row has FLOOR between 0.27 and 0.34 of FPTS. Excluded from the fitted ratio and flagged as IR-19 rather than imputed.</li>

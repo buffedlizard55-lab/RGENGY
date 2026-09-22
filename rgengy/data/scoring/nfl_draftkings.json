@@ -6,8 +6,10 @@
     "salary_cap": 50000,
     "confirmed_by_operator": false,
     "audit_date": "2026-09-22",
-    "audit_method": "Re-audited in pass 2 against four 2026 sources. Roster is QB, 2 RB, 3 WR, TE, FLEX(RB/WR/TE), DST = 9 slots with NO kicker, corroborated by a real published DraftKings lineup that totals exactly $50,000 (sportsbettingdime, 2026-09-19). Because no kicker can be rostered, all kicker coefficients are pinned at 0.",
+    "audit_method": "Re-audited in pass 2 against four 2026 sources, then OPERATOR-CONFIRMED in the second audit pass for the offensive scoring: DraftKings' own NFL DFS 101 article (dknetwork.draftkings.com, 2025-08-27, retrieved 2026-09-22) lists Passing TD +4, 25 passing yards +1, 300+ yard passing game +3, Interception -1, Rushing TD +6, 10 rushing yards +1, 100+ yard rushing game +3, Receiving TD +6, 10 receiving yards +1, 100+ yard receiving game +3, Reception +1, Punt/Kickoff/FG Return TD +6, Fumble Lost -1, 2-pt Conversion +2, Offensive Fumble Recovery TD +6. Roster is QB, 2 RB, 3 WR, TE, FLEX(RB/WR/TE), DST = 9 slots with NO kicker, corroborated by a real published DraftKings lineup that totals exactly $50,000 (sportsbettingdime, 2026-09-19). Because no kicker can be rostered, all kicker coefficients are pinned at 0.",
     "sources_consulted": [
+      "https://dknetwork.draftkings.com/2025/08/27/nfl-dfs-beginners-guide-draftkings/",
+      "https://www.fanduel.com/rules",
       "https://rotogrinders.com/projected-stats/nfl",
       "https://www.stokastic.com/articles/nfl-dfs/stokastic-sims-vs-sabersim-vs-rotogrinders-nfl-2026",
       "https://fantasyteamadvisors.com/nfl-dfs-strategy/",
@@ -15,43 +17,46 @@
       "https://fantasyfootballers.org/featured/draftkings-vs-fanduel/",
       "https://www.sportsbettingdime.com/news/nfl/nfl-dfs-week-2-lineup-draftkings-picks-for-sunday/"
     ],
-    "notes": "TWO PASS-1 ERRORS FIXED (IR-18). (1) The 100-yard rushing / 100-yard receiving / 300-yard passing bonuses were assigned to FanDuel and set to 0 for DraftKings. fantasyfootballers (2026-08-15) shows the opposite - DraftKings 3 / 3 / 3, FanDuel 0 / 0 / 0 - and fantasyteamadvisors (2026-08-05) independently says 'DraftKings ... awards milestone bonuses for 100-yard and 300-yard performances'. (2) DraftKings was given field-goal and extra-point coefficients even though its classic roster has no kicker slot; those are now 0. RotoGrinders' NFL grid publishes 100RU / 100RE / 300PA columns, which corroborates that these bonuses are a projection target on at least one major site."
+    "notes": "TWO PASS-1 ERRORS FIXED (IR-18). (1) The 100-yard rushing / 100-yard receiving / 300-yard passing bonuses were assigned to FanDuel and set to 0 for DraftKings; the operator pages now confirm both operators score them at 3.0. (2) DraftKings was given field-goal and extra-point coefficients even though its classic roster has no kicker slot; those are now 0. RotoGrinders' NFL grid publishes 100RU / 100RE / 300PA columns, which corroborates that these bonuses are a projection target on at least one major site. The DST block remains 'not-audited': no DraftKings operator document for team defence was retrieved (limitation L-04)."
   },
   "values": {
     "pa_yds": {
       "value": 0.04,
       "verification_status": "multi-source-consistent",
-      "agreement": 2,
+      "agreement": 3,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://dknetwork.draftkings.com/2025/08/27/nfl-dfs-beginners-guide-draftkings/",
         "https://occupyfantasy.com/daily-fantasy-football-strategy-draftkings-fanduel-dfs/",
         "https://fantasyteamadvisors.com/nfl-dfs-strategy/"
       ],
-      "note": "Confirmed by occupyfantasy (2026-09-10): '1 point per 25 passing yards, 1 point per 10 yards rushing, 4 points per passing TD, and 6 points per rushing/receiving TD' - identical on both sites. 1 per 25 yards = 0.04 per yard; 1 per 10 yards = 0.1 per yard."
+      "note": "OPERATOR-CONFIRMED for DraftKings by its own NFL DFS 101 article (dknetwork.draftkings.com, 2025-08-27, retrieved 2026-09-22): 25 Passing Yards +1 Pt, 10 Rushing Yards +1 Pt, 10 Receiving Yards +1 Pt, Passing TD +4, Rushing/Receiving TD +6. Corroborated for both sites by occupyfantasy (2026-09-10): '1 point per 25 passing yards, 1 point per 10 yards rushing, 4 points per passing TD, and 6 points per rushing/receiving TD' - identical on both sites. 1 per 25 yards = 0.04 per yard; 1 per 10 yards = 0.1 per yard."
     },
     "pa_td": {
       "value": 4.0,
       "verification_status": "multi-source-consistent",
-      "agreement": 2,
+      "agreement": 3,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://dknetwork.draftkings.com/2025/08/27/nfl-dfs-beginners-guide-draftkings/",
         "https://occupyfantasy.com/daily-fantasy-football-strategy-draftkings-fanduel-dfs/",
         "https://fantasyteamadvisors.com/nfl-dfs-strategy/"
       ],
-      "note": "Confirmed by occupyfantasy (2026-09-10): '1 point per 25 passing yards, 1 point per 10 yards rushing, 4 points per passing TD, and 6 points per rushing/receiving TD' - identical on both sites. 1 per 25 yards = 0.04 per yard; 1 per 10 yards = 0.1 per yard."
+      "note": "OPERATOR-CONFIRMED for DraftKings by its own NFL DFS 101 article (dknetwork.draftkings.com, 2025-08-27, retrieved 2026-09-22): 25 Passing Yards +1 Pt, 10 Rushing Yards +1 Pt, 10 Receiving Yards +1 Pt, Passing TD +4, Rushing/Receiving TD +6. Corroborated for both sites by occupyfantasy (2026-09-10): '1 point per 25 passing yards, 1 point per 10 yards rushing, 4 points per passing TD, and 6 points per rushing/receiving TD' - identical on both sites. 1 per 25 yards = 0.04 per yard; 1 per 10 yards = 0.1 per yard."
     },
     "pa_int": {
       "value": -1.0,
-      "verification_status": "single-source",
-      "agreement": 1,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://dknetwork.draftkings.com/2025/08/27/nfl-dfs-beginners-guide-draftkings/",
         "https://occupyfantasy.com/daily-fantasy-football-strategy-draftkings-fanduel-dfs/"
       ],
-      "note": "Standard interception penalty; not restated by the other 2026 sources."
+      "note": "Operator article: 'Interception (thrown) -1 Pt'."
     },
     "pa_cmp": {
       "value": 0.0,
@@ -66,123 +71,132 @@
     "ru_yds": {
       "value": 0.1,
       "verification_status": "multi-source-consistent",
-      "agreement": 2,
+      "agreement": 3,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://dknetwork.draftkings.com/2025/08/27/nfl-dfs-beginners-guide-draftkings/",
         "https://occupyfantasy.com/daily-fantasy-football-strategy-draftkings-fanduel-dfs/",
         "https://fantasyteamadvisors.com/nfl-dfs-strategy/"
       ],
-      "note": "Confirmed by occupyfantasy (2026-09-10): '1 point per 25 passing yards, 1 point per 10 yards rushing, 4 points per passing TD, and 6 points per rushing/receiving TD' - identical on both sites. 1 per 25 yards = 0.04 per yard; 1 per 10 yards = 0.1 per yard."
+      "note": "OPERATOR-CONFIRMED for DraftKings by its own NFL DFS 101 article (dknetwork.draftkings.com, 2025-08-27, retrieved 2026-09-22): 25 Passing Yards +1 Pt, 10 Rushing Yards +1 Pt, 10 Receiving Yards +1 Pt, Passing TD +4, Rushing/Receiving TD +6. Corroborated for both sites by occupyfantasy (2026-09-10): '1 point per 25 passing yards, 1 point per 10 yards rushing, 4 points per passing TD, and 6 points per rushing/receiving TD' - identical on both sites. 1 per 25 yards = 0.04 per yard; 1 per 10 yards = 0.1 per yard."
     },
     "ru_td": {
       "value": 6.0,
       "verification_status": "multi-source-consistent",
-      "agreement": 2,
+      "agreement": 3,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://dknetwork.draftkings.com/2025/08/27/nfl-dfs-beginners-guide-draftkings/",
         "https://occupyfantasy.com/daily-fantasy-football-strategy-draftkings-fanduel-dfs/",
         "https://fantasyteamadvisors.com/nfl-dfs-strategy/"
       ],
-      "note": "Confirmed by occupyfantasy (2026-09-10): '1 point per 25 passing yards, 1 point per 10 yards rushing, 4 points per passing TD, and 6 points per rushing/receiving TD' - identical on both sites. 1 per 25 yards = 0.04 per yard; 1 per 10 yards = 0.1 per yard."
+      "note": "OPERATOR-CONFIRMED for DraftKings by its own NFL DFS 101 article (dknetwork.draftkings.com, 2025-08-27, retrieved 2026-09-22): 25 Passing Yards +1 Pt, 10 Rushing Yards +1 Pt, 10 Receiving Yards +1 Pt, Passing TD +4, Rushing/Receiving TD +6. Corroborated for both sites by occupyfantasy (2026-09-10): '1 point per 25 passing yards, 1 point per 10 yards rushing, 4 points per passing TD, and 6 points per rushing/receiving TD' - identical on both sites. 1 per 25 yards = 0.04 per yard; 1 per 10 yards = 0.1 per yard."
     },
     "rec": {
       "value": 1.0,
       "verification_status": "multi-source-consistent",
-      "agreement": 3,
+      "agreement": 4,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://dknetwork.draftkings.com/2025/08/27/nfl-dfs-beginners-guide-draftkings/",
         "https://fantasyteamadvisors.com/nfl-dfs-strategy/",
         "https://occupyfantasy.com/daily-fantasy-football-strategy-draftkings-fanduel-dfs/",
         "https://fantasyfootballers.org/featured/draftkings-vs-fanduel/"
       ],
-      "note": "DraftKings is FULL PPR: 'DraftKings uses full-point PPR scoring (1 point per reception)' - fantasyteamadvisors, 2026-08-05."
+      "note": "Operator article: 'Reception +1 Pt' (full PPR). fantasyteamadvisors (2026-08-05) corroborates: 'DraftKings uses full-point PPR scoring'."
     },
     "rec_yds": {
       "value": 0.1,
       "verification_status": "multi-source-consistent",
-      "agreement": 2,
+      "agreement": 3,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://dknetwork.draftkings.com/2025/08/27/nfl-dfs-beginners-guide-draftkings/",
         "https://occupyfantasy.com/daily-fantasy-football-strategy-draftkings-fanduel-dfs/",
         "https://fantasyteamadvisors.com/nfl-dfs-strategy/"
       ],
-      "note": "Confirmed by occupyfantasy (2026-09-10): '1 point per 25 passing yards, 1 point per 10 yards rushing, 4 points per passing TD, and 6 points per rushing/receiving TD' - identical on both sites. 1 per 25 yards = 0.04 per yard; 1 per 10 yards = 0.1 per yard."
+      "note": "OPERATOR-CONFIRMED for DraftKings by its own NFL DFS 101 article (dknetwork.draftkings.com, 2025-08-27, retrieved 2026-09-22): 25 Passing Yards +1 Pt, 10 Rushing Yards +1 Pt, 10 Receiving Yards +1 Pt, Passing TD +4, Rushing/Receiving TD +6. Corroborated for both sites by occupyfantasy (2026-09-10): '1 point per 25 passing yards, 1 point per 10 yards rushing, 4 points per passing TD, and 6 points per rushing/receiving TD' - identical on both sites. 1 per 25 yards = 0.04 per yard; 1 per 10 yards = 0.1 per yard."
     },
     "rec_td": {
       "value": 6.0,
       "verification_status": "multi-source-consistent",
-      "agreement": 2,
+      "agreement": 3,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://dknetwork.draftkings.com/2025/08/27/nfl-dfs-beginners-guide-draftkings/",
         "https://occupyfantasy.com/daily-fantasy-football-strategy-draftkings-fanduel-dfs/",
         "https://fantasyteamadvisors.com/nfl-dfs-strategy/"
       ],
-      "note": "Confirmed by occupyfantasy (2026-09-10): '1 point per 25 passing yards, 1 point per 10 yards rushing, 4 points per passing TD, and 6 points per rushing/receiving TD' - identical on both sites. 1 per 25 yards = 0.04 per yard; 1 per 10 yards = 0.1 per yard."
+      "note": "OPERATOR-CONFIRMED for DraftKings by its own NFL DFS 101 article (dknetwork.draftkings.com, 2025-08-27, retrieved 2026-09-22): 25 Passing Yards +1 Pt, 10 Rushing Yards +1 Pt, 10 Receiving Yards +1 Pt, Passing TD +4, Rushing/Receiving TD +6. Corroborated for both sites by occupyfantasy (2026-09-10): '1 point per 25 passing yards, 1 point per 10 yards rushing, 4 points per passing TD, and 6 points per rushing/receiving TD' - identical on both sites. 1 per 25 yards = 0.04 per yard; 1 per 10 yards = 0.1 per yard."
     },
     "two_pt": {
       "value": 2.0,
-      "verification_status": "single-source",
-      "agreement": 1,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://dknetwork.draftkings.com/2025/08/27/nfl-dfs-beginners-guide-draftkings/",
         "https://occupyfantasy.com/daily-fantasy-football-strategy-draftkings-fanduel-dfs/"
       ],
-      "note": "2-point conversion. Not restated by the other sources retrieved."
+      "note": "Operator article: '2 Pt Conversion (Pass, Run, or Catch) +2 Pts'."
     },
     "fum_lost": {
       "value": -1.0,
       "verification_status": "multi-source-consistent",
-      "agreement": 2,
+      "agreement": 3,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://dknetwork.draftkings.com/2025/08/27/nfl-dfs-beginners-guide-draftkings/",
         "https://fantasyfootballers.org/featured/draftkings-vs-fanduel/",
         "https://occupyfantasy.com/daily-fantasy-football-strategy-draftkings-fanduel-dfs/"
       ],
-      "note": "fantasyfootballers (2026-08-15) lists Fumble Lost: DraftKings -1, FanDuel -2."
+      "note": "Operator article: 'Fumble Lost -1 Pt' (FanDuel is -2)."
     },
     "100ru": {
       "value": 3.0,
-      "verification_status": "cross-validated-via-rg",
+      "verification_status": "multi-source-consistent",
       "agreement": 3,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://dknetwork.draftkings.com/2025/08/27/nfl-dfs-beginners-guide-draftkings/",
         "https://fantasyfootballers.org/featured/draftkings-vs-fanduel/",
-        "https://fantasyteamadvisors.com/nfl-dfs-strategy/",
         "https://rotogrinders.com/projected-stats/nfl"
       ],
-      "note": "CORRECTED IN PASS 2 (was 0.0). fantasyfootballers: '100+ Rushing Yards: DraftKings 3, FanDuel 0'. Also corroborated by the 100RU column on RotoGrinders' NFL grid."
+      "note": "Operator article: '100+ Yard Rushing Game +3 Pts'. Also corroborated by the 100RU column on RotoGrinders' NFL grid."
     },
     "100rec": {
       "value": 3.0,
-      "verification_status": "cross-validated-via-rg",
-      "agreement": 2,
+      "verification_status": "multi-source-consistent",
+      "agreement": 3,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://dknetwork.draftkings.com/2025/08/27/nfl-dfs-beginners-guide-draftkings/",
         "https://fantasyfootballers.org/featured/draftkings-vs-fanduel/",
         "https://rotogrinders.com/projected-stats/nfl"
       ],
-      "note": "CORRECTED IN PASS 2 (was 0.0). '100+ Receiving Yards: DraftKings 3, FanDuel 0'; corroborated by the 100RE grid column."
+      "note": "Operator article: '100+ Yard Receiving Game +3 Pts'; corroborated by the 100RE grid column."
     },
     "300pa": {
       "value": 3.0,
-      "verification_status": "cross-validated-via-rg",
-      "agreement": 2,
+      "verification_status": "multi-source-consistent",
+      "agreement": 3,
       "disputed": false,
-      "confirmed_by_operator": false,
+      "confirmed_by_operator": true,
       "sources": [
+        "https://dknetwork.draftkings.com/2025/08/27/nfl-dfs-beginners-guide-draftkings/",
         "https://fantasyfootballers.org/featured/draftkings-vs-fanduel/",
         "https://rotogrinders.com/projected-stats/nfl"
       ],
-      "note": "CORRECTED IN PASS 2 (was 0.0). '300+ Passing Yards: DraftKings 3, FanDuel 0'; corroborated by the 300PA grid column."
+      "note": "Operator article: '300+ Yard Passing Game +3 Pts'; corroborated by the 300PA grid column."
     },
     "fg_0_39": {
       "value": 0.0,
@@ -235,55 +249,67 @@
     "dst_sack": {
       "value": 1.0,
       "verification_status": "not-audited",
-      "agreement": 0,
+      "agreement": 1,
       "disputed": false,
       "confirmed_by_operator": false,
-      "sources": [],
-      "note": "DraftKings team-defence scoring was NOT retrieved from any source during this audit. The values below follow the long-standing convention and are flagged 'not-audited'; the pipeline excludes them from published totals under --strict. See limitation L-04."
+      "sources": [
+        "https://www.dailyfantasysports101.com/football/"
+      ],
+      "note": "DraftKings team-defence scoring was NOT retrieved from any OPERATOR source. A secondary comparison table (dailyfantasysports101) shows DK DST tiers identical to FanDuel's, so the convention values are kept as 'not-audited' secondary estimates; the pipeline excludes them from published totals under --strict. See limitation L-04."
     },
     "dst_int": {
       "value": 2.0,
       "verification_status": "not-audited",
-      "agreement": 0,
+      "agreement": 1,
       "disputed": false,
       "confirmed_by_operator": false,
-      "sources": [],
+      "sources": [
+        "https://www.dailyfantasysports101.com/football/"
+      ],
       "note": "See 'dst_sack'."
     },
     "dst_fum_rec": {
       "value": 2.0,
       "verification_status": "not-audited",
-      "agreement": 0,
+      "agreement": 1,
       "disputed": false,
       "confirmed_by_operator": false,
-      "sources": [],
+      "sources": [
+        "https://www.dailyfantasysports101.com/football/"
+      ],
       "note": "See 'dst_sack'."
     },
     "dst_td": {
       "value": 2.0,
       "verification_status": "not-audited",
-      "agreement": 0,
+      "agreement": 1,
       "disputed": false,
       "confirmed_by_operator": false,
-      "sources": [],
+      "sources": [
+        "https://www.dailyfantasysports101.com/football/"
+      ],
       "note": "See 'dst_sack'."
     },
     "dst_safety": {
       "value": 2.0,
       "verification_status": "not-audited",
-      "agreement": 0,
+      "agreement": 1,
       "disputed": false,
       "confirmed_by_operator": false,
-      "sources": [],
+      "sources": [
+        "https://www.dailyfantasysports101.com/football/"
+      ],
       "note": "See 'dst_sack'."
     },
     "dst_block": {
       "value": 2.0,
       "verification_status": "not-audited",
-      "agreement": 0,
+      "agreement": 1,
       "disputed": false,
       "confirmed_by_operator": false,
-      "sources": [],
+      "sources": [
+        "https://www.dailyfantasysports101.com/football/"
+      ],
       "note": "See 'dst_sack'."
     },
     "dst_pts_allowed": {
@@ -294,7 +320,7 @@
       "confirmed_by_operator": false,
       "sources": [],
       "intentionally_zero": true,
-      "note": "GAP: both sites also score team defence on points allowed (tiered). No tier table was retrieved, so the key is modelled at 0 and flagged. See limitation L-04. Pinned at 0.0 on purpose: this stat is an alternative REPRESENTATION of production already scored by another key in this table, and applying both would double count. See IR-15."
+      "note": "GAP: both sites also score team defence on points allowed (tiered). FanDuel's tier table is now operator-documented (see the FanDuel table); no DraftKings operator tier table was retrieved, and the engine does not yet model tiers. See limitation L-04. Pinned at 0.0 on purpose: this stat is an alternative REPRESENTATION of production already scored by another key in this table, and applying both would double count. See IR-15."
     }
   }
 }
