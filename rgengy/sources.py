@@ -51,7 +51,9 @@ class Endpoint:
 
     def url(self, **params: Any) -> str:
         """Render the template.  ``{param}`` placeholders are URL-quoted."""
-        safe = {k: quote(str(v), safe=",:-") for k, v in params.items()}
+        # '/' stays unquoted: sport_path="football/nfl" is a path segment, and
+        # ESPN's site API 400s on the encoded form (found by CI verify, pass 3).
+        safe = {k: quote(str(v), safe="/,:-") for k, v in params.items()}
         return self.url_template.format(**safe)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -213,7 +215,7 @@ ENDPOINTS: List[Endpoint] = [
         auth="none",
         verification_status="live-verified",
         verified_on=AUDIT_DATE,
-        docs_url="https://api-web.nhle.com/",
+        docs_url="https://gitlab.com/dword4/nhlapi/-/blob/master/new-api.md",
         terms_url="https://www.nhl.com/info/terms-of-service",
         notes="Retrieved 2026-09-22: HTTP 200, focusedDateCount=11. Confirmed fields: gamesByDate[].games[].id, "
               "season (20262027), gameType (1 = preseason), gameDate, gameCenterLink, venue.default, "
@@ -230,7 +232,7 @@ ENDPOINTS: List[Endpoint] = [
         auth="none",
         verification_status="live-verified",
         verified_on=AUDIT_DATE,
-        docs_url="https://api-web.nhle.com/",
+        docs_url="https://gitlab.com/dword4/nhlapi/-/blob/master/new-api.md",
         terms_url="https://www.nhl.com/info/terms-of-service",
         notes="CORRECTED AND LIVE-VERIFIED 2026-09-22 (second audit pass, IR-24). The template this "
               "registry shipped in the first pass (/v1/club/schedule/{club}/{season}) returned HTTP 404 "
@@ -252,7 +254,7 @@ ENDPOINTS: List[Endpoint] = [
         auth="none",
         verification_status="live-verified",
         verified_on=AUDIT_DATE,
-        docs_url="https://api-web.nhle.com/",
+        docs_url="https://gitlab.com/dword4/nhlapi/-/blob/master/new-api.md",
         terms_url="https://www.nhl.com/info/terms-of-service",
         notes="LIVE-VERIFIED 2026-09-22 (second audit pass): GET /v1/player/8478402/landing returned "
               "HTTP 200 with playerId, isActive, currentTeamId/Abbrev, name, position, "
@@ -321,7 +323,7 @@ ENDPOINTS: List[Endpoint] = [
         verification_status="live-verified",
         verified_on=AUDIT_DATE,
         docs_url="https://rotogrinders.com/",
-        terms_url="https://rotogrinders.com/terms",
+        terms_url=None,  # rotogrinders.com/terms is a real 404 (CI-verified); robots.txt is the cited constraint
         notes="Retrieved 2026-09-22 for mlb, nfl and wnba, and re-verified the same day during the "
               "second audit pass. These pages show a FREE six-row teaser above a paywall. Re-observed "
               "on the second pass: MLB grid = 49 columns, NFL = 38, WNBA = 33 (unchanged); the six "
@@ -344,7 +346,7 @@ ENDPOINTS: List[Endpoint] = [
         verification_status="live-verified",
         verified_on=AUDIT_DATE,
         docs_url=None,
-        terms_url="https://rotogrinders.com/terms",
+        terms_url=None,
         notes="Retrieved 2026-09-22 and re-verified the same day during the second audit pass. "
               "Disallows, for all user agents: /app, ?, */edit, /grind-downs/, /api/ and .csv; declares "
               "sitemap at https://rotogrinders.com/sitemaps.xml. This is why RGENGY does not "
@@ -361,7 +363,7 @@ ENDPOINTS: List[Endpoint] = [
         verification_status="live-verified",
         verified_on=AUDIT_DATE,
         docs_url=None,
-        terms_url="https://rotogrinders.com/terms",
+        terms_url=None,
         notes="Retrieved 2026-09-22. Lists eight child sitemaps: sitemap.xml, articles.xml, authors.xml and "
               "per-sport player sitemaps for nfl, nba, mlb, nhl and pga. Confirms the five sports for which "
               "RotoGrinders publishes individual player URLs.",

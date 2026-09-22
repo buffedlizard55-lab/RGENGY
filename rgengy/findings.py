@@ -410,7 +410,7 @@ FINDINGS: List[Finding] = [
             "tests/test_optimizer.py assert the exact slot shape per sport and site, including the "
             "combined C/1B slot and the absence of a DraftKings NFL kicker."),
         sources=["https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/",
-                 "https://www.sportsbettingdime.com/news/nfl/nfl-dfs-week-2-lineup"],
+                 "https://www.sportsbettingdime.com/news/nfl/nfl-dfs-week-2-lineup-draftkings-picks-for-sunday/"],
         refs=["rgengy/models.py", "tests/test_models.py"]),
 
     # ------------------------------------------------------------------ IR-18
@@ -663,8 +663,7 @@ FINDINGS: List[Finding] = [
             "tables - with its live status and write verification.json. The GitHub Pages workflow "
             "runs them on every build so the published site reflects the live state rather than "
             "the audit state. `data/` is gitignored and regenerated."),
-        sources=["https://help.fanduel.com/", "https://www.draftkings.com/",
-                 "https://www.fanduel.com/rules"],
+        sources=["https://www.draftkings.com/", "https://www.fanduel.com/rules"],
         refs=["rgengy/cli.py", "rgengy/sources.py", ".github/workflows/pages.yml"]),
 
     # ------------------------------------------------------------------- L-03
@@ -759,6 +758,58 @@ FINDINGS: List[Finding] = [
             "play-by-play data listed as future work in docs/10."),
         sources=[],
         refs=["rgengy/simulator.py"]),
+
+    # ------------------------------------------------------------------- IR-27
+    Finding(
+        id="IR-27", kind="irregularity", severity="warning", status="resolved",
+        title="RESOLVED: the URL renderer percent-encoded the ESPN sport path, 400ing the endpoint",
+        detail=(
+            "Found by the first live CI verify run (2026-09-22): `Endpoint.url()` quotes every "
+            "template parameter with a safe-set that excluded the slash, which percent-encoded "
+            "espn.scoreboard's sport_path (football/nfl -> football%2Fnfl). ESPN's site API "
+            "rejects the encoded form with HTTP 400, so the endpoint that had passed every "
+            "workspace check failed from CI. The literal-slash form returns 200 "
+            "(the IR-01 citation URL was checked in the same run and confirmed it)."),
+        impact=(
+            "Any consumer rendering espn.scoreboard from the registry would have hit a 400. "
+            "The workspace audit never caught it because the proxy fetch tool normalises the "
+            "encoding; only a raw-socket CI run could see it."),
+        action=(
+            "PASS 3 FIX: the quote safe-set now keeps '/' unquoted, which is correct for every "
+            "registered template parameter (sport_path is a path segment; all other parameters "
+            "are dates, ids or short codes). CI verify re-runs on every push so this class of "
+            "regression is caught at build time."),
+        sources=["https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard"],
+        refs=["rgengy/sources.py", "rgengy/cli.py"]),
+
+    # ------------------------------------------------------------------- IR-28
+    Finding(
+        id="IR-28", kind="irregularity", severity="warning", status="resolved",
+        title="RESOLVED: verify scored healthy HTML reference pages as failures, and conflated bot-blocks with rot",
+        detail=(
+            "Found by the first live CI verify run (2026-09-22), same run as IR-27. Two defects "
+            "in the checker itself: (1) the endpoint liveness check required every response to "
+            "parse as JSON, so rotogrinders' robots.txt, sitemaps.xml and projection grids - "
+            "which returned HTTP 200 with HTML/text bodies by design - were scored as failures; "
+            "(2) the cited-URL walk reported a bare 403 the same way as a 404, so anti-bot "
+            "protection on a cloud runner (teamriseorfall.com, lineups.com, ftnfantasy.com, "
+            "reddit.com, cdn.nba.com, nba.com/termsofuse all returned 403) was indistinguishable "
+            "from a dead citation."),
+        impact=(
+            "The report would have cried wolf on healthy pages, training readers to ignore it - "
+            "the opposite of what a no-hallucination registry needs."),
+        action=(
+            "PASS 3 FIX: endpoint liveness is now the HTTP status, with JSON parsing required "
+            "only for the JSON API endpoints (rg.* reference pages are judged on status alone); "
+            "every cited-URL record now carries a `classification` (ok / bot-blocked / "
+            "dead-or-moved / network-error / http-error) and the report counts "
+            "cited_urls_bot_blocked and cited_urls_dead separately. Two genuinely dead citations "
+            "the run did surface (rotogrinders.com/terms -> 404, api-web.nhle.com/ -> 404) were "
+            "repaired in the same pass, along with a truncated IR-17 URL and L-02's "
+            "TLS-blocked help.fanduel.com citation."),
+        sources=["https://rotogrinders.com/robots.txt",
+                 "https://gitlab.com/dword4/nhlapi/-/blob/master/new-api.md"],
+        refs=["rgengy/cli.py", "rgengy/sources.py"]),
 ]
 
 

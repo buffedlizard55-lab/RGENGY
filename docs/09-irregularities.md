@@ -4,7 +4,7 @@
 
 Everything found during the audit that is wrong, conflicting, undefined or unverifiable. Generated from `rgengy/findings.py`, which is the single source of truth: the scoring tables, module docstrings and quality findings all cite these ids, and `tests/test_findings.py` fails if the two disagree in either direction.
 
-**32 findings** on 2026-09-22: 26 irregularities and 6 limitations - 17 open, 3 stated assumptions, 9 resolved, 3 declared-unused identifiers, 1 critical.
+**34 findings** on 2026-09-22: 28 irregularities and 6 limitations - 17 open, 3 stated assumptions, 11 resolved, 3 declared-unused identifiers, 1 critical.
 
 > Gaps in the numbering are **declared, not silent**. An id that was consumed during the
 > audit and then folded into another finding stays on the register with status
@@ -47,6 +47,8 @@ Everything found during the audit that is wrong, conflicting, undefined or unver
 | [L-04](#l04) | warning | OPEN | DraftKings team-defence tiers remain unaudited; FanDuel's are operator-documented but not yet modelled |
 | [L-05](#l05) | warning | OPEN | RotoGrinders' paywalled features could not be inspected at all |
 | [L-06](#l06) | warning | OPEN | Player outcomes are simulated from a normal approximation, not a per-stat model |
+| [IR-27](#ir27) | warning | RESOLVED | RESOLVED: the URL renderer percent-encoded the ESPN sport path, 400ing the endpoint |
+| [IR-28](#ir28) | warning | RESOLVED | RESOLVED: verify scored healthy HTML reference pages as failures, and conflated bot-blocks with rot |
 
 ---
 
@@ -426,7 +428,7 @@ Everything found during the audit that is wrong, conflicting, undefined or unver
 **Sources retrieved.**
 
 - [https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/](https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/)
-- [https://www.sportsbettingdime.com/news/nfl/nfl-dfs-week-2-lineup](https://www.sportsbettingdime.com/news/nfl/nfl-dfs-week-2-lineup)
+- [https://www.sportsbettingdime.com/news/nfl/nfl-dfs-week-2-lineup-draftkings-picks-for-sunday/](https://www.sportsbettingdime.com/news/nfl/nfl-dfs-week-2-lineup-draftkings-picks-for-sunday/)
 
 ---
 
@@ -673,7 +675,6 @@ Everything found during the audit that is wrong, conflicting, undefined or unver
 
 **Sources retrieved.**
 
-- [https://help.fanduel.com/](https://help.fanduel.com/)
 - [https://www.draftkings.com/](https://www.draftkings.com/)
 - [https://www.fanduel.com/rules](https://www.fanduel.com/rules)
 
@@ -764,3 +765,50 @@ Everything found during the audit that is wrong, conflicting, undefined or unver
 **Why it matters.** Tail behaviour is understated: a normal draw cannot produce a 4-home-run game, so simulated top-1 rates are conservative and the cash/top-10/top-1 ordering is preserved but the magnitudes are not trustworthy for large-field GPPs. The band is also over-dispersed relative to a true event model.
 
 **What RGENGY does about it.** Documented in the simulator module docstring and surfaced in every simulation result. Replacing it needs a per-stat correlated event model, which needs the historical play-by-play data listed as future work in docs/10.
+
+---
+
+## IR-27
+
+**RESOLVED: the URL renderer percent-encoded the ESPN sport path, 400ing the endpoint**
+
+| | |
+| --- | --- |
+| kind | irregularity |
+| status | RESOLVED |
+| severity | warning |
+| cited in | `rgengy/sources.py`, `rgengy/cli.py` |
+
+**What was found.** Found by the first live CI verify run (2026-09-22): `Endpoint.url()` quotes every template parameter with a safe-set that excluded the slash, which percent-encoded espn.scoreboard's sport_path (football/nfl -> football%2Fnfl). ESPN's site API rejects the encoded form with HTTP 400, so the endpoint that had passed every workspace check failed from CI. The literal-slash form returns 200 (the IR-01 citation URL was checked in the same run and confirmed it).
+
+**Why it matters.** Any consumer rendering espn.scoreboard from the registry would have hit a 400. The workspace audit never caught it because the proxy fetch tool normalises the encoding; only a raw-socket CI run could see it.
+
+**What RGENGY does about it.** PASS 3 FIX: the quote safe-set now keeps '/' unquoted, which is correct for every registered template parameter (sport_path is a path segment; all other parameters are dates, ids or short codes). CI verify re-runs on every push so this class of regression is caught at build time.
+
+**Sources retrieved.**
+
+- [https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard](https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard)
+
+---
+
+## IR-28
+
+**RESOLVED: verify scored healthy HTML reference pages as failures, and conflated bot-blocks with rot**
+
+| | |
+| --- | --- |
+| kind | irregularity |
+| status | RESOLVED |
+| severity | warning |
+| cited in | `rgengy/cli.py`, `rgengy/sources.py` |
+
+**What was found.** Found by the first live CI verify run (2026-09-22), same run as IR-27. Two defects in the checker itself: (1) the endpoint liveness check required every response to parse as JSON, so rotogrinders' robots.txt, sitemaps.xml and projection grids - which returned HTTP 200 with HTML/text bodies by design - were scored as failures; (2) the cited-URL walk reported a bare 403 the same way as a 404, so anti-bot protection on a cloud runner (teamriseorfall.com, lineups.com, ftnfantasy.com, reddit.com, cdn.nba.com, nba.com/termsofuse all returned 403) was indistinguishable from a dead citation.
+
+**Why it matters.** The report would have cried wolf on healthy pages, training readers to ignore it - the opposite of what a no-hallucination registry needs.
+
+**What RGENGY does about it.** PASS 3 FIX: endpoint liveness is now the HTTP status, with JSON parsing required only for the JSON API endpoints (rg.* reference pages are judged on status alone); every cited-URL record now carries a `classification` (ok / bot-blocked / dead-or-moved / network-error / http-error) and the report counts cited_urls_bot_blocked and cited_urls_dead separately. Two genuinely dead citations the run did surface (rotogrinders.com/terms -> 404, api-web.nhle.com/ -> 404) were repaired in the same pass, along with a truncated IR-17 URL and L-02's TLS-blocked help.fanduel.com citation.
+
+**Sources retrieved.**
+
+- [https://rotogrinders.com/robots.txt](https://rotogrinders.com/robots.txt)
+- [https://gitlab.com/dword4/nhlapi/-/blob/master/new-api.md](https://gitlab.com/dword4/nhlapi/-/blob/master/new-api.md)

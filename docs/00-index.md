@@ -45,9 +45,10 @@ asserted from memory.
    reproduce.
 3. **16 data endpoints are registered, 14 of them official league feeds**, with a
    verification status each. Zero require an API key. See [02](02-data-sources.md).
-4. **32 findings are on the register** - 26 irregularities and 6 limitations,
-   including 3 defects in RGENGY itself found by the second audit pass, all fixed
-   and pinned by tests. See [09](09-irregularities.md).
+4. **34 findings are on the register** - 28 irregularities and 6 limitations,
+   including 5 defects in RGENGY itself, two of them (IR-27, IR-28) caught by the
+   project's own CI verify run and fixed in the same pass. See
+   [09](09-irregularities.md).
 5. **122 coefficients are operator-confirmed** (updated 2026-09-22). FanDuel's
    public rules page and DraftKings' own Network scoring articles were retrieved
    and matched against the tables - every non-zero value in 7 of the 11 tables is

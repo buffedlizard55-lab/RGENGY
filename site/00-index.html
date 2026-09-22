@@ -16,7 +16,7 @@
   <div class="tagline">An auditable rebuild of RotoGrinders' projection data quality</div>
   <nav aria-label="Explore the data">
     <div class="navhead">Explore</div>
-    <a class="navhead" href="index.html">Dashboard</a><a href="sources.html">Data sources</a><a href="scoring.html">Scoring tables</a><a href="findings.html">Findings register</a><a href="rosters.html">Roster templates</a><a href="grid.html">Grid schema</a><a href="checks.html">Quality gates</a>
+    <a class="navhead" href="index.html">Dashboard</a><a href="sources.html">Data sources</a><a href="scoring.html">Scoring tables</a><a href="findings.html">Findings register</a><a href="rosters.html">Roster templates</a><a href="grid.html">Grid schema</a><a href="checks.html">Quality gates</a><a href="verification.html">Live verification</a>
   </nav>
   <div class="sep"></div>
   <nav aria-label="Documentation">
@@ -28,7 +28,7 @@
     Audit date 2026-09-22<br>
     16 endpoints &middot;
     11 scoring tables<br>
-    32 findings (17 open)<br>
+    34 findings (17 open)<br>
     460 tests passing
   </div>
 </div>
@@ -56,9 +56,9 @@
 </ol>
 <p>verification status each. Zero require an API key. See <a href="02-data-sources.html">02</a>.</p>
 <ol>
-<li><strong>32 findings are on the register</strong> - 26 irregularities and 6 limitations,</li>
+<li><strong>34 findings are on the register</strong> - 28 irregularities and 6 limitations,</li>
 </ol>
-<p>including 3 defects in RGENGY itself found by the second audit pass, all fixed and pinned by tests. See <a href="09-irregularities.html">09</a>.</p>
+<p>including 5 defects in RGENGY itself, two of them (IR-27, IR-28) caught by the project's own CI verify run and fixed in the same pass. See <a href="09-irregularities.html">09</a>.</p>
 <ol>
 <li><strong>122 coefficients are operator-confirmed</strong> (updated 2026-09-22). FanDuel's</li>
 </ol>

@@ -70,11 +70,11 @@
     "counts": {
       "assumptions": 3,
       "critical": 1,
-      "irregularities": 26,
+      "irregularities": 28,
       "limitations": 6,
       "open": 17,
-      "resolved": 9,
-      "total": 32,
+      "resolved": 11,
+      "total": 34,
       "unused_ids": 3
     },
     "findings": [
@@ -354,7 +354,7 @@
         "severity": "critical",
         "sources": [
           "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/",
-          "https://www.sportsbettingdime.com/news/nfl/nfl-dfs-week-2-lineup"
+          "https://www.sportsbettingdime.com/news/nfl/nfl-dfs-week-2-lineup-draftkings-picks-for-sunday/"
         ],
         "status": "resolved",
         "title": "RESOLVED: roster templates that produced illegal lineups"
@@ -543,7 +543,6 @@
         ],
         "severity": "warning",
         "sources": [
-          "https://help.fanduel.com/",
           "https://www.draftkings.com/",
           "https://www.fanduel.com/rules"
         ],
@@ -618,6 +617,41 @@
         "sources": [],
         "status": "open",
         "title": "Player outcomes are simulated from a normal approximation, not a per-stat model"
+      },
+      {
+        "action": "PASS 3 FIX: the quote safe-set now keeps '/' unquoted, which is correct for every registered template parameter (sport_path is a path segment; all other parameters are dates, ids or short codes). CI verify re-runs on every push so this class of regression is caught at build time.",
+        "detail": "Found by the first live CI verify run (2026-09-22): `Endpoint.url()` quotes every template parameter with a safe-set that excluded the slash, which percent-encoded espn.scoreboard's sport_path (football/nfl -> football%2Fnfl). ESPN's site API rejects the encoded form with HTTP 400, so the endpoint that had passed every workspace check failed from CI. The literal-slash form returns 200 (the IR-01 citation URL was checked in the same run and confirmed it).",
+        "id": "IR-27",
+        "impact": "Any consumer rendering espn.scoreboard from the registry would have hit a 400. The workspace audit never caught it because the proxy fetch tool normalises the encoding; only a raw-socket CI run could see it.",
+        "kind": "irregularity",
+        "refs": [
+          "rgengy/sources.py",
+          "rgengy/cli.py"
+        ],
+        "severity": "warning",
+        "sources": [
+          "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard"
+        ],
+        "status": "resolved",
+        "title": "RESOLVED: the URL renderer percent-encoded the ESPN sport path, 400ing the endpoint"
+      },
+      {
+        "action": "PASS 3 FIX: endpoint liveness is now the HTTP status, with JSON parsing required only for the JSON API endpoints (rg.* reference pages are judged on status alone); every cited-URL record now carries a `classification` (ok / bot-blocked / dead-or-moved / network-error / http-error) and the report counts cited_urls_bot_blocked and cited_urls_dead separately. Two genuinely dead citations the run did surface (rotogrinders.com/terms -> 404, api-web.nhle.com/ -> 404) were repaired in the same pass, along with a truncated IR-17 URL and L-02's TLS-blocked help.fanduel.com citation.",
+        "detail": "Found by the first live CI verify run (2026-09-22), same run as IR-27. Two defects in the checker itself: (1) the endpoint liveness check required every response to parse as JSON, so rotogrinders' robots.txt, sitemaps.xml and projection grids - which returned HTTP 200 with HTML/text bodies by design - were scored as failures; (2) the cited-URL walk reported a bare 403 the same way as a 404, so anti-bot protection on a cloud runner (teamriseorfall.com, lineups.com, ftnfantasy.com, reddit.com, cdn.nba.com, nba.com/termsofuse all returned 403) was indistinguishable from a dead citation.",
+        "id": "IR-28",
+        "impact": "The report would have cried wolf on healthy pages, training readers to ignore it - the opposite of what a no-hallucination registry needs.",
+        "kind": "irregularity",
+        "refs": [
+          "rgengy/cli.py",
+          "rgengy/sources.py"
+        ],
+        "severity": "warning",
+        "sources": [
+          "https://rotogrinders.com/robots.txt",
+          "https://gitlab.com/dword4/nhlapi/-/blob/master/new-api.md"
+        ],
+        "status": "resolved",
+        "title": "RESOLVED: verify scored healthy HTML reference pages as failures, and conflated bot-blocks with rot"
       }
     ]
   },
@@ -7845,7 +7879,7 @@
       },
       {
         "auth": "none",
-        "docs_url": "https://api-web.nhle.com/",
+        "docs_url": "https://gitlab.com/dword4/nhlapi/-/blob/master/new-api.md",
         "key": "nhl.scoreboard",
         "name": "NHL Web API - scoreboard",
         "notes": "Retrieved 2026-09-22: HTTP 200, focusedDateCount=11. Confirmed fields: gamesByDate[].games[].id, season (20262027), gameType (1 = preseason), gameDate, gameCenterLink, venue.default, startTimeUTC, easternUTCOffset, venueUTCOffset, tvBroadcasts[], gameState, awayTeam/homeTeam {id,name,commonName,placeNameWithPreposition,abbrev,score,logo}, periodDescriptor.",
@@ -7861,7 +7895,7 @@
       },
       {
         "auth": "none",
-        "docs_url": "https://api-web.nhle.com/",
+        "docs_url": "https://gitlab.com/dword4/nhlapi/-/blob/master/new-api.md",
         "key": "nhl.club_schedule",
         "name": "NHL Web API - club season schedule",
         "notes": "CORRECTED AND LIVE-VERIFIED 2026-09-22 (second audit pass, IR-24). The template this registry shipped in the first pass (/v1/club/schedule/{club}/{season}) returned HTTP 404 when actually fetched, as did the /v1/club-schedule/{club}/{season} variant. The correct route, confirmed live, is /v1/club-schedule-season/{club}/{season}: GET .../TOR/20262027 returned HTTP 200 with {previousSeason: 20252026, currentSeason: 20262027, clubTimezone, clubUTCOffset, games[] containing id, season, gameType, gameDate, venue.default, startTimeUTC, easternUTCOffset, venueTimezone, gameState, gameScheduleState, tvBroadcasts[], awayTeam/homeTeam {id, commonName, placeNameWithPreposition, abbrev, logo, score}, periodDescriptor, gameOutcome, gameCenterLink}.",
@@ -7877,7 +7911,7 @@
       },
       {
         "auth": "none",
-        "docs_url": "https://api-web.nhle.com/",
+        "docs_url": "https://gitlab.com/dword4/nhlapi/-/blob/master/new-api.md",
         "key": "nhl.player_landing",
         "name": "NHL Web API - player landing page data",
         "notes": "LIVE-VERIFIED 2026-09-22 (second audit pass): GET /v1/player/8478402/landing returned HTTP 200 with playerId, isActive, currentTeamId/Abbrev, name, position, featuredStats (season 20252026 regular-season and playoff splits), careerTotals (including plusMinus and faceoffWinningPctg), last5Games[] and seasonTotals[].",
@@ -7950,7 +7984,7 @@
         "official": true,
         "provider": "RotoGrinders / Better Collective",
         "replaces": [],
-        "terms_url": "https://rotogrinders.com/terms",
+        "terms_url": null,
         "url_template": "https://rotogrinders.com/projected-stats/{sport}",
         "verification_status": "live-verified",
         "verified_on": "2026-09-22"
@@ -7964,7 +7998,7 @@
         "official": true,
         "provider": "RotoGrinders / Better Collective",
         "replaces": [],
-        "terms_url": "https://rotogrinders.com/terms",
+        "terms_url": null,
         "url_template": "https://rotogrinders.com/robots.txt",
         "verification_status": "live-verified",
         "verified_on": "2026-09-22"
@@ -7978,7 +8012,7 @@
         "official": true,
         "provider": "RotoGrinders / Better Collective",
         "replaces": [],
-        "terms_url": "https://rotogrinders.com/terms",
+        "terms_url": null,
         "url_template": "https://rotogrinders.com/sitemaps.xml",
         "verification_status": "live-verified",
         "verified_on": "2026-09-22"
