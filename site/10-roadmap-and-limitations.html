@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- GENERATED FILE - DO NOT EDIT: rendered by scripts/build_site.py from the committed registries. -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>10-roadmap-and-limitations &middot; RGENGY</title>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="layout">
+<div class="sidebar">
+  <div class="brand">RGENGY</div>
+  <div class="tagline">An auditable rebuild of RotoGrinders' projection data quality</div>
+  <nav aria-label="Explore the data">
+    <div class="navhead">Explore</div>
+    <a class="navhead" href="index.html">Dashboard</a><a href="sources.html">Data sources</a><a href="scoring.html">Scoring tables</a><a href="findings.html">Findings register</a><a href="rosters.html">Roster templates</a><a href="grid.html">Grid schema</a><a href="checks.html">Quality gates</a>
+  </nav>
+  <div class="sep"></div>
+  <nav aria-label="Documentation">
+    <div class="navhead">Documentation</div>
+    <a href="00-index.html">Overview</a><a href="01-method.html">Method</a><a href="02-data-sources.html">Data sources</a><a href="03-scoring-verification.html">Scoring</a><a href="04-rg-findings.html">RotoGrinders findings</a><a href="05-projection-engines.html">Projection engines</a><a href="06-optimizer-and-simulator.html">Optimizer &amp; simulator</a><a href="07-grid-schema.html">Grid schema</a><a href="08-quality-gates.html">Quality gates</a><a href="09-irregularities.html">Irregularities</a><a href="10-roadmap-and-limitations.html" aria-current="page">Limitations &amp; roadmap</a>
+  </nav>
+  <div class="sep"></div>
+  <div class="meta">
+    Audit date 2026-09-22<br>
+    16 endpoints &middot;
+    11 scoring tables<br>
+    29 findings (17 open)<br>
+    459 tests passing
+  </div>
+</div>
+<main class="content" id="main">
+<p>&lt;!-- GENERATED FILE - DO NOT EDIT: rendered by scripts/build_docs.py from the committed registries. Edit the source and re-run the generator. --&gt;</p>
+<h1 id="10-limitations-and-remaining-work">10 - Limitations and remaining work</h1>
+<p>What RGENGY cannot do yet, what would have to be true to do it, and what to build next. The limitations section is generated from <code>rgengy/findings.py</code>; the roadmap below is the prioritised work that would retire them.</p>
+<h2 id="limitations">Limitations</h2>
+<div class="table-wrap"><table><thead><tr><th>id</th><th>severity</th><th>status</th><th>limitation</th></tr></thead><tbody><tr><td><a href="09-irregularities.html#l01">L-01</a></td><td>info</td><td>UNUSED IDENTIFIER</td><td>Identifier L-01 is deliberately unused</td></tr><tr><td><a href="09-irregularities.html#l02">L-02</a></td><td>critical</td><td>OPEN</td><td>No outbound network access in the build environment</td></tr><tr><td><a href="09-irregularities.html#l03">L-03</a></td><td>warning</td><td>OPEN</td><td>The WNBA roster templates are unconfirmed</td></tr><tr><td><a href="09-irregularities.html#l04">L-04</a></td><td>warning</td><td>OPEN</td><td>NFL team-defence and kicker scoring tiers were never retrieved</td></tr><tr><td><a href="09-irregularities.html#l05">L-05</a></td><td>warning</td><td>OPEN</td><td>RotoGrinders' paywalled features could not be inspected at all</td></tr><tr><td><a href="09-irregularities.html#l06">L-06</a></td><td>warning</td><td>OPEN</td><td>Player outcomes are simulated from a normal approximation, not a per-stat model</td></tr></tbody></table></div>
+<h3 id="l-01-identifier-l-01-is-deliberately-unused">L-01 - Identifier L-01 is deliberately unused</h3>
+<p>No limitation in this register or in the source tree cites L-01. The id was consumed during the audit by the absence of any outbound network access in the build environment, which turned out to be an environment property rather than a limitation of the system, and is documented in the README instead.</p>
+<p><strong>Consequence.</strong> A gap in the numbering, declared rather than silently renumbered.</p>
+<p><strong>Current mitigation.</strong> Declared here so the L-nn sequence can be read as complete.</p>
+<h3 id="l-02-no-outbound-network-access-in-the-build-environment">L-02 - No outbound network access in the build environment</h3>
+<p>Raw HTTPS fetches from this workspace fail with a TLS/SSL EOF error. The pages retrieved during the audit were read through a proxy that can reach rotogrinders.com; fanduel.com is additionally geo-blocked, and both operators keep their authoritative scoring pages inside their logged-in apps.</p>
+<p><strong>Consequence.</strong> No scoring value in this repository is marked <code>confirmed_by_operator</code>, because no operator scoring page could be retrieved. Every value rests on secondary sources. The live feeds cannot be exercised here, so the pipeline is tested against synthetic and cached inputs and the slate stage honestly reports <code>unavailable</code> rather than substituting invented games.</p>
+<p><strong>Current mitigation.</strong> <code>rgengy probe</code> and <code>rgengy verify</code> exist to be run from a networked machine; they stamp each endpoint with its live status and write verification.json. The GitHub Pages workflow runs them on every build so the published site reflects the live state rather than the audit state. <code>data/</code> is gitignored and regenerated.</p>
+<h3 id="l-03-the-wnba-roster-templates-are-unconfirmed">L-03 - The WNBA roster templates are unconfirmed</h3>
+<p>No source for the WNBA roster shape was retrieved during the audit. The templates were treated as the NBA shape reduced to six slots.</p>
+<p><strong>Consequence.</strong> A WNBA lineup built from these templates may be rejected by the operator. Both <code>wnba:draftkings</code> and <code>wnba:fanduel</code> have zero sources and are marked <code>not-audited</code>.</p>
+<p><strong>Current mitigation.</strong> <code>models.default_roster()</code> returns the <code>not-audited</code> status and a note beginning UNCONFIRMED for both, and tests/test_models.py asserts that any template with no sources must be marked <code>not-audited</code> and must say UNCONFIRMED - so the templates cannot be quietly upgraded without a source being added.</p>
+<h3 id="l-04-nfl-team-defence-and-kicker-scoring-tiers-were-never-retrieved">L-04 - NFL team-defence and kicker scoring tiers were never retrieved</h3>
+<p>DraftKings team-defence scoring was not retrieved from any source during the audit. The shipped values follow the long-standing convention (points allowed and yardage tiers, sacks, turnovers, defensive touchdowns) but are marked <code>not-audited</code>.</p>
+<p><strong>Consequence.</strong> DST and KPTS projections carry an unknown error. The NFL grid's KPTS column is left null rather than filled from unaudited tiers.</p>
+<p><strong>Current mitigation.</strong> The seven <code>dst_*</code> keys are <code>not-audited</code> in both NFL tables, so <code>quality.check_scoring_coverage</code> escalates them to a warning whenever a DST is actually projected. Under <code>--strict</code> the pipeline excludes unaudited coefficients from published totals.</p>
+<h3 id="l-05-rotogrinders-paywalled-features-could-not-be-inspected-at-all">L-05 - RotoGrinders' paywalled features could not be inspected at all</h3>
+<p>The subscription tier - the full projection grid beyond six rows, the optimizer, ownership projections, THE BAT X projections, contest simulation and the partner-site columns (UNDERDOG, PRIZEPICKS) - is not retrievable without an account.</p>
+<p><strong>Consequence.</strong> Every claim about those features rests on the free tier, on RotoGrinders' own published articles, or on nothing at all. Where nothing was available, RGENGY implements its own documented equivalent and says so.</p>
+<p><strong>Current mitigation.</strong> The rebuild is explicit about which is which. <code>analytics_provenance</code> labels each column reproduced / RGENGY-own / not computed; the site carries the same three-way split; and no paywalled quantity is emitted under RotoGrinders' column heading without that label.</p>
+<h3 id="l-06-player-outcomes-are-simulated-from-a-normal-approximation-not-a-per-stat-model">L-06 - Player outcomes are simulated from a normal approximation, not a per-stat model</h3>
+<p><code>simulator.sample_player_fpts</code> draws each player's score from a normal distribution built on the projected mean and a standard deviation derived from the floor/ceiling band. Real fantasy output is a sum of discrete, correlated events (a hit is also a run and an RBI; a pitcher's innings correlate with his strikeouts).</p>
+<p><strong>Consequence.</strong> Tail behaviour is understated: a normal draw cannot produce a 4-home-run game, so simulated top-1 rates are conservative and the cash/top-10/top-1 ordering is preserved but the magnitudes are not trustworthy for large-field GPPs. The band is also over-dispersed relative to a true event model.</p>
+<p><strong>Current mitigation.</strong> Documented in the simulator module docstring and surfaced in every simulation result. Replacing it needs a per-stat correlated event model, which needs the historical play-by-play data listed as future work in docs/10.</p>
+<h2 id="stated-assumptions">Stated assumptions</h2>
+<p>These are not defects and not verified facts: they are the places where RGENGY proceeds on a documented assumption because no source settles it. Each is labelled wherever its output is surfaced.</p>
+<div class="table-wrap"><table><thead><tr><th>id</th><th>assumption</th><th>where it is labelled</th></tr></thead><tbody><tr><td><a href="09-irregularities.html#ir03">IR-03</a></td><td>The score-distribution sigmas used to turn a margin into a win probability are unaudited</td><td><code>rgengy/engines.py</code>, <code>rgengy/pipeline.py</code></td></tr><tr><td><a href="09-irregularities.html#ir12">IR-12</a></td><td>RotoGrinders' floor/ceiling ratios are calibrated on six rows</td><td><code>rgengy/engines.py</code>, <code>scripts/analyze_rg_public_grid.py</code></td></tr><tr><td><a href="09-irregularities.html#ir13">IR-13</a></td><td>The ownership model's beta is an uncalibrated default</td><td><code>rgengy/ownership.py</code>, <code>rgengy/pipeline.py</code></td></tr></tbody></table></div>
+<h2 id="remaining-work-prioritised">Remaining work, prioritised</h2>
+<p>Ordered by how much of the gap to RotoGrinders' data quality each one closes. Priority reflects the severity of the finding it retires, not the effort involved.</p>
+<h3 id="1-retrieve-the-operators-own-scoring-pages">1. Retrieve the operators' own scoring pages</h3>
+<p><strong>Priority: critical.</strong></p>
+<p>No coefficient in this repository is <code>confirmed_by_operator</code> (L-02). Every value rests on secondary sources, and three are actively contradicted (IR-05, IR-06, IR-16). DraftKings and FanDuel both keep their authoritative tables inside their logged-in apps, so this needs an authenticated session or a direct operator relationship.</p>
+<p><strong>Payoff.</strong> Settles IR-04, IR-05, IR-06, IR-08, IR-10, IR-16, L-04.</p>
+<h3 id="2-fit-the-ownership-model-on-real-ownership-data">2. Fit the ownership model on real ownership data</h3>
+<p><strong>Priority: high.</strong></p>
+<p>pOWN is a softmax choice model with an uncalibrated beta (IR-13). RotoGrinders' is gradient-boosted over historical DraftKings ownership. <code>ownership.calibrate_beta()</code> already fits beta by deterministic grid search; what is missing is the data. Operator-published ownership after a contest settles is the cheapest legal source.</p>
+<p><strong>Payoff.</strong> Turns the ownership stage from <code>degraded</code> to <code>complete</code>.</p>
+<h3 id="3-replace-the-normal-approximation-simulator-with-a-correlated-event-model">3. Replace the normal-approximation simulator with a correlated event model</h3>
+<p><strong>Priority: high.</strong></p>
+<p>Player outcomes are drawn from a normal built on the mean and the floor/ceiling band (L-06). Real output is a sum of discrete correlated events, so tail behaviour is understated and a 4-home-run game cannot occur. Needs historical play-by-play to fit per-stat distributions and their correlations.</p>
+<p><strong>Payoff.</strong> Makes simulated top-1 rates usable for large-field GPP decisions.</p>
+<h3 id="4-verify-the-live-player-stat-endpoints">4. Verify the live player-stat endpoints</h3>
+<p><strong>Priority: high.</strong></p>
+<p>The slate endpoints are live-verified but the per-player season-stat endpoints are marked <code>unverified</code> (L-02). <code>rgengy probe</code> exists to check their shape; until it has been run from a networked machine, <code>run()</code> refuses to synthesise season stats and says so.</p>
+<p><strong>Payoff.</strong> Unblocks real projections end to end instead of caller-supplied data.</p>
+<h3 id="5-transcribe-the-nba-and-nhl-grid-headers">5. Transcribe the NBA and NHL grid headers</h3>
+<p><strong>Priority: medium.</strong></p>
+<p><code>RG_GRID_COLUMNS</code> covers MLB, NFL and WNBA only (IR-22). Without the NBA and NHL headers the grid artefacts for those sports cannot be diffed against RotoGrinders' and are labelled as RGENGY's own schema.</p>
+<p><strong>Payoff.</strong> Makes all five supported sports schema-comparable.</p>
+<h3 id="6-confirm-the-wnba-roster-templates">6. Confirm the WNBA roster templates</h3>
+<p><strong>Priority: medium.</strong></p>
+<p>Both WNBA templates have zero sources and are marked <code>not-audited</code> (L-03); they were assumed to be the NBA shape reduced to six slots. A wrong template produces lineups the operator rejects outright (the IR-17 failure class).</p>
+<p><strong>Payoff.</strong> Removes the only roster template that could produce an illegal lineup.</p>
+<h3 id="7-enlarge-the-rotogrinders-calibration-sample">7. Enlarge the RotoGrinders calibration sample</h3>
+<p><strong>Priority: medium.</strong></p>
+<p>The floor/ceiling ratios come from six free-tier rows (IR-12), one sport, one site, one slate. The paid tier would give a sample large enough to fit per-position bands and to test whether the ratios are stable across slates.</p>
+<p><strong>Payoff.</strong> Would let <code>rg_band</code> become a defensible default rather than an opt-in curiosity.</p>
+<h3 id="8-licence-a-weather-feed-with-a-validated-run-scoring-sensitivity">8. Licence a weather feed with a validated run-scoring sensitivity</h3>
+<p><strong>Priority: low.</strong></p>
+<p>Air density is computed exactly from the retrieved pressure, temperature and humidity, but <code>WEATHER_AIR_DENSITY_COEFFICIENT</code> is 0 - the adjustment is disabled, because applying an unvalidated sensitivity would fabricate precision. Enabling it needs a coefficient fitted against observed run production.</p>
+<p><strong>Payoff.</strong> Turns an already-computed input into an actual adjustment.</p>
+<h3 id="9-add-per-operator-roster-templates-beyond-classic">9. Add per-operator roster templates beyond Classic</h3>
+<p><strong>Priority: low.</strong></p>
+<p>Only the Classic (full-slate) template is shipped per sport and site. Showdown, single-game and 3-player-stack formats have different shapes and caps, and would each need their own verified provenance entry.</p>
+<p><strong>Payoff.</strong> Widens the optimizer to the formats most GPP players actually use.</p>
+<h2 id="what-would-have-to-be-true-to-reach-parity">What would have to be true to reach parity</h2>
+<p>RotoGrinders' projection quality rests on three things RGENGY does not have and cannot obtain from free official feeds:</p>
+<ol>
+<li><strong>Historical per-contest ownership.</strong> Their pOWN is gradient-boosted over it (IR-13). No operator publishes it historically; some publish it after a contest settles.</li>
+<li><strong>A proprietary projection engine.</strong> THE BAT X and their in-house models are fitted to years of outcomes. RGENGY ships a transparent rate x opportunity x environment engine whose inputs are all sourced, which is auditable but will not match a fitted model's accuracy.</li>
+<li><strong>Licensed data.</strong> Player news, injury timing, lineup confirmation and weather come from paid feeds. RGENGY uses official free feeds and says so per endpoint (docs/02).</li>
+</ol>
+<p>What RGENGY does better is <em>auditability</em>: every coefficient, every roster slot and every derived column carries its evidence class and its source URLs, and every quantity it cannot verify is null with a written reason rather than a plausible number.</p>
+<div class="pagefoot">
+  Generated 2026-09-22T00:00:00Z by <code>scripts/build_site.py</code> from the committed
+  registries. Nothing on this site is hand-copied: every number is rendered from
+  <code>rgengy/sources.py</code>, <code>rgengy/data/scoring/*.json</code> or
+  <code>rgengy/findings.py</code>.
+</div>
+</main>
+</div>
+<script src="app.js" defer></script>
+</body>
+</html>

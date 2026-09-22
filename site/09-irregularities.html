@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- GENERATED FILE - DO NOT EDIT: rendered by scripts/build_site.py from the committed registries. -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>09-irregularities &middot; RGENGY</title>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="layout">
+<div class="sidebar">
+  <div class="brand">RGENGY</div>
+  <div class="tagline">An auditable rebuild of RotoGrinders' projection data quality</div>
+  <nav aria-label="Explore the data">
+    <div class="navhead">Explore</div>
+    <a class="navhead" href="index.html">Dashboard</a><a href="sources.html">Data sources</a><a href="scoring.html">Scoring tables</a><a href="findings.html">Findings register</a><a href="rosters.html">Roster templates</a><a href="grid.html">Grid schema</a><a href="checks.html">Quality gates</a>
+  </nav>
+  <div class="sep"></div>
+  <nav aria-label="Documentation">
+    <div class="navhead">Documentation</div>
+    <a href="00-index.html">Overview</a><a href="01-method.html">Method</a><a href="02-data-sources.html">Data sources</a><a href="03-scoring-verification.html">Scoring</a><a href="04-rg-findings.html">RotoGrinders findings</a><a href="05-projection-engines.html">Projection engines</a><a href="06-optimizer-and-simulator.html">Optimizer &amp; simulator</a><a href="07-grid-schema.html">Grid schema</a><a href="08-quality-gates.html">Quality gates</a><a href="09-irregularities.html" aria-current="page">Irregularities</a><a href="10-roadmap-and-limitations.html">Limitations &amp; roadmap</a>
+  </nav>
+  <div class="sep"></div>
+  <div class="meta">
+    Audit date 2026-09-22<br>
+    16 endpoints &middot;
+    11 scoring tables<br>
+    29 findings (17 open)<br>
+    459 tests passing
+  </div>
+</div>
+<main class="content" id="main">
+<p>&lt;!-- GENERATED FILE - DO NOT EDIT: rendered by scripts/build_docs.py from the committed registries. Edit the source and re-run the generator. --&gt;</p>
+<h1 id="09-irregularities">09 - Irregularities</h1>
+<p>Everything found during the audit that is wrong, conflicting, undefined or unverifiable. Generated from <code>rgengy/findings.py</code>, which is the single source of truth: the scoring tables, module docstrings and quality findings all cite these ids, and <code>tests/test_findings.py</code> fails if the two disagree in either direction.</p>
+<p><strong>29 findings</strong> on 2026-09-22: 23 irregularities and 6 limitations - 17 open, 3 stated assumptions, 6 resolved, 3 declared-unused identifiers, 2 critical.</p>
+<blockquote>Gaps in the numbering are <strong>declared, not silent</strong>. An id that was consumed during the<br>
+audit and then folded into another finding stays on the register with status<br>
+<code>unused-id</code>, because renumbering would quietly invalidate every cross-reference already<br>
+written into the scoring tables.</blockquote>
+<h2 id="index">Index</h2>
+<div class="table-wrap"><table><thead><tr><th>id</th><th>severity</th><th>status</th><th>title</th></tr></thead><tbody><tr><td><a href="#ir01">IR-01</a></td><td>warning</td><td>OPEN</td><td>ESPN's site API is undocumented and publishes no terms of use</td></tr><tr><td><a href="#ir02">IR-02</a></td><td>warning</td><td>OPEN</td><td>RotoGrinders publishes the Bryant formula but not its AdjustedSpread input</td></tr><tr><td><a href="#ir03">IR-03</a></td><td>warning</td><td>STATED ASSUMPTION</td><td>The score-distribution sigmas used to turn a margin into a win probability are unaudited</td></tr><tr><td><a href="#ir04">IR-04</a></td><td>info</td><td>OPEN</td><td>DraftKings MLB caught-stealing (-2) is reported by only one source</td></tr><tr><td><a href="#ir05">IR-05</a></td><td>warning</td><td>OPEN</td><td>DraftKings MLB quality-start bonus is directly contradicted between sources</td></tr><tr><td><a href="#ir06">IR-06</a></td><td>info</td><td>OPEN</td><td>FanDuel MLB earned-run penalty is -3 in three sources and -1 in one</td></tr><tr><td><a href="#ir07">IR-07</a></td><td>info</td><td>UNUSED IDENTIFIER</td><td>Identifier IR-07 is deliberately unused</td></tr><tr><td><a href="#ir08">IR-08</a></td><td>info</td><td>OPEN</td><td>FanDuel NBA double-double and triple-double bonuses are unconfirmed</td></tr><tr><td><a href="#ir09">IR-09</a></td><td>info</td><td>RESOLVED</td><td>RESOLVED: DraftKings NHL goal value was missing</td></tr><tr><td><a href="#ir10">IR-10</a></td><td>warning</td><td>OPEN</td><td>FanDuel NHL scoring rests on a single document, and FanDuel also scores +/-</td></tr><tr><td><a href="#ir11">IR-11</a></td><td>warning</td><td>OPEN</td><td>Yahoo MLB scoring is sourced from a single 2019 document</td></tr><tr><td><a href="#ir12">IR-12</a></td><td>warning</td><td>STATED ASSUMPTION</td><td>RotoGrinders' floor/ceiling ratios are calibrated on six rows</td></tr><tr><td><a href="#ir13">IR-13</a></td><td>warning</td><td>STATED ASSUMPTION</td><td>The ownership model's beta is an uncalibrated default</td></tr><tr><td><a href="#ir14">IR-14</a></td><td>info</td><td>RESOLVED</td><td>RESOLVED: DraftKings NHL was double-counting goals via shots-on-goal</td></tr><tr><td><a href="#ir15">IR-15</a></td><td>info</td><td>RESOLVED</td><td>RESOLVED: representation overlaps let one event satisfy two scoring keys</td></tr><tr><td><a href="#ir16">IR-16</a></td><td>warning</td><td>OPEN</td><td>FanDuel NFL and DraftKings NBA flex eligibility is disputed between sources</td></tr><tr><td><a href="#ir17">IR-17</a></td><td>critical</td><td>RESOLVED</td><td>RESOLVED: roster templates that produced illegal lineups</td></tr><tr><td><a href="#ir18">IR-18</a></td><td>warning</td><td>RESOLVED</td><td>RESOLVED: NFL 100/300-yard bonuses were attributed to the wrong operator</td></tr><tr><td><a href="#ir19">IR-19</a></td><td>warning</td><td>RESOLVED</td><td>RESOLVED: players with no usable sample were silently dropped</td></tr><tr><td><a href="#ir20">IR-20</a></td><td>info</td><td>UNUSED IDENTIFIER</td><td>Identifier IR-20 is deliberately unused</td></tr><tr><td><a href="#ir21">IR-21</a></td><td>warning</td><td>OPEN</td><td>RotoGrinders publishes OBFPTS, SMASH, LEV, TOPVAL and DIFFERENCE without definitions</td></tr><tr><td><a href="#ir22">IR-22</a></td><td>warning</td><td>OPEN</td><td>RotoGrinders' grid schema was only transcribed for three sports</td></tr><tr><td><a href="#ir23">IR-23</a></td><td>warning</td><td>OPEN</td><td>Team win probability had two competing origins, and PRIZEPICKS equals FPTS only on six rows</td></tr><tr><td><a href="#l01">L-01</a></td><td>info</td><td>UNUSED IDENTIFIER</td><td>Identifier L-01 is deliberately unused</td></tr><tr><td><a href="#l02">L-02</a></td><td>critical</td><td>OPEN</td><td>No outbound network access in the build environment</td></tr><tr><td><a href="#l03">L-03</a></td><td>warning</td><td>OPEN</td><td>The WNBA roster templates are unconfirmed</td></tr><tr><td><a href="#l04">L-04</a></td><td>warning</td><td>OPEN</td><td>NFL team-defence and kicker scoring tiers were never retrieved</td></tr><tr><td><a href="#l05">L-05</a></td><td>warning</td><td>OPEN</td><td>RotoGrinders' paywalled features could not be inspected at all</td></tr><tr><td><a href="#l06">L-06</a></td><td>warning</td><td>OPEN</td><td>Player outcomes are simulated from a normal approximation, not a per-stat model</td></tr></tbody></table></div>
+<hr>
+<h2 id="ir-01">IR-01</h2>
+<p><strong>ESPN's site API is undocumented and publishes no terms of use</strong></p>
+<div class="table-wrap"><table><tbody><tr><td>kind</td><td>irregularity</td></tr><tr><td>status</td><td>OPEN</td></tr><tr><td>severity</td><td>warning</td></tr><tr><td>cited in</td><td><code>rgengy/sources.py</code></td></tr></tbody></table></div>
+<p><strong>What was found.</strong> The slate, score, venue and odds data for NFL, NBA, NHL and WNBA comes from https://site.api.espn.com/apis/site/v2/sports/{sport}/scoreboard. It was retrieved live on 2026-09-22 (HTTP 200) and its field names were confirmed by inspection, but ESPN publishes no documentation and no terms for it. It is an internal feed for espn.com, not a product.</p>
+<p><strong>Why it matters.</strong> The feed can change shape or be withdrawn without notice, and continued use is a compliance risk for any published or commercial deployment.</p>
+<p><strong>What RGENGY does about it.</strong> The endpoint is marked official=False with a terms_url of null in the registry, so every artefact that used it says so. Replace it with a licensed provider before any commercial use. <code>rgengy probe</code> re-checks the live shape.</p>
+<p><strong>Sources retrieved.</strong></p>
+<ul>
+<li><a href="https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard" target="_blank" rel="noopener noreferrer">https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard</a></li>
+<li><a href="https://gist.github.com/nntrn/ee26cb2a0716de0947a0a4e9a157bc1c" target="_blank" rel="noopener noreferrer">https://gist.github.com/nntrn/ee26cb2a0716de0947a0a4e9a157bc1c</a></li>
+</ul>
+<hr>
+<h2 id="ir-02">IR-02</h2>
+<p><strong>RotoGrinders publishes the Bryant formula but not its AdjustedSpread input</strong></p>
+<div class="table-wrap"><table><tbody><tr><td>kind</td><td>irregularity</td></tr><tr><td>status</td><td>OPEN</td></tr><tr><td>severity</td><td>warning</td></tr><tr><td>cited in</td><td><code>rgengy/vegas.py</code></td></tr></tbody></table></div>
+<p><strong>What was found.</strong> RotoGrinders attributes this implied-team-total formula to co-founder Riley Bryant: (TotalPoints / 2) - (Spread * (100 / (AdjustedSpread + 100))) / 2. The derivation of <code>AdjustedSpread</code> is not published anywhere on the site.</p>
+<p><strong>Why it matters.</strong> The formula cannot be reproduced end to end from published information alone. Any number produced by guessing AdjustedSpread would look exactly like a reproduction and would not be one.</p>
+<p><strong>What RGENGY does about it.</strong> <code>vegas.bryant_published()</code> transcribes the formula verbatim and takes <code>adjusted_spread</code> as a REQUIRED argument, so it raises rather than invents one. It is shipped for inspection, not as the default path; <code>vegas.implied_totals()</code> is the default and documents its own method.</p>
+<p><strong>Sources retrieved.</strong></p>
+<ul>
+<li><a href="https://rotogrinders.com/articles/the-bat-vs-vegas-2016-results-1873096" target="_blank" rel="noopener noreferrer">https://rotogrinders.com/articles/the-bat-vs-vegas-2016-results-1873096</a></li>
+</ul>
+<hr>
+<h2 id="ir-03">IR-03</h2>
+<p><strong>The score-distribution sigmas used to turn a margin into a win probability are unaudited</strong></p>
+<div class="table-wrap"><table><tbody><tr><td>kind</td><td>irregularity</td></tr><tr><td>status</td><td>STATED ASSUMPTION</td></tr><tr><td>severity</td><td>warning</td></tr><tr><td>cited in</td><td><code>rgengy/engines.py</code>, <code>rgengy/pipeline.py</code></td></tr></tbody></table></div>
+<p><strong>What was found.</strong> Where no market line exists, a team win probability is derived from the expected output differential divided by a per-sport sigma (<code>engines.SIGMA_BY_SPORT</code>). Those sigmas are conventional values, not fitted to data, and none is confirmed by an official source.</p>
+<p><strong>Why it matters.</strong> Derived win probabilities are sensitive to sigma. The NFL value of 13.5 is known to understate heavy favourites, so a moneyline-derived probability should be preferred wherever one exists.</p>
+<p><strong>What RGENGY does about it.</strong> The preference order is enforced in one place (<code>engines.team_win_probability</code>): market line first, differential second, and the method actually used is written into the projection note and into the artefact. No win probability is ever emitted without its origin.</p>
+<hr>
+<h2 id="ir-04">IR-04</h2>
+<p><strong>DraftKings MLB caught-stealing (-2) is reported by only one source</strong></p>
+<div class="table-wrap"><table><tbody><tr><td>kind</td><td>irregularity</td></tr><tr><td>status</td><td>OPEN</td></tr><tr><td>severity</td><td>info</td></tr><tr><td>cited in</td><td><code>rgengy/data/scoring/mlb_draftkings.json</code></td></tr></tbody></table></div>
+<p><strong>What was found.</strong> Only RotoWire lists Caught Stealing = -2 for DraftKings MLB. The 2026 fantasyteamadvice calculator and the DraftKings/FanDuel comparison tables omit it entirely, which is not the same as contradicting it.</p>
+<p><strong>Why it matters.</strong> A hitter's FPTS may be overstated by up to 2 points per caught stealing.</p>
+<p><strong>What RGENGY does about it.</strong> The value is shipped as <code>verification_status: single-source</code>, <code>disputed: true</code>, <code>agreement: 1</code>, so <code>rgengy scoring</code> and the site both show it as the weakest evidence class on the table.</p>
+<p><strong>Sources retrieved.</strong></p>
+<ul>
+<li><a href="https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444" target="_blank" rel="noopener noreferrer">https://www.rotowire.com/baseball/article/fantasy-101-how-to-win-on-draftkings-basic-strategy-23444</a></li>
+</ul>
+<hr>
+<h2 id="ir-05">IR-05</h2>
+<p><strong>DraftKings MLB quality-start bonus is directly contradicted between sources</strong></p>
+<div class="table-wrap"><table><tbody><tr><td>kind</td><td>irregularity</td></tr><tr><td>status</td><td>OPEN</td></tr><tr><td>severity</td><td>warning</td></tr><tr><td>cited in</td><td><code>rgengy/data/scoring/mlb_draftkings.json</code></td></tr></tbody></table></div>
+<p><strong>What was found.</strong> sportsfanfocus and dailyfantasysports101 both show DraftKings Quality Start = 0 (no bonus); runpuresports lists +4 under its DraftKings heading. This is a genuine contradiction, not an omission.</p>
+<p><strong>Why it matters.</strong> A starting pitcher's FPTS is understated by 4.0 if runpuresports is right. That is large relative to a pitcher's typical projection and would change roster selection.</p>
+<p><strong>What RGENGY does about it.</strong> Set to 0.0 (the two-source majority) and marked <code>disputed: true</code>. Resolving it needs DraftKings' own scoring page, which is inside the logged-in app and could not be retrieved. <code>rgengy scoring</code> prints the conflict next to the value.</p>
+<p><strong>Sources retrieved.</strong></p>
+<ul>
+<li><a href="https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/" target="_blank" rel="noopener noreferrer">https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/</a></li>
+<li><a href="https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/" target="_blank" rel="noopener noreferrer">https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/</a></li>
+<li><a href="https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/" target="_blank" rel="noopener noreferrer">https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/</a></li>
+</ul>
+<hr>
+<h2 id="ir-06">IR-06</h2>
+<p><strong>FanDuel MLB earned-run penalty is -3 in three sources and -1 in one</strong></p>
+<div class="table-wrap"><table><tbody><tr><td>kind</td><td>irregularity</td></tr><tr><td>status</td><td>OPEN</td></tr><tr><td>severity</td><td>info</td></tr><tr><td>cited in</td><td><code>rgengy/data/scoring/mlb_fanduel.json</code></td></tr></tbody></table></div>
+<p><strong>What was found.</strong> Three independent sources give FanDuel MLB Earned Run = -3. runpuresports gives -1. The majority value was adopted.</p>
+<p><strong>Why it matters.</strong> If the outlier is correct, FanDuel pitcher FPTS is understated by 2.0 per earned run - a material error over a 5-run outing.</p>
+<p><strong>What RGENGY does about it.</strong> Shipped as -3.0 with the conflict recorded in the value's note and surfaced by <code>rgengy scoring</code>. Needs FanDuel's own scoring page to settle.</p>
+<p><strong>Sources retrieved.</strong></p>
+<ul>
+<li><a href="https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/" target="_blank" rel="noopener noreferrer">https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/</a></li>
+</ul>
+<hr>
+<h2 id="ir-07">IR-07</h2>
+<p><strong>Identifier IR-07 is deliberately unused</strong></p>
+<div class="table-wrap"><table><tbody><tr><td>kind</td><td>irregularity</td></tr><tr><td>status</td><td>UNUSED IDENTIFIER</td></tr><tr><td>severity</td><td>info</td></tr><tr><td>cited in</td><td><code>rgengy/findings.py</code></td></tr></tbody></table></div>
+<p><strong>What was found.</strong> No finding in this register, in the scoring tables, or anywhere in the source tree cites IR-07. The id was consumed during the audit by an item that was resolved before the register was written and then folded into IR-05 and IR-06, which cover the same class of problem (single-source and contradicted scoring values).</p>
+<p><strong>Why it matters.</strong> A gap in the numbering. Left undeclared it would invite the assumption that a finding had been suppressed.</p>
+<p><strong>What RGENGY does about it.</strong> Declared here rather than renumbered: renumbering would silently invalidate every IR-nn cross-reference already written into the scoring tables and module docstrings.</p>
+<hr>
+<h2 id="ir-08">IR-08</h2>
+<p><strong>FanDuel NBA double-double and triple-double bonuses are unconfirmed</strong></p>
+<div class="table-wrap"><table><tbody><tr><td>kind</td><td>irregularity</td></tr><tr><td>status</td><td>OPEN</td></tr><tr><td>severity</td><td>info</td></tr><tr><td>cited in</td><td><code>rgengy/data/scoring/nba_fanduel.json</code>, <code>scripts/build_scoring_tables.py</code></td></tr></tbody></table></div>
+<p><strong>What was found.</strong> Neither RotoGrinders' own FanDuel NBA strategy article nor dfsbuild's comparison table lists a FanDuel double-double or triple-double bonus, but FanDuel has historically scored them. Absence from two secondary sources is not evidence of absence from the operator's rules.</p>
+<p><strong>Why it matters.</strong> A player reaching a double-double may be understated. Both keys are shipped at 0.0, which is the conservative direction - it never overstates a projection.</p>
+<p><strong>What RGENGY does about it.</strong> Both keys are marked <code>disputed: true</code> with the ambiguity stated in their notes, and <code>quality.check_scoring_coverage</code> reports them as a coverage question rather than letting the zero pass silently.</p>
+<p><strong>Sources retrieved.</strong></p>
+<ul>
+<li><a href="https://rotogrinders.com/articles/fanduel-nba-strategy-239702" target="_blank" rel="noopener noreferrer">https://rotogrinders.com/articles/fanduel-nba-strategy-239702</a></li>
+</ul>
+<hr>
+<h2 id="ir-09">IR-09</h2>
+<p><strong>RESOLVED: DraftKings NHL goal value was missing</strong></p>
+<div class="table-wrap"><table><tbody><tr><td>kind</td><td>irregularity</td></tr><tr><td>status</td><td>RESOLVED</td></tr><tr><td>severity</td><td>info</td></tr><tr><td>cited in</td><td><code>rgengy/data/scoring/nhl_draftkings.json</code>, <code>scripts/build_scoring_tables.py</code></td></tr></tbody></table></div>
+<p><strong>What was found.</strong> Pass 1 had no sourced value for a DraftKings NHL goal. DraftKings' own published NHL DFS 101 article states goal = 10.0, which is an operator document rather than a secondary summary.</p>
+<p><strong>Why it matters.</strong> Resolved. The value is now operator-sourced.</p>
+<p><strong>What RGENGY does about it.</strong> Adopted 10.0 from dknetwork.draftkings.com and recorded the operator URL in the value's source list. This is one of the few values in the register backed by the operator itself.</p>
+<p><strong>Sources retrieved.</strong></p>
+<ul>
+<li><a href="https://dknetwork.draftkings.com/2025-09-30/nhl-daily-fantasy-101" target="_blank" rel="noopener noreferrer">https://dknetwork.draftkings.com/2025-09-30/nhl-daily-fantasy-101</a></li>
+</ul>
+<hr>
+<h2 id="ir-10">IR-10</h2>
+<p><strong>FanDuel NHL scoring rests on a single document, and FanDuel also scores +/-</strong></p>
+<div class="table-wrap"><table><tbody><tr><td>kind</td><td>irregularity</td></tr><tr><td>status</td><td>OPEN</td></tr><tr><td>severity</td><td>warning</td></tr><tr><td>cited in</td><td><code>rgengy/data/scoring/nhl_fanduel.json</code>, <code>rgengy/quality.py</code></td></tr></tbody></table></div>
+<p><strong>What was found.</strong> The FanDuel NHL table is sourced from exactly one document (ftnfantasy). FanDuel additionally scores plus/minus, which DraftKings does not.</p>
+<p><strong>Why it matters.</strong> <code>nhl:fanduel</code> is marked <code>single-source</code>, the weakest evidence class. The plus/minus key is shipped as <code>not-audited</code> with a 0.0 coefficient, so FanDuel goalie and skater FPTS is understated by an unknown amount.</p>
+<p><strong>What RGENGY does about it.</strong> <code>quality.check_scoring_coverage</code> escalates an unaudited zero on a stat that is actually projected to a warning, so the understatement surfaces in every run report instead of hiding inside a total.</p>
+<p><strong>Sources retrieved.</strong></p>
+<ul>
+<li><a href="https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey" target="_blank" rel="noopener noreferrer">https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey</a></li>
+</ul>
+<hr>
+<h2 id="ir-11">IR-11</h2>
+<p><strong>Yahoo MLB scoring is sourced from a single 2019 document</strong></p>
+<div class="table-wrap"><table><tbody><tr><td>kind</td><td>irregularity</td></tr><tr><td>status</td><td>OPEN</td></tr><tr><td>severity</td><td>warning</td></tr><tr><td>cited in</td><td><code>rgengy/data/scoring/mlb_yahoo.json</code>, <code>scripts/build_scoring_tables.py</code></td></tr></tbody></table></div>
+<p><strong>What was found.</strong> <code>mlb:yahoo</code> rests on one document published in 2019. RotoGrinders does offer a Yahoo projection view, but its scoring values are behind the subscription and could not be retrieved.</p>
+<p><strong>Why it matters.</strong> Yahoo's scoring may have changed in the intervening seasons. Every Yahoo number RGENGY publishes is older than the audit by up to seven years.</p>
+<p><strong>What RGENGY does about it.</strong> The table's meta records the single-source status and the document's age, and the site shows Yahoo last. Yahoo is not used for any validated comparison.</p>
+<hr>
+<h2 id="ir-12">IR-12</h2>
+<p><strong>RotoGrinders' floor/ceiling ratios are calibrated on six rows</strong></p>
+<div class="table-wrap"><table><tbody><tr><td>kind</td><td>irregularity</td></tr><tr><td>status</td><td>STATED ASSUMPTION</td></tr><tr><td>severity</td><td>warning</td></tr><tr><td>cited in</td><td><code>rgengy/engines.py</code>, <code>scripts/analyze_rg_public_grid.py</code></td></tr></tbody></table></div>
+<p><strong>What was found.</strong> The free tier of RotoGrinders' MLB projection grid exposes six rows. From those, FLOOR/FPTS averaged 0.3030 and CEIL/FPTS averaged 2.2229, giving <code>RG_OBSERVED_FLOOR_RATIO</code> and <code>RG_OBSERVED_CEIL_RATIO</code>.</p>
+<p><strong>Why it matters.</strong> n=6 is far too small to treat as a distribution. The ratios also come from one sport, one site and one slate, and only hitters and pitchers in whatever proportion those six rows happened to contain.</p>
+<p><strong>What RGENGY does about it.</strong> The sample size is stored next to the constants (<code>RG_OBSERVED_SAMPLE_SIZE = 6</code>) and printed wherever the rg_band mode is used. <code>rg_band</code> is opt-in; the default band comes from RGENGY's own distribution model, not from these ratios.</p>
+<p><strong>Sources retrieved.</strong></p>
+<ul>
+<li><a href="https://rotogrinders.com/projected-stats/mlb?site=draftkings" target="_blank" rel="noopener noreferrer">https://rotogrinders.com/projected-stats/mlb?site=draftkings</a></li>
+</ul>
+<hr>
+<h2 id="ir-13">IR-13</h2>
+<p><strong>The ownership model's beta is an uncalibrated default</strong></p>
+<div class="table-wrap"><table><tbody><tr><td>kind</td><td>irregularity</td></tr><tr><td>status</td><td>STATED ASSUMPTION</td></tr><tr><td>severity</td><td>warning</td></tr><tr><td>cited in</td><td><code>rgengy/ownership.py</code>, <code>rgengy/pipeline.py</code></td></tr></tbody></table></div>
+<p><strong>What was found.</strong> RotoGrinders' pOWN is gradient-boosted (XGBoost) over historical DraftKings ownership plus several hundred explanatory variables, trained on mid-stakes multi-entry tournaments. Historical per-contest ownership is not available from any free official feed, so that model cannot be reproduced. RGENGY substitutes a softmax choice model over player value with one parameter, beta, defaulted to 0.35.</p>
+<p><strong>Why it matters.</strong> pOWN is a transparent modelling choice, not a measurement. Its absolute level is arbitrary; only its ordering is meaningful.</p>
+<p><strong>What RGENGY does about it.</strong> <code>default_model()</code> returns <code>calibrated=False</code>, the ownership stage reports <code>degraded</code> with this id in the reason, and <code>calibrate_beta()</code> fits beta by deterministic grid search the moment real ownership data is supplied.</p>
+<p><strong>Sources retrieved.</strong></p>
+<ul>
+<li><a href="https://rotogrinders.com/grids/the-bat-ownership-projections-beta-faq-3771773" target="_blank" rel="noopener noreferrer">https://rotogrinders.com/grids/the-bat-ownership-projections-beta-faq-3771773</a></li>
+</ul>
+<hr>
+<h2 id="ir-14">IR-14</h2>
+<p><strong>RESOLVED: DraftKings NHL was double-counting goals via shots-on-goal</strong></p>
+<div class="table-wrap"><table><tbody><tr><td>kind</td><td>irregularity</td></tr><tr><td>status</td><td>RESOLVED</td></tr><tr><td>severity</td><td>info</td></tr><tr><td>cited in</td><td><code>rgengy/scoring.py</code>, <code>rgengy/quality.py</code>, <code>scripts/build_scoring_tables.py</code></td></tr></tbody></table></div>
+<p><strong>What was found.</strong> A goal is also a shot on goal. Pass 1 scored a goal under both <code>g</code> and <code>sog</code>, which counted the same event twice.</p>
+<p><strong>Why it matters.</strong> Resolved. Goaler and skater FPTS were overstated before the fix.</p>
+<p><strong>What RGENGY does about it.</strong> The overlap is now declared in <code>scoring.REPRESENTATION_SETS</code> so <code>quality.check_representation_double_count</code> fails the run loudly if any shipped table reintroduces it. The redundant key is pinned to 0.0 and marked <code>intentionally_zero</code> so the coverage check reports it as deliberate, not as a gap.</p>
+<p><strong>Sources retrieved.</strong></p>
+<ul>
+<li><a href="https://dknetwork.draftkings.com/2025-09-30/nhl-daily-fantasy-101" target="_blank" rel="noopener noreferrer">https://dknetwork.draftkings.com/2025-09-30/nhl-daily-fantasy-101</a></li>
+</ul>
+<hr>
+<h2 id="ir-15">IR-15</h2>
+<p><strong>RESOLVED: representation overlaps let one event satisfy two scoring keys</strong></p>
+<div class="table-wrap"><table><tbody><tr><td>kind</td><td>irregularity</td></tr><tr><td>status</td><td>RESOLVED</td></tr><tr><td>severity</td><td>info</td></tr><tr><td>cited in</td><td><code>rgengy/scoring.py</code>, <code>rgengy/quality.py</code></td></tr></tbody></table></div>
+<p><strong>What was found.</strong> Several stat families are nested - a hit is also a single/double/triple/homer, a shot on goal is also a goal, a strikeout is also an out. Scoring both keys counts the production twice.</p>
+<p><strong>Why it matters.</strong> Silent FPTS inflation, which is worse than a visible error because the total still looks plausible.</p>
+<p><strong>What RGENGY does about it.</strong> <code>scoring.REPRESENTATION_SETS</code> declares every overlap; <code>scoring.representation_audit()</code> and <code>check_representation_double_count()</code> run on every configuration at every run and raise a critical finding if any table scores two members of a set simultaneously. tests/test_quality.py asserts all 11 shipped tables are clean.</p>
+<hr>
+<h2 id="ir-16">IR-16</h2>
+<p><strong>FanDuel NFL and DraftKings NBA flex eligibility is disputed between sources</strong></p>
+<div class="table-wrap"><table><tbody><tr><td>kind</td><td>irregularity</td></tr><tr><td>status</td><td>OPEN</td></tr><tr><td>severity</td><td>warning</td></tr><tr><td>cited in</td><td><code>rgengy/models.py</code>, <code>rgengy/data/scoring/nfl_fanduel.json</code></td></tr></tbody></table></div>
+<p><strong>What was found.</strong> fanscout.pro and RotoGrinders disagree on the FanDuel NBA roster shape, and two 2026 sources disagree on which positions the FanDuel NFL FLEX accepts. <code>nfl:fanduel</code> is therefore marked <code>disputed</code>.</p>
+<p><strong>Why it matters.</strong> A roster template that is wrong produces lineups the operator rejects outright - a hard failure, not a scoring error.</p>
+<p><strong>What RGENGY does about it.</strong> Both templates carry <code>verification_status: disputed</code> with the conflicting sources listed, and <code>models.default_roster()</code> returns that status in its output so no caller can miss it. tests/test_models.py pins the disputed flag so it cannot be quietly upgraded to 'consistent'.</p>
+<p><strong>Sources retrieved.</strong></p>
+<ul>
+<li><a href="https://fanscout.pro/nba-fanduel-optimizer" target="_blank" rel="noopener noreferrer">https://fanscout.pro/nba-fanduel-optimizer</a></li>
+<li><a href="https://rotogrinders.com/articles/fanduel-nba-strategy-239702" target="_blank" rel="noopener noreferrer">https://rotogrinders.com/articles/fanduel-nba-strategy-239702</a></li>
+</ul>
+<hr>
+<h2 id="ir-17">IR-17</h2>
+<p><strong>RESOLVED: roster templates that produced illegal lineups</strong></p>
+<div class="table-wrap"><table><tbody><tr><td>kind</td><td>irregularity</td></tr><tr><td>status</td><td>RESOLVED</td></tr><tr><td>severity</td><td>critical</td></tr><tr><td>cited in</td><td><code>rgengy/models.py</code>, <code>tests/test_models.py</code></td></tr></tbody></table></div>
+<p><strong>What was found.</strong> Pass 1 listed separate C and 1B slots for DraftKings MLB, requiring 11 players where the operator's classic roster combines them into one C/1B slot for 10. Similar off-by-one errors affected the NHL and NBA templates (a shape with 2 UTILs is not a legal DraftKings NHL roster).</p>
+<p><strong>Why it matters.</strong> Every lineup produced was illegal and would have been rejected at submission. This is the highest-severity class of defect in the project because it is invisible in the projection output.</p>
+<p><strong>What RGENGY does about it.</strong> Templates were corrected against the operators' published rosters, and <code>models.default_roster()</code> now self-checks that the slot counts sum to the documented player count and raises if they do not. tests/test_models.py and tests/test_optimizer.py assert the exact slot shape per sport and site, including the combined C/1B slot and the absence of a DraftKings NFL kicker.</p>
+<p><strong>Sources retrieved.</strong></p>
+<ul>
+<li><a href="https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/" target="_blank" rel="noopener noreferrer">https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/</a></li>
+<li><a href="https://www.sportsbettingdime.com/news/nfl/nfl-dfs-week-2-lineup" target="_blank" rel="noopener noreferrer">https://www.sportsbettingdime.com/news/nfl/nfl-dfs-week-2-lineup</a></li>
+</ul>
+<hr>
+<h2 id="ir-18">IR-18</h2>
+<p><strong>RESOLVED: NFL 100/300-yard bonuses were attributed to the wrong operator</strong></p>
+<div class="table-wrap"><table><tbody><tr><td>kind</td><td>irregularity</td></tr><tr><td>status</td><td>RESOLVED</td></tr><tr><td>severity</td><td>warning</td></tr><tr><td>cited in</td><td><code>rgengy/data/scoring/nfl_draftkings.json</code>, <code>rgengy/data/scoring/nfl_fanduel.json</code>, <code>scripts/build_scoring_tables.py</code></td></tr></tbody></table></div>
+<p><strong>What was found.</strong> Pass 1 applied the 100-yard rushing, 100-yard receiving and 300-yard passing bonuses to both operators. DraftKings scores them (3.0); FanDuel does not. A 2026 source states the reverse of what pass 1 assumed.</p>
+<p><strong>Why it matters.</strong> FanDuel NFL FPTS was overstated by up to 3.0 per qualifying player, which is enough to reorder a slate.</p>
+<p><strong>What RGENGY does about it.</strong> The bonuses are 3.0 on <code>nfl:draftkings</code> and 0.0 on <code>nfl:fanduel</code>, with the conflict and its resolution recorded in the table notes. This difference is the documented basis of the DraftKings/FanDuel NFL scoring divergence.</p>
+<p><strong>Sources retrieved.</strong></p>
+<ul>
+<li><a href="https://fantasyfootballers.org/featured/draftkings-vs-fanduel/" target="_blank" rel="noopener noreferrer">https://fantasyfootballers.org/featured/draftkings-vs-fanduel/</a></li>
+<li><a href="https://fantasyteamadvisors.com/nfl-dfs-strategy/" target="_blank" rel="noopener noreferrer">https://fantasyteamadvisors.com/nfl-dfs-strategy/</a></li>
+<li><a href="https://occupyfantasy.com/daily-fantasy-football-strategy-draftkings-fanduel-dfs/" target="_blank" rel="noopener noreferrer">https://occupyfantasy.com/daily-fantasy-football-strategy-draftkings-fanduel-dfs/</a></li>
+</ul>
+<hr>
+<h2 id="ir-19">IR-19</h2>
+<p><strong>RESOLVED: players with no usable sample were silently dropped</strong></p>
+<div class="table-wrap"><table><tbody><tr><td>kind</td><td>irregularity</td></tr><tr><td>status</td><td>RESOLVED</td></tr><tr><td>severity</td><td>warning</td></tr><tr><td>cited in</td><td><code>rgengy/pipeline.py</code>, <code>rgengy/quality.py</code>, <code>scripts/analyze_rg_public_grid.py</code></td></tr></tbody></table></div>
+<p><strong>What was found.</strong> Pass 1 removed any player for whom no projection could be produced. On RotoGrinders' own public grid the same situation is visible as a row published with no projection.</p>
+<p><strong>Why it matters.</strong> Dropping a player makes any roster slot that only they could fill impossible to satisfy, which silently converts one missing season sample into 'no lineup exists for this sport at all'. The failure is reported at the optimizer, far from its cause.</p>
+<p><strong>What RGENGY does about it.</strong> Players are retained at 0.0 with a run warning naming them, and an all-zero projection is flagged separately from an empty one because the fixes differ. <code>quality.check_zero_projection</code> reports every paid player with no projection in the run report.</p>
+<p><strong>Sources retrieved.</strong></p>
+<ul>
+<li><a href="https://rotogrinders.com/projected-stats/mlb?site=draftkings" target="_blank" rel="noopener noreferrer">https://rotogrinders.com/projected-stats/mlb?site=draftkings</a></li>
+</ul>
+<hr>
+<h2 id="ir-20">IR-20</h2>
+<p><strong>Identifier IR-20 is deliberately unused</strong></p>
+<div class="table-wrap"><table><tbody><tr><td>kind</td><td>irregularity</td></tr><tr><td>status</td><td>UNUSED IDENTIFIER</td></tr><tr><td>severity</td><td>info</td></tr><tr><td>cited in</td><td><code>rgengy/findings.py</code></td></tr></tbody></table></div>
+<p><strong>What was found.</strong> No finding in this register, in the scoring tables, or anywhere in the source tree cites IR-20. The id was consumed during pass 2 by a simulator payout issue that was fixed outright and is now covered by tests/test_simulator.py rather than by an open finding.</p>
+<p><strong>Why it matters.</strong> A gap in the numbering, declared rather than silently renumbered.</p>
+<p><strong>What RGENGY does about it.</strong> Declared here. IR-21 to IR-23 were assigned after this gap opened and renumbering them would invalidate references already written into pipeline.py.</p>
+<hr>
+<h2 id="ir-21">IR-21</h2>
+<p><strong>RotoGrinders publishes OBFPTS, SMASH, LEV, TOPVAL and DIFFERENCE without definitions</strong></p>
+<div class="table-wrap"><table><tbody><tr><td>kind</td><td>irregularity</td></tr><tr><td>status</td><td>OPEN</td></tr><tr><td>severity</td><td>warning</td></tr><tr><td>cited in</td><td><code>rgengy/pipeline.py</code>, <code>rgengy/ownership.py</code>, <code>scripts/analyze_rg_public_grid.py</code></td></tr></tbody></table></div>
+<p><strong>What was found.</strong> The free tier of the MLB projection grid (retrieved 2026-09-22) exposes these columns with values but no formula. Observed: OBFPTS is published at full float precision at roughly 1.08-1.13x FPTS; LEV was 9 for all six free rows, i.e. a slate-level constant rather than a per-player quantity; OPTO is expressed in FPTS units, not as a percentage.</p>
+<p><strong>Why it matters.</strong> These are the columns most likely to be mistaken for reproduced features. Guessing a formula would produce numbers that look like RotoGrinders' and are not.</p>
+<p><strong>What RGENGY does about it.</strong> RGENGY leaves OBFPTS, TOPVAL, DIFFERENCE and OPTO null and computes its OWN clearly labelled <code>lev</code> (value share minus ownership share) and <code>smash</code> (P(FPTS &gt; 1.5x projection)) into <code>extra</code>. <code>attach_ownership</code> writes an <code>analytics_provenance</code> block onto every player stating, per column, whether it is reproduced, RGENGY's own, or not computed - and tests/test_ownership.py asserts that block exists and says the right thing for each column.</p>
+<p><strong>Sources retrieved.</strong></p>
+<ul>
+<li><a href="https://rotogrinders.com/projected-stats/mlb?site=draftkings" target="_blank" rel="noopener noreferrer">https://rotogrinders.com/projected-stats/mlb?site=draftkings</a></li>
+</ul>
+<hr>
+<h2 id="ir-22">IR-22</h2>
+<p><strong>RotoGrinders' grid schema was only transcribed for three sports</strong></p>
+<div class="table-wrap"><table><tbody><tr><td>kind</td><td>irregularity</td></tr><tr><td>status</td><td>OPEN</td></tr><tr><td>severity</td><td>warning</td></tr><tr><td>cited in</td><td><code>rgengy/models.py</code>, <code>rgengy/pipeline.py</code>, <code>tests/test_pipeline.py</code></td></tr></tbody></table></div>
+<p><strong>What was found.</strong> Column headers were transcribed from the live site on 2026-09-22 for MLB (49 columns), NFL (38) and WNBA (33). The NBA and NHL grid headers were NOT transcribed, so <code>models.RG_GRID_COLUMNS</code> deliberately omits them. TEAMOWN is a team-level roll-up whose aggregation RotoGrinders does not publish, and the WNBA TOTAL column sits beside SPREAD and O/U with no definition.</p>
+<p><strong>Why it matters.</strong> Emitting an NBA or NHL grid under RotoGrinders' column headings would present RGENGY's own schema as a reproduction of theirs. Omitting a column silently would make the artefact impossible to diff against their grid.</p>
+<p><strong>What RGENGY does about it.</strong> <code>grid_rows()</code> sets <code>rg_column_schema_observed=False</code> and writes an explicit note for NBA/NHL. Every observed column is either mapped or listed in <code>unfilled_columns</code> with a written reason in <code>UNMAPPED_COLUMN_REASONS</code>, and every row carries the full column shape with nulls rather than omitting keys. tests/test_pipeline.py asserts the two-way invariant: no column without a mapping or a reason, and no reason without a column.</p>
+<p><strong>Sources retrieved.</strong></p>
+<ul>
+<li><a href="https://rotogrinders.com/projected-stats/mlb?site=draftkings" target="_blank" rel="noopener noreferrer">https://rotogrinders.com/projected-stats/mlb?site=draftkings</a></li>
+</ul>
+<hr>
+<h2 id="ir-23">IR-23</h2>
+<p><strong>Team win probability had two competing origins, and PRIZEPICKS equals FPTS only on six rows</strong></p>
+<div class="table-wrap"><table><tbody><tr><td>kind</td><td>irregularity</td></tr><tr><td>status</td><td>OPEN</td></tr><tr><td>severity</td><td>warning</td></tr><tr><td>cited in</td><td><code>rgengy/engines.py</code>, <code>rgengy/pipeline.py</code>, <code>tests/test_engines.py</code></td></tr></tbody></table></div>
+<p><strong>What was found.</strong> Two issues in the same class. (1) A win probability was being derived inside the projection engines as well as from the market line in the pipeline, so the same quantity could come from two places with different values. (2) On the six free MLB grid rows the PRIZEPICKS column equalled RotoGrinders' FPTS exactly, while UNDERDOG differed; that equivalence cannot be verified as a general rule from six rows.</p>
+<p><strong>Why it matters.</strong> A pitcher's win projection and a goalie's win projection would silently disagree with the market line shown beside them. Claiming PRIZEPICKS == FPTS generally would be an unverified extrapolation presented as a finding.</p>
+<p><strong>What RGENGY does about it.</strong> All win probabilities now come from one function, <code>engines.team_win_probability()</code>, with a fixed preference order (market line, then expected-output differential, then 0.0 with the source labelled 'unavailable'). It returns the source label alongside the probability and that label is written into the projection notes and the artefact. No engine may invent 0.5. PRIZEPICKS is left null with the six-row observation recorded rather than generalised.</p>
+<p><strong>Sources retrieved.</strong></p>
+<ul>
+<li><a href="https://rotogrinders.com/projected-stats/mlb?site=draftkings" target="_blank" rel="noopener noreferrer">https://rotogrinders.com/projected-stats/mlb?site=draftkings</a></li>
+</ul>
+<hr>
+<h2 id="l-01">L-01</h2>
+<p><strong>Identifier L-01 is deliberately unused</strong></p>
+<div class="table-wrap"><table><tbody><tr><td>kind</td><td>limitation</td></tr><tr><td>status</td><td>UNUSED IDENTIFIER</td></tr><tr><td>severity</td><td>info</td></tr><tr><td>cited in</td><td><code>rgengy/findings.py</code></td></tr></tbody></table></div>
+<p><strong>What was found.</strong> No limitation in this register or in the source tree cites L-01. The id was consumed during the audit by the absence of any outbound network access in the build environment, which turned out to be an environment property rather than a limitation of the system, and is documented in the README instead.</p>
+<p><strong>Why it matters.</strong> A gap in the numbering, declared rather than silently renumbered.</p>
+<p><strong>What RGENGY does about it.</strong> Declared here so the L-nn sequence can be read as complete.</p>
+<hr>
+<h2 id="l-02">L-02</h2>
+<p><strong>No outbound network access in the build environment</strong></p>
+<div class="table-wrap"><table><tbody><tr><td>kind</td><td>limitation</td></tr><tr><td>status</td><td>OPEN</td></tr><tr><td>severity</td><td>critical</td></tr><tr><td>cited in</td><td><code>rgengy/cli.py</code>, <code>rgengy/sources.py</code>, <code>.github/workflows/pages.yml</code></td></tr></tbody></table></div>
+<p><strong>What was found.</strong> Raw HTTPS fetches from this workspace fail with a TLS/SSL EOF error. The pages retrieved during the audit were read through a proxy that can reach rotogrinders.com; fanduel.com is additionally geo-blocked, and both operators keep their authoritative scoring pages inside their logged-in apps.</p>
+<p><strong>Why it matters.</strong> No scoring value in this repository is marked <code>confirmed_by_operator</code>, because no operator scoring page could be retrieved. Every value rests on secondary sources. The live feeds cannot be exercised here, so the pipeline is tested against synthetic and cached inputs and the slate stage honestly reports <code>unavailable</code> rather than substituting invented games.</p>
+<p><strong>What RGENGY does about it.</strong> <code>rgengy probe</code> and <code>rgengy verify</code> exist to be run from a networked machine; they stamp each endpoint with its live status and write verification.json. The GitHub Pages workflow runs them on every build so the published site reflects the live state rather than the audit state. <code>data/</code> is gitignored and regenerated.</p>
+<p><strong>Sources retrieved.</strong></p>
+<ul>
+<li><a href="https://help.fanduel.com/" target="_blank" rel="noopener noreferrer">https://help.fanduel.com/</a></li>
+<li><a href="https://www.draftkings.com/" target="_blank" rel="noopener noreferrer">https://www.draftkings.com/</a></li>
+</ul>
+<hr>
+<h2 id="l-03">L-03</h2>
+<p><strong>The WNBA roster templates are unconfirmed</strong></p>
+<div class="table-wrap"><table><tbody><tr><td>kind</td><td>limitation</td></tr><tr><td>status</td><td>OPEN</td></tr><tr><td>severity</td><td>warning</td></tr><tr><td>cited in</td><td><code>rgengy/models.py</code>, <code>tests/test_models.py</code></td></tr></tbody></table></div>
+<p><strong>What was found.</strong> No source for the WNBA roster shape was retrieved during the audit. The templates were treated as the NBA shape reduced to six slots.</p>
+<p><strong>Why it matters.</strong> A WNBA lineup built from these templates may be rejected by the operator. Both <code>wnba:draftkings</code> and <code>wnba:fanduel</code> have zero sources and are marked <code>not-audited</code>.</p>
+<p><strong>What RGENGY does about it.</strong> <code>models.default_roster()</code> returns the <code>not-audited</code> status and a note beginning UNCONFIRMED for both, and tests/test_models.py asserts that any template with no sources must be marked <code>not-audited</code> and must say UNCONFIRMED - so the templates cannot be quietly upgraded without a source being added.</p>
+<hr>
+<h2 id="l-04">L-04</h2>
+<p><strong>NFL team-defence and kicker scoring tiers were never retrieved</strong></p>
+<div class="table-wrap"><table><tbody><tr><td>kind</td><td>limitation</td></tr><tr><td>status</td><td>OPEN</td></tr><tr><td>severity</td><td>warning</td></tr><tr><td>cited in</td><td><code>rgengy/data/scoring/nfl_draftkings.json</code>, <code>rgengy/pipeline.py</code>, <code>rgengy/quality.py</code></td></tr></tbody></table></div>
+<p><strong>What was found.</strong> DraftKings team-defence scoring was not retrieved from any source during the audit. The shipped values follow the long-standing convention (points allowed and yardage tiers, sacks, turnovers, defensive touchdowns) but are marked <code>not-audited</code>.</p>
+<p><strong>Why it matters.</strong> DST and KPTS projections carry an unknown error. The NFL grid's KPTS column is left null rather than filled from unaudited tiers.</p>
+<p><strong>What RGENGY does about it.</strong> The seven <code>dst_*</code> keys are <code>not-audited</code> in both NFL tables, so <code>quality.check_scoring_coverage</code> escalates them to a warning whenever a DST is actually projected. Under <code>--strict</code> the pipeline excludes unaudited coefficients from published totals.</p>
+<p><strong>Sources retrieved.</strong></p>
+<ul>
+<li><a href="https://www.draftkings.com/" target="_blank" rel="noopener noreferrer">https://www.draftkings.com/</a></li>
+</ul>
+<hr>
+<h2 id="l-05">L-05</h2>
+<p><strong>RotoGrinders' paywalled features could not be inspected at all</strong></p>
+<div class="table-wrap"><table><tbody><tr><td>kind</td><td>limitation</td></tr><tr><td>status</td><td>OPEN</td></tr><tr><td>severity</td><td>warning</td></tr><tr><td>cited in</td><td><code>rgengy/pipeline.py</code>, <code>scripts/analyze_rg_public_grid.py</code></td></tr></tbody></table></div>
+<p><strong>What was found.</strong> The subscription tier - the full projection grid beyond six rows, the optimizer, ownership projections, THE BAT X projections, contest simulation and the partner-site columns (UNDERDOG, PRIZEPICKS) - is not retrievable without an account.</p>
+<p><strong>Why it matters.</strong> Every claim about those features rests on the free tier, on RotoGrinders' own published articles, or on nothing at all. Where nothing was available, RGENGY implements its own documented equivalent and says so.</p>
+<p><strong>What RGENGY does about it.</strong> The rebuild is explicit about which is which. <code>analytics_provenance</code> labels each column reproduced / RGENGY-own / not computed; the site carries the same three-way split; and no paywalled quantity is emitted under RotoGrinders' column heading without that label.</p>
+<p><strong>Sources retrieved.</strong></p>
+<ul>
+<li><a href="https://rotogrinders.com/projected-stats/mlb?site=draftkings" target="_blank" rel="noopener noreferrer">https://rotogrinders.com/projected-stats/mlb?site=draftkings</a></li>
+<li><a href="https://rotogrinders.com/grids/the-bat-ownership-projections-beta-faq-3771773" target="_blank" rel="noopener noreferrer">https://rotogrinders.com/grids/the-bat-ownership-projections-beta-faq-3771773</a></li>
+<li><a href="https://rotogrinders.com/articles/the-bat-vs-vegas-2016-results-1873096" target="_blank" rel="noopener noreferrer">https://rotogrinders.com/articles/the-bat-vs-vegas-2016-results-1873096</a></li>
+</ul>
+<hr>
+<h2 id="l-06">L-06</h2>
+<p><strong>Player outcomes are simulated from a normal approximation, not a per-stat model</strong></p>
+<div class="table-wrap"><table><tbody><tr><td>kind</td><td>limitation</td></tr><tr><td>status</td><td>OPEN</td></tr><tr><td>severity</td><td>warning</td></tr><tr><td>cited in</td><td><code>rgengy/simulator.py</code></td></tr></tbody></table></div>
+<p><strong>What was found.</strong> <code>simulator.sample_player_fpts</code> draws each player's score from a normal distribution built on the projected mean and a standard deviation derived from the floor/ceiling band. Real fantasy output is a sum of discrete, correlated events (a hit is also a run and an RBI; a pitcher's innings correlate with his strikeouts).</p>
+<p><strong>Why it matters.</strong> Tail behaviour is understated: a normal draw cannot produce a 4-home-run game, so simulated top-1 rates are conservative and the cash/top-10/top-1 ordering is preserved but the magnitudes are not trustworthy for large-field GPPs. The band is also over-dispersed relative to a true event model.</p>
+<p><strong>What RGENGY does about it.</strong> Documented in the simulator module docstring and surfaced in every simulation result. Replacing it needs a per-stat correlated event model, which needs the historical play-by-play data listed as future work in docs/10.</p>
+<div class="pagefoot">
+  Generated 2026-09-22T00:00:00Z by <code>scripts/build_site.py</code> from the committed
+  registries. Nothing on this site is hand-copied: every number is rendered from
+  <code>rgengy/sources.py</code>, <code>rgengy/data/scoring/*.json</code> or
+  <code>rgengy/findings.py</code>.
+</div>
+</main>
+</div>
+<script src="app.js" defer></script>
+</body>
+</html>

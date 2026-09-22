@@ -1,0 +1,138 @@
+{
+  "meta": {
+    "sport": "wnba",
+    "site": "fanduel",
+    "contest_format": "Classic (full slate)",
+    "salary_cap": 40000,
+    "confirmed_by_operator": false,
+    "audit_date": "2026-09-22",
+    "audit_method": "No WNBA scoring page was retrieved during this audit. Stat keys are derived from the columns RotoGrinders publishes on its WNBA grid; point values are NOT audited and are set to 0 so the engine cannot silently produce a wrong total.",
+    "sources_consulted": [
+      "https://rotogrinders.com/projected-stats/wnba"
+    ],
+    "notes": "All values are 0.0 and status 'not-audited' on purpose: the WNBA table must be filled from the operator's own scoring page before it is used. See docs/10-roadmap-and-limitations.md item L-03."
+  },
+  "values": {
+    "pts": {
+      "value": 0.0,
+      "verification_status": "not-audited",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://rotogrinders.com/projected-stats/wnba"
+      ],
+      "note": "Point value not audited."
+    },
+    "three_pm": {
+      "value": 0.0,
+      "verification_status": "not-audited",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://rotogrinders.com/projected-stats/wnba"
+      ],
+      "note": "Point value not audited."
+    },
+    "two_pm": {
+      "value": 0.0,
+      "verification_status": "not-audited",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://rotogrinders.com/projected-stats/wnba"
+      ],
+      "note": "Point value not audited."
+    },
+    "ftm": {
+      "value": 0.0,
+      "verification_status": "not-audited",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://rotogrinders.com/projected-stats/wnba"
+      ],
+      "note": "Point value not audited."
+    },
+    "reb": {
+      "value": 0.0,
+      "verification_status": "not-audited",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://rotogrinders.com/projected-stats/wnba"
+      ],
+      "note": "Point value not audited."
+    },
+    "ast": {
+      "value": 0.0,
+      "verification_status": "not-audited",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://rotogrinders.com/projected-stats/wnba"
+      ],
+      "note": "Point value not audited."
+    },
+    "stl": {
+      "value": 0.0,
+      "verification_status": "not-audited",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://rotogrinders.com/projected-stats/wnba"
+      ],
+      "note": "Point value not audited."
+    },
+    "blk": {
+      "value": 0.0,
+      "verification_status": "not-audited",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://rotogrinders.com/projected-stats/wnba"
+      ],
+      "note": "Point value not audited."
+    },
+    "to": {
+      "value": 0.0,
+      "verification_status": "not-audited",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://rotogrinders.com/projected-stats/wnba"
+      ],
+      "note": "Point value not audited."
+    },
+    "dd": {
+      "value": 0.0,
+      "verification_status": "not-audited",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://rotogrinders.com/projected-stats/wnba"
+      ],
+      "note": "Point value not audited."
+    },
+    "td": {
+      "value": 0.0,
+      "verification_status": "not-audited",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://rotogrinders.com/projected-stats/wnba"
+      ],
+      "note": "Point value not audited."
+    }
+  }
+}

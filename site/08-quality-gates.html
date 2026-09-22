@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- GENERATED FILE - DO NOT EDIT: rendered by scripts/build_site.py from the committed registries. -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>08-quality-gates &middot; RGENGY</title>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="layout">
+<div class="sidebar">
+  <div class="brand">RGENGY</div>
+  <div class="tagline">An auditable rebuild of RotoGrinders' projection data quality</div>
+  <nav aria-label="Explore the data">
+    <div class="navhead">Explore</div>
+    <a class="navhead" href="index.html">Dashboard</a><a href="sources.html">Data sources</a><a href="scoring.html">Scoring tables</a><a href="findings.html">Findings register</a><a href="rosters.html">Roster templates</a><a href="grid.html">Grid schema</a><a href="checks.html">Quality gates</a>
+  </nav>
+  <div class="sep"></div>
+  <nav aria-label="Documentation">
+    <div class="navhead">Documentation</div>
+    <a href="00-index.html">Overview</a><a href="01-method.html">Method</a><a href="02-data-sources.html">Data sources</a><a href="03-scoring-verification.html">Scoring</a><a href="04-rg-findings.html">RotoGrinders findings</a><a href="05-projection-engines.html">Projection engines</a><a href="06-optimizer-and-simulator.html">Optimizer &amp; simulator</a><a href="07-grid-schema.html">Grid schema</a><a href="08-quality-gates.html" aria-current="page">Quality gates</a><a href="09-irregularities.html">Irregularities</a><a href="10-roadmap-and-limitations.html">Limitations &amp; roadmap</a>
+  </nav>
+  <div class="sep"></div>
+  <div class="meta">
+    Audit date 2026-09-22<br>
+    16 endpoints &middot;
+    11 scoring tables<br>
+    29 findings (17 open)<br>
+    459 tests passing
+  </div>
+</div>
+<main class="content" id="main">
+<h1 id="08-quality-gates">08 - Quality gates</h1>
+<p>Nine checks run on every pipeline execution. Their job is not to make the numbers better - it is to stop an indefensible number being published quietly.</p>
+<p><code>rgengy/quality.py</code>. Each check appends to a <code>QualityReport</code> of <code>Finding</code> objects, and each <code>Finding</code> carries a <strong><code>review_action</code></strong>: what a human should do next. An irregularity with no review action cannot be actioned, so <code>tests/test_quality.py</code> asserts every emitted finding has one.</p>
+<hr>
+<h2 id="severities">Severities</h2>
+<div class="table-wrap"><table><thead><tr><th>severity</th><th>meaning</th></tr></thead><tbody><tr><td><code>info</code></td><td>correct behaviour worth recording, or a question rather than a defect</td></tr><tr><td><code>warning</code></td><td>the output is usable but degraded; the run continues</td></tr><tr><td><code>critical</code></td><td>the output must not be trusted; <code>has_critical</code> is true and the report says so</td></tr></tbody></table></div>
+<p><code>QualityReport</code> exposes <code>by_severity()</code>, <code>by_check()</code>, <code>has_critical</code> and <code>to_dict()</code>, and rejects an unknown severity outright rather than bucketing it. <code>checks_run</code> records every check that executed, <strong>including the ones that found nothing</strong> - a report that lists only failures cannot distinguish "clean" from "never ran".</p>
+<h2 id="the-checks">The checks</h2>
+<p><code>ALL_CHECKS</code> is the registered set, run by <code>pipeline.run()</code>:</p>
+<div class="table-wrap"><table><thead><tr><th>check</th><th>severity</th><th>what it catches</th></tr></thead><tbody><tr><td><code>check_zero_projection</code></td><td>warning</td><td>a paid player with no projected points, or projected at exactly 0 - they cannot be ranked meaningfully</td></tr><tr><td><code>check_duplicate_ids</code></td><td><strong>critical</strong></td><td>the same player id twice, which corrupts ownership normalisation and roster uniqueness</td></tr><tr><td><code>check_implausible_values</code></td><td><strong>critical</strong> / warning</td><td>a negative count stat (an environment ratio went negative), a negative salary, or an opportunity above a sanity bound</td></tr><tr><td><code>check_stale_provenance</code></td><td>warning</td><td>an input older than <code>STALE_AFTER_HOURS</code> (36h), an unparseable timestamp, or a network input with <strong>no timestamp at all</strong></td></tr><tr><td><code>check_endpoint_failures</code></td><td><strong>critical</strong></td><td>an endpoint that returned no data, so every projection downstream of it is degraded</td></tr><tr><td><code>check_ownership_normalisation</code></td><td>warning</td><td>projected ownership that does not sum to ~1.0 across the slate</td></tr><tr><td><code>check_scoring_coverage</code></td><td>warning / info</td><td>a projected stat with no coefficient, or a coefficient of 0 that was never audited - both silently understate FPTS</td></tr><tr><td><code>check_representation_double_count</code></td><td><strong>critical</strong></td><td>a scoring table that counts the same production twice</td></tr><tr><td><code>check_cross_source_identity</code></td><td>warning</td><td>a projection row the official feed does not contain. Needs two feeds, so the pipeline calls it explicitly rather than by default</td></tr></tbody></table></div>
+<h2 id="sanity-bounds-are-labelled-as-ours">Sanity bounds are labelled as ours</h2>
+<div class="table-wrap"><table><thead><tr><th>constant</th><th style="text-align:right">value</th><th>applies to</th></tr></thead><tbody><tr><td><code>MAX_MLB_PA</code></td><td style="text-align:right">8.0</td><td>plate appearances (a batter cannot realistically exceed ~7 in 9 innings plus extras)</td></tr><tr><td><code>MAX_MLB_IP</code></td><td style="text-align:right">12.0</td><td>innings pitched</td></tr><tr><td><code>MAX_BASKETBALL_MINUTES</code></td><td style="text-align:right">60.0</td><td><code>min</code> for NBA and WNBA</td></tr><tr><td><code>MAX_HOCKEY_TOI</code></td><td style="text-align:right">45.0</td><td>time on ice</td></tr><tr><td><code>STALE_AFTER_HOURS</code></td><td style="text-align:right">36</td><td>provenance age</td></tr></tbody></table></div>
+<p>Exceeding one is a <strong>warning, not an error</strong>, and the review action says so: "the bound itself is an RGENGY sanity limit, not a league rule." A bound presented as a rule would be a fabricated constraint.</p>
+<p>Negative values are critical for count stats but explicitly exempt for run-<em>prevention</em> keys (<code>er</code>, <code>ga</code>, <code>to</code>, <code>pa_int</code>, <code>fum_lost</code>), which are subtractions in the scoring table.</p>
+<h2 id="telling-a-deliberate-zero-from-an-unaudited-zero">Telling a deliberate zero from an unaudited zero</h2>
+<p>This is the distinction the whole coverage check exists for.</p>
+<p>A coefficient of 0.0 on a stat that is actually projected means published FPTS understates the operator's real total. But there are two reasons for a zero, and they need opposite responses:</p>
+<ul>
+<li><strong><code>intentionally_zero</code></strong> - another key already carries that production, so</li>
+</ul>
+<p>scoring both would double-count (IR-15). Example: FanDuel NBA <code>ftm</code> and <code>two_pm</code> against <code>pts</code>. Reported as <strong>info</strong>: no action needed.</p>
+<ul>
+<li><strong><code>not_audited</code></strong> - no source was ever retrieved for the value. Example: the</li>
+</ul>
+<p>seven <code>dst_*</code> keys in both NFL tables (L-04), and FanDuel NHL <code>plus_minus</code> (IR-10). Reported as <strong>warning</strong>, because the published total is wrong by an unknown amount.</p>
+<p><code>check_scoring_coverage</code> takes the <code>ScoringTable</code> so it can tell them apart. Called without one it falls back to a single blunt warning, and the review action tells the caller to pass the table.</p>
+<h2 id="representation-overlaps">Representation overlaps</h2>
+<p><code>scoring.REPRESENTATION_SETS</code> declares the five stat families where one real-world event satisfies two scoring keys - a hit is also a single/double/triple/homer, a shot on goal is also a goal, a strikeout is also an out. Scoring both counts the production twice, which inflates FPTS <em>silently</em>: the total still looks plausible.</p>
+<p><code>scoring.representation_audit()</code> and <code>check_representation_double_count()</code> run on every configuration at every run and raise a <strong>critical</strong> finding if any shipped table scores two members of a set simultaneously. <code>tests/test_quality.py</code> asserts all 11 shipped tables are clean, so a new table cannot be added with an overlap by accident.</p>
+<p>This caught a real defect: DraftKings NHL was scoring a goal under both <code>g</code> and <code>sog</code> (IR-14).</p>
+<h2 id="no-findings-is-not-the-same-as-never-checked">"No findings" is not the same as "never checked"</h2>
+<p><code>check_representation_double_count("curling", "draftkings")</code> used to emit nothing, because there is no scoring table for curling and therefore no audit rows. A report that reads <em>clean</em> for a configuration that was never examined is worse than one that reads <em>unknown</em>. It now emits a warning naming every shipped configuration and saying plainly that the requested one has had <strong>no invariant checked at all</strong>.</p>
+<p>The same rule applies to freshness: a provenance row that looks like a network fetch but records no <code>fetched_at</code> cannot be shown to be fresh, so it is reported rather than silently skipped. Static scoring-table provenance carries <code>audit_date</code> and no <code>url</code>, and is correctly out of scope for a check about fetch times.</p>
+<h2 id="endpoint-failures-are-grouped-by-url">Endpoint failures are grouped by URL</h2>
+<p>A retried endpoint fails once per attempt. Emitting one critical finding per attempt made a single dead endpoint look like two separate defects, which sends a reviewer looking for a second problem that does not exist. Findings are now grouped by URL with the attempt count preserved in the message, and every distinct error for that URL is listed.</p>
+<p>The review action is explicit about the sandbox case: if there is no outbound network this is <em>expected</em>, and the stage must be reported <code>unavailable</code> - never guessed (L-02).</p>
+<h2 id="cross-source-identity">Cross-source identity</h2>
+<p><code>check_cross_source_identity(primary, secondary, report)</code> flags entities present in the projection source but absent from the official feed. <code>primary</code> is the official feed; <code>secondary</code> is the source being reconciled.</p>
+<p>This exists because of a class of error observed on RotoGrinders' own public NFL grid on 2026-09-22, where a row was published for <strong>Frank Gore</strong> against Buffalo. Gore's NFL career ended years earlier, so a row like that is either an identity collision in the projection database or a stale roster join. Comparing against the league's own feed surfaces it without RGENGY having to assert anything about who is retired - which it is not in a position to do.</p>
+<p>Name comparison normalises case, punctuation and generational suffixes (<code>Jr</code>, <code>Sr</code>, <code>II</code>, <code>III</code>, <code>IV</code>), so "Josh Allen Jr." does not create a phantom mismatch against "Josh Allen".</p>
+<h2 id="where-the-gates-run">Where the gates run</h2>
+<pre><code class="language-python">quality.check_zero_projection(players, site, report)
+quality.check_duplicate_ids(players, report)
+quality.check_implausible_values(players, sport, report)
+quality.check_ownership_normalisation(players, report)
+quality.check_scoring_coverage(players, coefficients, report, scoring_table=table)
+quality.check_representation_double_count(sport, site, report)
+quality.check_stale_provenance(prov, report)
+quality.check_endpoint_failures(result.fetch_summary, report)</code></pre>
+<p>The report is attached to the <code>RunResult</code>, serialised into every artefact, and drives <code>overall_status</code>. <code>rgengy verify</code> writes the endpoint half of it to <code>verification.json</code>.</p>
+<div class="pagefoot">
+  Generated 2026-09-22T00:00:00Z by <code>scripts/build_site.py</code> from the committed
+  registries. Nothing on this site is hand-copied: every number is rendered from
+  <code>rgengy/sources.py</code>, <code>rgengy/data/scoring/*.json</code> or
+  <code>rgengy/findings.py</code>.
+</div>
+</main>
+</div>
+<script src="app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,244 @@
+{
+  "meta": {
+    "sport": "mlb",
+    "site": "yahoo",
+    "contest_format": "Classic (full slate)",
+    "salary_cap": 200,
+    "confirmed_by_operator": false,
+    "audit_date": "2026-09-22",
+    "audit_method": "Yahoo values come from one comparison table (sportsfanfocus.com, 2019). The document is seven years old at audit time, so every value is 'single-source' and provisional.",
+    "sources_consulted": [
+      "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+    ],
+    "notes": "IRREGULARITY IR-11: Yahoo scoring is sourced from a single 2019 document. RotoGrinders does offer a ?site=yahoo grid variant (verified 2026-09-22), so Yahoo is a real target even though its values here are weakly sourced."
+  },
+  "values": {
+    "1b": {
+      "value": 2.6,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+      ]
+    },
+    "2b": {
+      "value": 5.2,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+      ]
+    },
+    "3b": {
+      "value": 7.8,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+      ]
+    },
+    "hr": {
+      "value": 10.4,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+      ]
+    },
+    "r": {
+      "value": 1.9,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+      ]
+    },
+    "rbi": {
+      "value": 1.9,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+      ]
+    },
+    "bb": {
+      "value": 2.6,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+      ]
+    },
+    "hbp": {
+      "value": 2.6,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+      ]
+    },
+    "sb": {
+      "value": 4.2,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+      ]
+    },
+    "cs": {
+      "value": 0.0,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+      ],
+      "note": "Not listed for Yahoo."
+    },
+    "k": {
+      "value": 2.0,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+      ]
+    },
+    "win": {
+      "value": 4.0,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+      ]
+    },
+    "er": {
+      "value": -2.0,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+      ]
+    },
+    "outs": {
+      "value": 1.0,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+      ],
+      "note": "Yahoo scores per out recorded, not per inning; do not also score 'ip'."
+    },
+    "ip": {
+      "value": 0.0,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+      ],
+      "note": "Set to 0 because Yahoo pays per out; scoring both would double count."
+    },
+    "ha": {
+      "value": -0.9,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+      ]
+    },
+    "bba": {
+      "value": -0.9,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+      ]
+    },
+    "hbpa": {
+      "value": -0.9,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+      ]
+    },
+    "qs": {
+      "value": 0.0,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+      ],
+      "note": "Not listed for Yahoo."
+    },
+    "cg": {
+      "value": 0.0,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+      ],
+      "note": "Not listed for Yahoo."
+    },
+    "cgso": {
+      "value": 0.0,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+      ],
+      "note": "Not listed for Yahoo."
+    },
+    "nohitter": {
+      "value": 0.0,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+      ],
+      "note": "Not listed for Yahoo."
+    }
+  }
+}

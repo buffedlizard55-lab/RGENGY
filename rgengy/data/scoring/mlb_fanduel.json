@@ -1,0 +1,307 @@
+{
+  "meta": {
+    "sport": "mlb",
+    "site": "fanduel",
+    "contest_format": "Classic (full slate)",
+    "salary_cap": 35000,
+    "confirmed_by_operator": false,
+    "audit_date": "2026-09-22",
+    "audit_method": "Hitter values agree across four independent sources. Pitcher 'er' is disputed (-3 vs -1) and is flagged.",
+    "sources_consulted": [
+      "https://fantasyteamadvice.com/mlb/fdoba",
+      "https://www.stokastic.com/articles/dfs-strategy/fanduel-mlb-dfs-cheat-sheet",
+      "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+      "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/",
+      "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/",
+      "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/"
+    ],
+    "notes": "FanDuel does not penalise pitchers for hits/walks/HBP allowed, so ha/bba/hbpa are 0. FanDuel scores per out (1 pt) rather than per inning; 3 outs = 1 inning = 3 pts, which reconciles the '+3 IP' and '+1 out' descriptions found in different sources. To avoid a double count, 'ip' carries the 3.0 and 'outs' is pinned at 0.0."
+  },
+  "values": {
+    "1b": {
+      "value": 3.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 5,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://fantasyteamadvice.com/mlb/fdoba",
+        "https://www.stokastic.com/articles/dfs-strategy/fanduel-mlb-dfs-cheat-sheet",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
+      ]
+    },
+    "2b": {
+      "value": 6.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 5,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://fantasyteamadvice.com/mlb/fdoba",
+        "https://www.stokastic.com/articles/dfs-strategy/fanduel-mlb-dfs-cheat-sheet",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
+      ]
+    },
+    "3b": {
+      "value": 9.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 5,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://fantasyteamadvice.com/mlb/fdoba",
+        "https://www.stokastic.com/articles/dfs-strategy/fanduel-mlb-dfs-cheat-sheet",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
+      ]
+    },
+    "hr": {
+      "value": 12.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 5,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://fantasyteamadvice.com/mlb/fdoba",
+        "https://www.stokastic.com/articles/dfs-strategy/fanduel-mlb-dfs-cheat-sheet",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
+      ]
+    },
+    "rbi": {
+      "value": 3.5,
+      "verification_status": "multi-source-consistent",
+      "agreement": 5,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://fantasyteamadvice.com/mlb/fdoba",
+        "https://www.stokastic.com/articles/dfs-strategy/fanduel-mlb-dfs-cheat-sheet",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
+      ]
+    },
+    "r": {
+      "value": 3.2,
+      "verification_status": "multi-source-consistent",
+      "agreement": 5,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://fantasyteamadvice.com/mlb/fdoba",
+        "https://www.stokastic.com/articles/dfs-strategy/fanduel-mlb-dfs-cheat-sheet",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
+      ]
+    },
+    "bb": {
+      "value": 3.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 5,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://fantasyteamadvice.com/mlb/fdoba",
+        "https://www.stokastic.com/articles/dfs-strategy/fanduel-mlb-dfs-cheat-sheet",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
+      ],
+      "note": "FanDuel pays a walk the same as a single - the single biggest hitter-scoring difference from DraftKings."
+    },
+    "hbp": {
+      "value": 3.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 3,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://www.stokastic.com/articles/dfs-strategy/fanduel-mlb-dfs-cheat-sheet",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+      ]
+    },
+    "sb": {
+      "value": 6.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 5,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://fantasyteamadvice.com/mlb/fdoba",
+        "https://www.stokastic.com/articles/dfs-strategy/fanduel-mlb-dfs-cheat-sheet",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
+      ]
+    },
+    "ip": {
+      "value": 3.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 4,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://www.stokastic.com/articles/dfs-strategy/fanduel-mlb-dfs-cheat-sheet",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
+      ],
+      "note": "Equivalent to 1.0 per out recorded; see meta.notes."
+    },
+    "outs": {
+      "value": 0.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 2,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
+      ],
+      "note": "FanDuel's own tables describe this as 'Out Recorded = 1 point', which is arithmetically identical to 'Inning Pitched = 3 points' (3 outs = 1 inning). Scoring BOTH would double count a pitcher's innings, so RGENGY scores 'ip' at 3.0 and pins 'outs' at 0.0. RotoGrinders publishes an OUTS column on its MLB grid, which is why the field is modelled at all. See IR-14 in docs/09-irregularities.md."
+    },
+    "k": {
+      "value": 3.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 4,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://www.stokastic.com/articles/dfs-strategy/fanduel-mlb-dfs-cheat-sheet",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
+      ]
+    },
+    "win": {
+      "value": 6.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 5,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://www.stokastic.com/articles/dfs-strategy/fanduel-mlb-dfs-cheat-sheet",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
+      ]
+    },
+    "qs": {
+      "value": 4.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 4,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://www.stokastic.com/articles/dfs-strategy/fanduel-mlb-dfs-cheat-sheet",
+        "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
+      ],
+      "note": "Quality Start = started the game, pitched at least 6 innings and allowed 3 or fewer earned runs (definition per https://intercom.help/boomfantasy/en/articles/9950352-mlb)."
+    },
+    "er": {
+      "value": -3.0,
+      "verification_status": "disputed",
+      "agreement": 3,
+      "disputed": true,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://www.stokastic.com/articles/dfs-strategy/fanduel-mlb-dfs-cheat-sheet",
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/",
+        "https://runpuresports.com/the-ultimate-guide-to-mlb-dfs-winning-strategies-for-draftkings-and-fanduel/"
+      ],
+      "note": "Three sources say -3, one (runpuresports) says -1. Majority value -3 adopted and FLAGGED as IR-06 in docs/09-irregularities.md."
+    },
+    "ha": {
+      "value": 0.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 3,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+      ],
+      "note": "FanDuel does not penalise hits allowed."
+    },
+    "bba": {
+      "value": 0.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 3,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://fantasyteamadvice.com/mlb/fantasy-calculator",
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/",
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+      ],
+      "note": "FanDuel does not penalise walks allowed."
+    },
+    "hbpa": {
+      "value": 0.0,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+      ],
+      "note": "Inferred 0 from the absence of an HBP-allowed penalty in every FanDuel table consulted."
+    },
+    "cg": {
+      "value": 0.0,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
+      ],
+      "note": "No FanDuel source lists a complete-game bonus."
+    },
+    "cgso": {
+      "value": 0.0,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
+      ]
+    },
+    "nohitter": {
+      "value": 0.0,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://www.dailyfantasysports101.com/draftkings-vs-fanduel-fantasy-baseball-scoring-differences/"
+      ]
+    },
+    "cs": {
+      "value": 0.0,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://sportsfanfocus.com/draftkings-yahoo-fanduel-mlb-scoring/"
+      ],
+      "note": "No FanDuel source lists a caught-stealing penalty."
+    }
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "meta": {
+    "sport": "nba",
+    "site": "fanduel",
+    "contest_format": "Classic (full slate)",
+    "salary_cap": 60000,
+    "confirmed_by_operator": false,
+    "audit_date": "2026-09-22",
+    "audit_method": "Five sources were retrieved and they disagree on two points, so both are marked 'disputed' and both readings are recorded. RotoGrinders' own FanDuel NBA guide (created 2014-02-11, last updated 2025-11-03) states: Point=1, Rebound=1.2, Assist=1.5, Steal=2, Block=2, TO=-1, and 'FanDuel does not give extra points for three-pointers'. occupyfantasy (2025-06-05) and dfsbuild (2025-10-07) both state Steal=3 and Block=3 and neither lists a 3PM bonus. sportingnews (2023-01-28) and lineups (2019-05-21) describe FanDuel in the MADE-SHOT representation (3PM +1, FGM +2, FTM +1), which is arithmetically identical to 1 point per point plus a +1 3PM bonus.",
+    "sources_consulted": [
+      "https://www.rotowire.com/basketball/article/dfs-basketball-101-how-to-win-on-draftkings-19246",
+      "https://dfsbuild.com/dfs-guide/nba-dfs-guide/",
+      "https://teamriseorfall.com/nba-dfs-strategy-guide/",
+      "https://rotogrinders.com/articles/fanduel-nba-strategy-239702",
+      "https://occupyfantasy.com/nba-dfs-strategy-guide-draftkings-fanduel/",
+      "https://fanscout.pro/nba-fanduel-optimizer",
+      "https://www.sportingnews.com/us/nba/news/nba-fanduel-picks-128-best-nba-dfs-lineup-advice-saturdays-daily-fantasy-basketball-tournaments/jqsghzxwekyboxtsm6mlw0jw",
+      "https://www.lineups.com/betting/fanduel-nba-strategy/"
+    ],
+    "notes": "TWO REPRESENTATION BUGS WERE FIXED HERE (IR-15). (1) The first pass of this audit encoded pts=1.0 AND two_pm=2.0 AND ftm=1.0 AND three_pm=3.0 at once. That is not either published representation - it is both of them summed, and it inflated every FanDuel NBA projection by roughly 2x (an 8-player demo lineup scored 763 points instead of ~300). RGENGY now uses the aggregate representation ('pts') and pins the made-shot keys at 0.0. (2) three_pm=3.0 came from a source that meant 'a made three is worth 3 points in total', not 'a made three earns a 3-point bonus'; the majority of recent sources say FanDuel pays no 3PM bonus at all, so it is 0.0 and disputed. NOTE ALSO: FanDuel's own rules page (https://sportsbook.fanduel.com/rules) is geo-verified and cannot be retrieved headlessly, which is why this table rests on secondary sources."
+  },
+  "values": {
+    "pts": {
+      "value": 1.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 5,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://rotogrinders.com/articles/fanduel-nba-strategy-239702",
+        "https://occupyfantasy.com/nba-dfs-strategy-guide-draftkings-fanduel/",
+        "https://dfsbuild.com/dfs-guide/nba-dfs-guide/"
+      ],
+      "note": "1 fantasy point per real point scored. Every retrieved source agrees."
+    },
+    "three_pm": {
+      "value": 0.0,
+      "verification_status": "disputed",
+      "agreement": 5,
+      "disputed": true,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://rotogrinders.com/articles/fanduel-nba-strategy-239702",
+        "https://dfsbuild.com/dfs-guide/nba-dfs-guide/",
+        "https://occupyfantasy.com/nba-dfs-strategy-guide-draftkings-fanduel/",
+        "https://www.sportingnews.com/us/nba/news/nba-fanduel-picks-128-best-nba-dfs-lineup-advice-saturdays-daily-fantasy-basketball-tournaments/jqsghzxwekyboxtsm6mlw0jw",
+        "https://www.lineups.com/betting/fanduel-nba-strategy/"
+      ],
+      "note": "CONFLICT. RotoGrinders (2025-11-03): 'FanDuel does not give extra points for three-pointers, so all buckets are treated the same.' dfsbuild (2025-10-07) shows '-' for FanDuel. sportingnews (2023-01-28) and lineups (2019-05-21) describe a +1 3PM bonus. Three of five sources and the two most recent say no bonus, so 0.0 is used. IR-15."
+    },
+    "two_pm": {
+      "value": 0.0,
+      "verification_status": "not-applicable",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://www.lineups.com/betting/fanduel-nba-strategy/"
+      ],
+      "intentionally_zero": true,
+      "note": "Made-shot representation: lineups.com states '2 points per field goal made', which is subsumed by pts=1.0. Pinned at 0.0 on purpose: this stat is an alternative REPRESENTATION of production already scored by another key in this table, and applying both would double count. See IR-15."
+    },
+    "ftm": {
+      "value": 0.0,
+      "verification_status": "not-applicable",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://www.lineups.com/betting/fanduel-nba-strategy/"
+      ],
+      "intentionally_zero": true,
+      "note": "Made-shot representation: sportingnews states 'free throw made (+1 point)', which is subsumed by pts=1.0. Pinned at 0.0 on purpose: this stat is an alternative REPRESENTATION of production already scored by another key in this table, and applying both would double count. See IR-15."
+    },
+    "reb": {
+      "value": 1.2,
+      "verification_status": "multi-source-consistent",
+      "agreement": 5,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://rotogrinders.com/articles/fanduel-nba-strategy-239702",
+        "https://occupyfantasy.com/nba-dfs-strategy-guide-draftkings-fanduel/",
+        "https://dfsbuild.com/dfs-guide/nba-dfs-guide/"
+      ],
+      "note": "1.2, versus 1.25 on DraftKings - every source agrees."
+    },
+    "ast": {
+      "value": 1.5,
+      "verification_status": "multi-source-consistent",
+      "agreement": 5,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://rotogrinders.com/articles/fanduel-nba-strategy-239702",
+        "https://occupyfantasy.com/nba-dfs-strategy-guide-draftkings-fanduel/",
+        "https://dfsbuild.com/dfs-guide/nba-dfs-guide/"
+      ]
+    },
+    "stl": {
+      "value": 3.0,
+      "verification_status": "disputed",
+      "agreement": 4,
+      "disputed": true,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://occupyfantasy.com/nba-dfs-strategy-guide-draftkings-fanduel/",
+        "https://dfsbuild.com/dfs-guide/nba-dfs-guide/",
+        "https://rotogrinders.com/articles/fanduel-nba-strategy-239702",
+        "https://www.sportingnews.com/us/nba/news/nba-fanduel-picks-128-best-nba-dfs-lineup-advice-saturdays-daily-fantasy-basketball-tournaments/jqsghzxwekyboxtsm6mlw0jw"
+      ],
+      "note": "CONFLICT: occupyfantasy (2025-06-05), dfsbuild (2025-10-07) and sportingnews (2023) say 3; RotoGrinders' own guide says 2. Majority of recent independent sources wins, but because the minority source is RotoGrinders itself this is flagged for manual review. IR-15."
+    },
+    "blk": {
+      "value": 3.0,
+      "verification_status": "disputed",
+      "agreement": 4,
+      "disputed": true,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://occupyfantasy.com/nba-dfs-strategy-guide-draftkings-fanduel/",
+        "https://dfsbuild.com/dfs-guide/nba-dfs-guide/",
+        "https://rotogrinders.com/articles/fanduel-nba-strategy-239702",
+        "https://www.sportingnews.com/us/nba/news/nba-fanduel-picks-128-best-nba-dfs-lineup-advice-saturdays-daily-fantasy-basketball-tournaments/jqsghzxwekyboxtsm6mlw0jw"
+      ],
+      "note": "Same conflict and same resolution as 'stl'. IR-15."
+    },
+    "to": {
+      "value": -1.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 5,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://rotogrinders.com/articles/fanduel-nba-strategy-239702",
+        "https://occupyfantasy.com/nba-dfs-strategy-guide-draftkings-fanduel/",
+        "https://dfsbuild.com/dfs-guide/nba-dfs-guide/"
+      ],
+      "note": "Harsher than DraftKings' -0.5; every source agrees."
+    },
+    "dd": {
+      "value": 0.0,
+      "verification_status": "disputed",
+      "agreement": 2,
+      "disputed": true,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://dfsbuild.com/dfs-guide/nba-dfs-guide/",
+        "https://rotogrinders.com/articles/fanduel-nba-strategy-239702"
+      ],
+      "note": "Neither RotoGrinders' FanDuel scoring table nor dfsbuild's comparison lists a FanDuel double-double bonus. Flagged as IR-08."
+    },
+    "td": {
+      "value": 0.0,
+      "verification_status": "disputed",
+      "agreement": 2,
+      "disputed": true,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://dfsbuild.com/dfs-guide/nba-dfs-guide/",
+        "https://rotogrinders.com/articles/fanduel-nba-strategy-239702"
+      ],
+      "note": "Same ambiguity as 'dd'. Flagged as IR-08."
+    }
+  }
+}

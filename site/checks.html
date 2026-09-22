@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- GENERATED FILE - DO NOT EDIT: rendered by scripts/build_site.py from the committed registries. -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quality gates &middot; RGENGY</title>
+<meta name="description" content="The checks that stop an indefensible number being published.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="layout">
+<div class="sidebar">
+  <div class="brand">RGENGY</div>
+  <div class="tagline">An auditable rebuild of RotoGrinders' projection data quality</div>
+  <nav aria-label="Explore the data">
+    <div class="navhead">Explore</div>
+    <a class="navhead" href="index.html">Dashboard</a><a href="sources.html">Data sources</a><a href="scoring.html">Scoring tables</a><a href="findings.html">Findings register</a><a href="rosters.html">Roster templates</a><a href="grid.html">Grid schema</a><a href="checks.html" aria-current="page">Quality gates</a>
+  </nav>
+  <div class="sep"></div>
+  <nav aria-label="Documentation">
+    <div class="navhead">Documentation</div>
+    <a href="00-index.html">Overview</a><a href="01-method.html">Method</a><a href="02-data-sources.html">Data sources</a><a href="03-scoring-verification.html">Scoring</a><a href="04-rg-findings.html">RotoGrinders findings</a><a href="05-projection-engines.html">Projection engines</a><a href="06-optimizer-and-simulator.html">Optimizer &amp; simulator</a><a href="07-grid-schema.html">Grid schema</a><a href="08-quality-gates.html">Quality gates</a><a href="09-irregularities.html">Irregularities</a><a href="10-roadmap-and-limitations.html">Limitations &amp; roadmap</a>
+  </nav>
+  <div class="sep"></div>
+  <div class="meta">
+    Audit date 2026-09-22<br>
+    16 endpoints &middot;
+    11 scoring tables<br>
+    29 findings (17 open)<br>
+    459 tests passing
+  </div>
+</div>
+<main class="content" id="main">
+<h1>Quality gates and engine constants</h1>
+<p>Nine checks run on every pipeline execution. Their job is not to make the numbers better - it is
+to stop an indefensible number being published quietly. Every finding carries a
+<code>review_action</code> saying what a human should do next; an irregularity with no review action
+cannot be actioned. See <a href="08-quality-gates.html">the full explanation</a>.</p>
+<div class="filters">
+  <input type="search" placeholder="Filter checks&hellip;" aria-label="Filter checks">
+  <span class="count"></span>
+</div>
+<div class="table-wrap"><table>
+<thead><tr><th>check</th><th>how it runs</th><th>what it catches</th></tr></thead>
+<tbody><tr data-tags="registered"><td><code>check_zero_projection</code></td><td><span class="badge ok">registered</span></td><td style="font-size:0.88rem">Players with a salary but no projected points cannot be ranked meaningfully.</td></tr><tr data-tags="registered"><td><code>check_duplicate_ids</code></td><td><span class="badge ok">registered</span></td><td style="font-size:0.88rem"></td></tr><tr data-tags="registered"><td><code>check_implausible_values</code></td><td><span class="badge ok">registered</span></td><td style="font-size:0.88rem">Range checks against physically impossible values.</td></tr><tr data-tags="registered"><td><code>check_stale_provenance</code></td><td><span class="badge ok">registered</span></td><td style="font-size:0.88rem">Flag any input whose recorded fetch time is older than ``STALE_AFTER_HOURS``.</td></tr><tr data-tags="registered"><td><code>check_endpoint_failures</code></td><td><span class="badge ok">registered</span></td><td style="font-size:0.88rem">One finding per distinct failing URL, with the retry count stated.</td></tr><tr data-tags="registered"><td><code>check_ownership_normalisation</code></td><td><span class="badge ok">registered</span></td><td style="font-size:0.88rem">pOWN across a slate should sum to roughly 1.0 (100%).</td></tr><tr data-tags="registered"><td><code>check_scoring_coverage</code></td><td><span class="badge ok">registered</span></td><td style="font-size:0.88rem">Any projected stat with no scoring coefficient is invisible to FPTS.</td></tr><tr data-tags="registered"><td><code>check_representation_double_count</code></td><td><span class="badge ok">registered</span></td><td style="font-size:0.88rem">Fail loudly if the scoring table counts the same production twice.</td></tr><tr data-tags="explicit"><td><code>check_cross_source_identity</code></td><td><span class="badge">called explicitly</span></td><td style="font-size:0.88rem">Flag entities present in one source but absent from the official one.</td></tr></tbody></table></div>
+<h2>Engine constants</h2>
+<div class="table-wrap"><table><thead><tr><th>constant</th><th>value</th></tr></thead><tbody><tr><td><code>RG_OBSERVED_FLOOR_RATIO</code></td><td>None</td></tr><tr><td><code>RG_OBSERVED_CEIL_RATIO</code></td><td>2.2229</td></tr><tr><td><code>RG_OBSERVED_SAMPLE_SIZE</code></td><td>6 rows &mdash; <strong>IR-12</strong>, one team, one game, one date</td></tr><tr><td><code>WEATHER_AIR_DENSITY_COEFFICIENT</code></td><td>0.0 &mdash; the adjustment is computed exactly and then <strong>disabled</strong>, because applying an unvalidated sensitivity would fabricate precision</td></tr><tr><td><code>FLOOR_Z</code> / <code>CEIL_Z</code></td><td>1.0 / 2.0 &mdash; asymmetric on purpose</td></tr><tr><td>band modes</td><td><code>distribution</code>, <code>rg_band</code></td></tr></tbody></table></div>
+<h2>Score-distribution sigmas <span class="badge warning">unaudited &mdash; IR-03</span></h2>
+<p>Used only where no market line exists, and always labelled with the method that produced them.
+The NFL value is known to understate heavy favourites, which is why the market line is always
+preferred.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>sport</th><th>sigma</th></tr></thead><tbody><tr><td><code>mlb</code></td><td style="text-align:right">2.9</td></tr><tr><td><code>nba</code></td><td style="text-align:right">12.0</td></tr><tr><td><code>ncaaf</code></td><td style="text-align:right">18.0</td></tr><tr><td><code>nfl</code></td><td style="text-align:right">13.5</td></tr><tr><td><code>nhl</code></td><td style="text-align:right">2.5</td></tr><tr><td><code>wnba</code></td><td style="text-align:right">11.0</td></tr></tbody></table></div>
+<div class="pagefoot">
+  Generated 2026-09-22T00:00:00Z by <code>scripts/build_site.py</code> from the committed
+  registries. Nothing on this site is hand-copied: every number is rendered from
+  <code>rgengy/sources.py</code>, <code>rgengy/data/scoring/*.json</code> or
+  <code>rgengy/findings.py</code>.
+</div>
+</main>
+</div>
+<script src="app.js" defer></script>
+</body>
+</html>

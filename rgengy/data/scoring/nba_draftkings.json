@@ -1,0 +1,129 @@
+{
+  "meta": {
+    "sport": "nba",
+    "site": "draftkings",
+    "contest_format": "Classic (full slate)",
+    "salary_cap": 50000,
+    "confirmed_by_operator": false,
+    "audit_date": "2026-09-22",
+    "audit_method": "DraftKings NBA values are identical across three independent sources retrieved 2026-09-22.",
+    "sources_consulted": [
+      "https://www.rotowire.com/basketball/article/dfs-basketball-101-how-to-win-on-draftkings-19246",
+      "https://dfsbuild.com/dfs-guide/nba-dfs-guide/",
+      "https://teamriseorfall.com/nba-dfs-strategy-guide/"
+    ],
+    "notes": "DraftKings scores counting stats plus a 3PM bonus and double-double / triple-double bonuses. Field-goal and free-throw makes are NOT scored separately (they are already inside 'pts')."
+  },
+  "values": {
+    "pts": {
+      "value": 1.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 3,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://www.rotowire.com/basketball/article/dfs-basketball-101-how-to-win-on-draftkings-19246",
+        "https://dfsbuild.com/dfs-guide/nba-dfs-guide/",
+        "https://teamriseorfall.com/nba-dfs-strategy-guide/"
+      ]
+    },
+    "three_pm": {
+      "value": 0.5,
+      "verification_status": "multi-source-consistent",
+      "agreement": 3,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://www.rotowire.com/basketball/article/dfs-basketball-101-how-to-win-on-draftkings-19246",
+        "https://dfsbuild.com/dfs-guide/nba-dfs-guide/",
+        "https://teamriseorfall.com/nba-dfs-strategy-guide/"
+      ]
+    },
+    "reb": {
+      "value": 1.25,
+      "verification_status": "multi-source-consistent",
+      "agreement": 3,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://www.rotowire.com/basketball/article/dfs-basketball-101-how-to-win-on-draftkings-19246",
+        "https://dfsbuild.com/dfs-guide/nba-dfs-guide/",
+        "https://teamriseorfall.com/nba-dfs-strategy-guide/"
+      ]
+    },
+    "ast": {
+      "value": 1.5,
+      "verification_status": "multi-source-consistent",
+      "agreement": 3,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://www.rotowire.com/basketball/article/dfs-basketball-101-how-to-win-on-draftkings-19246",
+        "https://dfsbuild.com/dfs-guide/nba-dfs-guide/",
+        "https://teamriseorfall.com/nba-dfs-strategy-guide/"
+      ]
+    },
+    "stl": {
+      "value": 2.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 3,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://www.rotowire.com/basketball/article/dfs-basketball-101-how-to-win-on-draftkings-19246",
+        "https://dfsbuild.com/dfs-guide/nba-dfs-guide/",
+        "https://teamriseorfall.com/nba-dfs-strategy-guide/"
+      ]
+    },
+    "blk": {
+      "value": 2.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 3,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://www.rotowire.com/basketball/article/dfs-basketball-101-how-to-win-on-draftkings-19246",
+        "https://dfsbuild.com/dfs-guide/nba-dfs-guide/",
+        "https://teamriseorfall.com/nba-dfs-strategy-guide/"
+      ]
+    },
+    "to": {
+      "value": -0.5,
+      "verification_status": "multi-source-consistent",
+      "agreement": 3,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://www.rotowire.com/basketball/article/dfs-basketball-101-how-to-win-on-draftkings-19246",
+        "https://dfsbuild.com/dfs-guide/nba-dfs-guide/",
+        "https://teamriseorfall.com/nba-dfs-strategy-guide/"
+      ]
+    },
+    "dd": {
+      "value": 1.5,
+      "verification_status": "multi-source-consistent",
+      "agreement": 3,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://www.rotowire.com/basketball/article/dfs-basketball-101-how-to-win-on-draftkings-19246",
+        "https://dfsbuild.com/dfs-guide/nba-dfs-guide/",
+        "https://teamriseorfall.com/nba-dfs-strategy-guide/"
+      ],
+      "note": "Max 1 per player."
+    },
+    "td": {
+      "value": 3.0,
+      "verification_status": "multi-source-consistent",
+      "agreement": 3,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://www.rotowire.com/basketball/article/dfs-basketball-101-how-to-win-on-draftkings-19246",
+        "https://dfsbuild.com/dfs-guide/nba-dfs-guide/",
+        "https://teamriseorfall.com/nba-dfs-strategy-guide/"
+      ],
+      "note": "Max 1 per player; additive with 'dd' per RotoWire's worked example."
+    }
+  }
+}

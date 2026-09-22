@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- GENERATED FILE - DO NOT EDIT: rendered by scripts/build_site.py from the committed registries. -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>05-projection-engines &middot; RGENGY</title>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="layout">
+<div class="sidebar">
+  <div class="brand">RGENGY</div>
+  <div class="tagline">An auditable rebuild of RotoGrinders' projection data quality</div>
+  <nav aria-label="Explore the data">
+    <div class="navhead">Explore</div>
+    <a class="navhead" href="index.html">Dashboard</a><a href="sources.html">Data sources</a><a href="scoring.html">Scoring tables</a><a href="findings.html">Findings register</a><a href="rosters.html">Roster templates</a><a href="grid.html">Grid schema</a><a href="checks.html">Quality gates</a>
+  </nav>
+  <div class="sep"></div>
+  <nav aria-label="Documentation">
+    <div class="navhead">Documentation</div>
+    <a href="00-index.html">Overview</a><a href="01-method.html">Method</a><a href="02-data-sources.html">Data sources</a><a href="03-scoring-verification.html">Scoring</a><a href="04-rg-findings.html">RotoGrinders findings</a><a href="05-projection-engines.html" aria-current="page">Projection engines</a><a href="06-optimizer-and-simulator.html">Optimizer &amp; simulator</a><a href="07-grid-schema.html">Grid schema</a><a href="08-quality-gates.html">Quality gates</a><a href="09-irregularities.html">Irregularities</a><a href="10-roadmap-and-limitations.html">Limitations &amp; roadmap</a>
+  </nav>
+  <div class="sep"></div>
+  <div class="meta">
+    Audit date 2026-09-22<br>
+    16 endpoints &middot;
+    11 scoring tables<br>
+    29 findings (17 open)<br>
+    459 tests passing
+  </div>
+</div>
+<main class="content" id="main">
+<h1 id="05-projection-engines">05 - Projection engines</h1>
+<p>One formulation across five sports, with sport-specific stat keys and position-specific dispatch.</p>
+<pre><code>projection = rate x opportunity x environment</code></pre>
+<ul>
+<li><strong>rate</strong> - per-opportunity production from the player's own season sample</li>
+</ul>
+<p>(per plate appearance, per minute, per game, per 60 minutes of ice time);</p>
+<ul>
+<li><strong>opportunity</strong> - the chance to produce it (plate appearances, minutes, snaps,</li>
+</ul>
+<p>time on ice). An opportunity is never scaled by the run/point environment: a hotter game produces more hits, not more plate appearances;</p>
+<ul>
+<li><strong>environment</strong> - the multiplicative adjustment for team output, opponent</li>
+</ul>
+<p>quality, park, pace and weather.</p>
+<p><code>rgengy/engines.py</code>. <code>engine_for(sport, band_mode)</code> returns the right engine; <code>Engine.project_player</code> dispatches on position.</p>
+<hr>
+<h2 id="why-position-dispatch-matters">Why position dispatch matters</h2>
+<p>Baseball and hockey project two fundamentally different kinds of participant from the same feed. Using hitter stat keys for a pitcher produces a <strong>wrong but plausible</strong> score - the strikeouts line up and everything else is silently missing. So:</p>
+<div class="table-wrap"><table><thead><tr><th>engine</th><th>dispatches on</th><th>branches</th></tr></thead><tbody><tr><td><code>BaseballEngine</code></td><td><code>positions</code></td><td><code>project_pitcher</code> / <code>project_hitter</code></td></tr><tr><td><code>HockeyEngine</code></td><td><code>positions</code></td><td><code>project_goalie</code> / <code>project_skater</code></td></tr><tr><td><code>BasketballEngine</code></td><td>-</td><td>one branch, per-minute rates</td></tr><tr><td><code>FootballEngine</code></td><td>-</td><td>per-game rates plus yardage-bonus probabilities</td></tr></tbody></table></div>
+<p>Both position-specific branches must pass their own key list explicitly to <code>rates()</code>. Twice during the audit one of them did not, and the default fell back to the <em>other</em> branch's keys: a pitcher projected with hitter keys, and a goalie projected with skater keys. The goalie case returned nothing but a win probability, which looked like a legitimate low-value goalie rather than an empty projection. <code>tests/test_engines.py</code> now asserts that a goalie gets <code>sv</code>/<code>ga</code> and never <code>g</code>, and that a hitter gets <code>pa</code>/<code>hr</code> and never <code>ip</code>/<code>er</code>/<code>win</code>.</p>
+<h2 id="no-fabrication">No fabrication</h2>
+<p>An engine that cannot project returns <code>{}</code> and records why in <code>ctx.notes</code>. It never substitutes a league-average line, never assumes a 0.5 win probability, and never invents a sample. The pipeline then keeps the player at 0.0 with a run warning (IR-19) rather than dropping them, because dropping a player makes any roster slot only they could fill impossible to satisfy - which converts one missing season sample into "no lineup exists for this sport at all", reported at the optimizer, far from its cause.</p>
+<p><code>tests/test_engines.py</code> covers this directly: no season sample, no games, and a goalie with saves but no games played all return <code>{}</code> with a note.</p>
+<h2 id="environment-ratio">Environment ratio</h2>
+<p><code>ProjectionContext.environment_ratio()</code> returns the adjustment <strong>broken out by term</strong> so it can be audited, and <code>combined_ratio()</code> multiplies them:</p>
+<div class="table-wrap"><table><thead><tr><th>sport</th><th>terms</th></tr></thead><tbody><tr><td>MLB</td><td><code>team_output_ratio</code>, <code>opp_pitching_ratio</code>, <code>park_factor</code>, <code>weather_ratio</code></td></tr><tr><td>others</td><td><code>team_output_ratio</code>, <code>opp_defense_ratio</code>, <code>pace_ratio</code>, <code>weather_ratio</code></td></tr></tbody></table></div>
+<p>Every term is a ratio of a retrieved number to another retrieved number (<code>team_expected_output / team_season_output_pg</code>, <code>opp_season_allowed_pg / league_average</code>). Where an input is missing the term is absent from the dict rather than defaulted to something plausible. The whole dict is written into <code>player.extra["environment_ratio"]</code> in every artefact.</p>
+<h3 id="weather-is-computed-exactly-and-then-disabled">Weather is computed exactly and then disabled</h3>
+<p>Air density is computed from the retrieved pressure, temperature and humidity (<code>sources.air_density</code>), exactly against the ISA standard (<code>vegas.ISA_AIR_DENSITY_KG_M3 = 1.225</code>). The scoring adjustment is that delta multiplied by <code>WEATHER_AIR_DENSITY_COEFFICIENT</code>, which is <strong>0.0</strong> - the adjustment is off.</p>
+<p>That is deliberate. Denser air suppresses flight, so the sign and shape are known, but the <em>magnitude</em> has not been fitted to anything. Applying an unvalidated sensitivity would fabricate precision: the projection would move by a small, confident-looking amount that no evidence supports. Setting the coefficient explicitly, and documenting the evidence, turns it on. <code>tests/test_pipeline.py</code> asserts the ratio is exactly 1.0 at every density while the coefficient is 0, and that thinner air helps once it is not.</p>
+<h2 id="win-probability-one-origin">Win probability: one origin</h2>
+<p><code>team_win_probability(ctx)</code> returns <code>(probability, source_label)</code> with a fixed preference order:</p>
+<ol>
+<li><strong><code>ctx.win_prob</code></strong> - derived from the market line in the pipeline by</li>
+</ol>
+<p><code>vegas.market_win_probability()</code>. Label: <code>market (&lt;method&gt;)</code>.</p>
+<ol>
+<li><strong>Expected-output differential</strong> - <code>engines.win_probability()</code> over</li>
+</ol>
+<p><code>SIGMA_BY_SPORT</code>. Label names the sigma and flags it as unaudited (IR-03).</p>
+<ol>
+<li><strong><code>0.0</code> with the label <code>"unavailable"</code></strong> - a legal answer.</li>
+</ol>
+<p>No engine may invent 0.5. Before this was centralised, a win probability could be derived in two places with two different values, so a pitcher's win projection could silently disagree with the market line printed beside it (IR-23). The label is written into the projection notes and the artefact, so every published win probability says where it came from.</p>
+<div class="table-wrap"><table><thead><tr><th>sport</th><th style="text-align:right">sigma</th><th>note</th></tr></thead><tbody><tr><td><code>mlb</code></td><td style="text-align:right">2.9</td><td>runs</td></tr><tr><td><code>nhl</code></td><td style="text-align:right">2.5</td><td>goals</td></tr><tr><td><code>nba</code></td><td style="text-align:right">12.0</td><td>points</td></tr><tr><td><code>wnba</code></td><td style="text-align:right">11.0</td><td>points</td></tr><tr><td><code>nfl</code></td><td style="text-align:right">13.5</td><td>points - <strong>known to understate heavy favourites</strong></td></tr><tr><td><code>ncaaf</code></td><td style="text-align:right">18.0</td><td>points</td></tr></tbody></table></div>
+<p>These are conventional values, not fitted ones (IR-03). The market line is always preferred where one exists.</p>
+<p>A pitcher's win is <code>team_win_probability x P(quality start)</code>; a goalie's is <code>team_win_probability</code> directly.</p>
+<h2 id="bands-floor-ceiling-standard-deviation">Bands: floor, ceiling, standard deviation</h2>
+<p>Two modes, selected per run by <code>band_mode</code>:</p>
+<p><strong><code>distribution</code> (default).</strong> The projection is a mean; the floor and ceiling come from <code>fpts_distribution()</code> at <code>FLOOR_Z = 1.0</code> and <code>CEIL_Z = 2.0</code> standard deviations. Asymmetric on purpose: a bust performance is bounded by the player getting nothing, while upside is not bounded at all.</p>
+<p><strong><code>rg_band</code> (opt-in).</strong> Floor and ceiling are fixed ratios of the projection, <code>0.3030</code> and <code>2.2229</code>, observed on RotoGrinders' own public grid. Those constants come from <strong>six rows, one team, one game, one date</strong> (IR-12). The sample size is stored beside them (<code>RG_OBSERVED_SAMPLE_SIZE = 6</code>) and printed wherever the mode is used. It is opt-in precisely because six rows cannot support a default.</p>
+<p><code>score_and_band()</code> attaches <code>fpts</code>, <code>sd</code>, <code>floor</code>, <code>ceil</code> and <code>fpts_per_1k</code> in one call, so the value a user sorts on and the value the optimizer ranks by are the same number from the same place.</p>
+<h2 id="other-derived-quantities">Other derived quantities</h2>
+<div class="table-wrap"><table><thead><tr><th>function</th><th>what it does</th><th>honesty note</th></tr></thead><tbody><tr><td><code>quality_start_probability</code></td><td>P(QS) from the projected line</td><td>uses the shipped <code>qs</code> coefficient's disputed status (IR-05)</td></tr><tr><td><code>park_factor_from_splits</code></td><td>derives a park factor from observed home/away splits</td><td>RotoGrinders publishes a <code>PARK</code> <em>identifier</em>, not a factor; RGENGY derives the factor and does not claim to reproduce their column</td></tr><tr><td><code>fpts_distribution</code></td><td>mean/sd of the scored distribution</td><td>the basis of the default band and of the simulator</td></tr><tr><td><code>band_from_distribution</code> / <code>band_from_ratio</code></td><td>the two band modes</td><td>kept separate so the mode is always explicit</td></tr></tbody></table></div>
+<div class="pagefoot">
+  Generated 2026-09-22T00:00:00Z by <code>scripts/build_site.py</code> from the committed
+  registries. Nothing on this site is hand-copied: every number is rendered from
+  <code>rgengy/sources.py</code>, <code>rgengy/data/scoring/*.json</code> or
+  <code>rgengy/findings.py</code>.
+</div>
+</main>
+</div>
+<script src="app.js" defer></script>
+</body>
+</html>

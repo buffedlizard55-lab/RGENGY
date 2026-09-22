@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- GENERATED FILE - DO NOT EDIT: rendered by scripts/build_site.py from the committed registries. -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>01-method &middot; RGENGY</title>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="layout">
+<div class="sidebar">
+  <div class="brand">RGENGY</div>
+  <div class="tagline">An auditable rebuild of RotoGrinders' projection data quality</div>
+  <nav aria-label="Explore the data">
+    <div class="navhead">Explore</div>
+    <a class="navhead" href="index.html">Dashboard</a><a href="sources.html">Data sources</a><a href="scoring.html">Scoring tables</a><a href="findings.html">Findings register</a><a href="rosters.html">Roster templates</a><a href="grid.html">Grid schema</a><a href="checks.html">Quality gates</a>
+  </nav>
+  <div class="sep"></div>
+  <nav aria-label="Documentation">
+    <div class="navhead">Documentation</div>
+    <a href="00-index.html">Overview</a><a href="01-method.html" aria-current="page">Method</a><a href="02-data-sources.html">Data sources</a><a href="03-scoring-verification.html">Scoring</a><a href="04-rg-findings.html">RotoGrinders findings</a><a href="05-projection-engines.html">Projection engines</a><a href="06-optimizer-and-simulator.html">Optimizer &amp; simulator</a><a href="07-grid-schema.html">Grid schema</a><a href="08-quality-gates.html">Quality gates</a><a href="09-irregularities.html">Irregularities</a><a href="10-roadmap-and-limitations.html">Limitations &amp; roadmap</a>
+  </nav>
+  <div class="sep"></div>
+  <div class="meta">
+    Audit date 2026-09-22<br>
+    16 endpoints &middot;
+    11 scoring tables<br>
+    29 findings (17 open)<br>
+    459 tests passing
+  </div>
+</div>
+<main class="content" id="main">
+<h1 id="01-method">01 - Method</h1>
+<p>How this audit was run, and the rules every claim in <code>docs/</code> had to satisfy.</p>
+<hr>
+<h2 id="the-four-rules">The four rules</h2>
+<p><strong>1. A claim needs a retrieved source, or it is not a claim.</strong> Every scoring coefficient, roster slot and endpoint carries the URLs it came from and an evidence class. Where nothing was retrieved, the value is marked <code>not-audited</code> and excluded from published totals under <code>--strict</code>. Guessing a value and marking it verified is the failure mode this whole structure exists to prevent.</p>
+<p><strong>2. Official beats secondary, and the gap is recorded.</strong> A league's own feed or an operator's own document outranks a strategy blog. No operator scoring page could be retrieved (L-02), so <em>nothing here is <code>confirmed_by_operator</code></em> - and the docs say that on every page rather than once.</p>
+<p><strong>3. Conflicts are shipped, not resolved silently.</strong> Where two sources disagree, the majority value is adopted <strong>and the conflict is recorded next to it</strong> with both URLs. IR-05 (quality start 0 vs +4), IR-06 (earned run -3 vs -1) and IR-16 (flex eligibility) are all live examples. A single-source value is marked <code>single-source</code> even when it is probably right (IR-04).</p>
+<p><strong>4. Reproduced, own-definition, or null - never a blend.</strong> Each RotoGrinders column is classified as one of:</p>
+<ul>
+<li><strong>reproduced</strong> - the derivation is verified against their published numbers</li>
+</ul>
+<p>(<code>FPTS/$</code> only);</p>
+<ul>
+<li><strong>RGENGY's own</strong> - they publish the column without a formula, so RGENGY computes</li>
+</ul>
+<p>a documented equivalent and labels it as its own (<code>lev</code>, <code>smash</code>);</p>
+<ul>
+<li><strong>not computed</strong> - left <code>null</code> with a written reason (<code>OBFPTS</code>, <code>TOPVAL</code>,</li>
+</ul>
+<p><code>DIFFERENCE</code>, <code>OPTO</code>, <code>TEAMOWN</code>).</p>
+<p>Publishing an invented number under their heading would be indistinguishable from having reproduced it, which is the one outcome worse than reproducing nothing.</p>
+<hr>
+<h2 id="passes">Passes</h2>
+<p>The work ran in three passes, each building on the last, and each pass found defects the previous one had introduced.</p>
+<p><strong>Pass 1 - implement and verify.</strong> Endpoints registered and probed, scoring tables assembled from retrieved sources, projection engines, optimizer, simulator, quality gates, CLI.</p>
+<p><strong>Pass 2 - review for bugs, wrong assumptions and edge cases.</strong> Found and fixed, among others:</p>
+<ul>
+<li><strong>IR-17</strong> - roster templates that produced <em>illegal</em> lineups (separate C and 1B</li>
+</ul>
+<p>slots where DraftKings MLB combines them into one C/1B slot, so 11 players instead of 10). Highest severity in the project: invisible in the projections, rejected at submission.</p>
+<ul>
+<li><strong>IR-18</strong> - NFL 100/300-yard bonuses applied to FanDuel, which does not score them.</li>
+<li><strong>IR-14 / IR-15</strong> - a goal double-counted via shots-on-goal; representation</li>
+</ul>
+<p>overlaps made a standing invariant with a check that fails the run.</p>
+<ul>
+<li><strong>Leverage</strong> was subtracting an ownership probability from an unnormalised</li>
+</ul>
+<p>ratio - dimensionally meaningless. Rewritten so both terms are field shares.</p>
+<ul>
+<li><strong><code>vegas.win_probability</code></strong> was imported by the pipeline but did not exist.</li>
+</ul>
+<p>Replaced with <code>market_win_probability()</code> plus explicit context fields.</p>
+<ul>
+<li>The <strong>payout fallback for tiny fields</strong> paid 200x to <em>last place</em>. Restricted to</li>
+</ul>
+<p>rank 1.</p>
+<ul>
+<li><strong>Simulator self-competition</strong> - on small pools the sharp field collapsed onto</li>
+</ul>
+<p>the user's own roster, producing a 100% cash rate. The field now excludes the user's exact rosters and counts what it removed.</p>
+<p><strong>Pass 3 - re-check against the original request.</strong> Found and fixed:</p>
+<ul>
+<li><strong>A duplicated player in published lineups.</strong> <code>_overlap_pairs</code> tested whether</li>
+</ul>
+<p>two slots' <em>eligibility sets</em> intersected. DraftKings MLB <code>C/1B</code> (C, 1B) and <code>OF</code> (OF, LF, CF, RF) are disjoint as sets, so both stayed "fixed" and were solved as independent group knapsacks - and a player listed at both 1B and OF was picked by <em>both</em>, appearing twice with his points counted twice. The conflict test is now over the <strong>pool</strong>: two slots are independent only if no available player is eligible for both. <code>_assert_valid_roster()</code> now refuses to return a lineup containing a duplicate or exceeding the cap.</p>
+<ul>
+<li><strong>The slot breakdown dropped players.</strong> <code>zip(flex_rules, picked)</code> paired one</li>
+</ul>
+<p>flex member per <em>rule</em>, so a 3-count <code>OF</code> flex slot reported a single name and the breakdown accounted for 8 of 10 roster players.</p>
+<ul>
+<li><strong>The NHL goalie projection was silently empty.</strong> <code>project_goalie</code> used the</li>
+</ul>
+<p>engine's default stat keys, which for hockey are the <em>skater</em> keys - so <code>sv</code> and <code>ga</code> were dropped and a goalie projected to nothing but a win probability. A plausible-looking number that was wrong. Same defect class as the pitcher fix.</p>
+<ul>
+<li><strong><code>MAX_POWN</code> was defeated.</strong> Capping a share at 0.95 and then re-normalising by</li>
+</ul>
+<p>the new total scales every share back up, so a dominant player came out at exactly <strong>1.0</strong> - 100% projected ownership, which is what the cap exists to forbid, and it corrupted leverage and the simulated field. Replaced with capped water-filling that redistributes the freed mass to the players still below the cap.</p>
+<ul>
+<li><strong>Grid rows omitted unmapped columns entirely</strong> instead of emitting them as</li>
+</ul>
+<p><code>null</code>, so the artefact could not be diffed against RotoGrinders' grid - the entire point of shipping their schema.</p>
+<ul>
+<li><strong>Mapped-but-empty columns reported no reason.</strong> A null because the weather feed</li>
+</ul>
+<p>was absent and a null because RotoGrinders' formula is unpublished are different problems with different fixes; they now read differently.</p>
+<ul>
+<li><strong>A network input with no <code>fetched_at</code> was assumed fresh.</strong> Now flagged - with a</li>
+</ul>
+<p>deliberate exception for static scoring-table provenance, which carries <code>audit_date</code> and is not a fetch.</p>
+<ul>
+<li><strong>An unshipped sport/site reported "clean"</strong> on the representation audit.</li>
+</ul>
+<p>"No findings" and "never checked" now read differently.</p>
+<ul>
+<li><strong>Four WNBA grid columns</strong> had neither a mapping nor a reason. <code>SPREAD</code> and</li>
+</ul>
+<p><code>O/U</code> are now filled from the retrieved market line; <code>TOTAL</code> and <code>TEAMNAME</code> are left null with written reasons (IR-22).</p>
+<ul>
+<li><strong><code>run()</code> raised</strong> for an unsupported sport instead of returning a report that</li>
+</ul>
+<p>says the sport is not implemented.</p>
+<h2 id="test-suite">Test suite</h2>
+<p>&lt;!-- RGENGY:TESTS:START - generated by scripts/build_docs.py; do not edit by hand --&gt; <strong>459 tests</strong> across 12 modules, all passing, run with <code>python3 -m unittest discover -s tests -t tests</code>.</p>
+<div class="table-wrap"><table><thead><tr><th>module</th><th style="text-align:right">tests</th><th>covers</th></tr></thead><tbody><tr><td><code>test_site</code></td><td style="text-align:right">60</td><td>the markdown renderer, link integrity, README/dashboard accuracy</td></tr><tr><td><code>test_pipeline</code></td><td style="text-align:right">59</td><td>end-to-end run, grid schema invariants, artefacts</td></tr><tr><td><code>test_ownership</code></td><td style="text-align:right">53</td><td>choice model, cap, leverage, smash, pipeline integration</td></tr><tr><td><code>test_quality</code></td><td style="text-align:right">47</td><td>every quality gate fires <em>and</em> stays silent when it should</td></tr><tr><td><code>test_engines</code></td><td style="text-align:right">42</td><td>position dispatch, no-fabrication, win probability, bands</td></tr><tr><td><code>test_vegas</code></td><td style="text-align:right">37</td><td>vig removal, implied totals, Bryant formula, market win probability</td></tr><tr><td><code>test_simulator</code></td><td style="text-align:right">34</td><td>payouts, field construction, cash/top-10/top-1 invariants</td></tr><tr><td><code>test_optimizer</code></td><td style="text-align:right">33</td><td>optimality vs brute force, roster uniqueness, slot breakdown</td></tr><tr><td><code>test_models</code></td><td style="text-align:right">27</td><td>roster provenance, grid schema, run report</td></tr><tr><td><code>test_scoring</code></td><td style="text-align:right">25</td><td>all 11 tables, representation overlaps, evidence classes</td></tr><tr><td><code>test_rg_grid</code></td><td style="text-align:right">24</td><td>the saved RotoGrinders fixture: identity, ratios, validation</td></tr><tr><td><code>test_findings</code></td><td style="text-align:right">18</td><td>the IR/L register agrees with every citation in the tree</td></tr></tbody></table></div>
+<p>&lt;!-- RGENGY:TESTS:END --&gt;</p>
+<p>Three properties are worth calling out because they are what stop regressions:</p>
+<ul>
+<li><strong>Optimality is checked against brute force</strong>, not against the optimizer's own</li>
+</ul>
+<p>opinion of itself. <code>test_optimizer</code> enumerates every legal roster for a small pool and asserts the DP finds the same total.</p>
+<ul>
+<li><strong>Quality gates are tested in both directions.</strong> A check that always fires is as</li>
+</ul>
+<p>useless as one that never does, because the report becomes noise nobody reads.</p>
+<ul>
+<li><strong>The findings register is cross-checked against the tree.</strong> An id cited in code</li>
+</ul>
+<p>but missing from the register is an undocumented irregularity; an id in the register that nothing cites is dead prose; an id <em>declared unused</em> that turns out to be cited is a lie. Generated files are excluded from the citation scan, since counting a document rendered from the register as evidence for the register is circular.</p>
+<h2 id="environment-constraints">Environment constraints</h2>
+<p>Recorded because they shaped what could be verified (L-02):</p>
+<ul>
+<li><strong>No outbound network</strong> for raw fetches from the workspace (TLS/SSL EOF). Pages</li>
+</ul>
+<p>were read through a proxy that reaches rotogrinders.com.</p>
+<ul>
+<li><strong>fanduel.com is geo-blocked</strong>; both operators keep their scoring pages inside</li>
+</ul>
+<p>their logged-in apps.</p>
+<ul>
+<li>The site is therefore <strong>static</strong>, and the GitHub Pages workflow regenerates the</li>
+</ul>
+<p><code>data/</code> artefacts on every build so the published numbers cannot disagree with the committed code.</p>
+<ul>
+<li><code>pytest</code> is not available; the suite is stdlib <code>unittest</code>.</li>
+</ul>
+<div class="pagefoot">
+  Generated 2026-09-22T00:00:00Z by <code>scripts/build_site.py</code> from the committed
+  registries. Nothing on this site is hand-copied: every number is rendered from
+  <code>rgengy/sources.py</code>, <code>rgengy/data/scoring/*.json</code> or
+  <code>rgengy/findings.py</code>.
+</div>
+</main>
+</div>
+<script src="app.js" defer></script>
+</body>
+</html>

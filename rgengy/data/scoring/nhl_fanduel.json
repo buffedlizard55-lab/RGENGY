@@ -1,0 +1,133 @@
+{
+  "meta": {
+    "sport": "nhl",
+    "site": "fanduel",
+    "contest_format": "Classic (full slate)",
+    "salary_cap": 40000,
+    "confirmed_by_operator": false,
+    "audit_date": "2026-09-22",
+    "audit_method": "Single source retrieved (FTN Fantasy, 2024-04-15). Every value is therefore 'single-source' and provisional.",
+    "sources_consulted": [
+      "https://www.reddit.com/r/hockey/comments/2iop7w/is_anyone_doing_nhl_fanduel/",
+      "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey",
+      "https://www.dailyfaceoff.com/news/draftkings-fantasy-hockey-cheat-sheet-march-9th",
+      "https://dknetwork.draftkings.com/2025-09-30/nhl-daily-fantasy-101-how-to-play-dfs-on-draftkings/",
+      "https://occupyfantasy.com/nhl-dfs-strategy-guide/"
+    ],
+    "notes": "IRREGULARITY IR-10: FanDuel NHL is sourced from exactly one document. FanDuel also scores +/-. The +/-' value is not present in that document and is set to 0 with status 'not-audited'."
+  },
+  "values": {
+    "g": {
+      "value": 12.0,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey"
+      ]
+    },
+    "a": {
+      "value": 8.0,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey"
+      ]
+    },
+    "sog": {
+      "value": 1.6,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey"
+      ]
+    },
+    "blk": {
+      "value": 1.6,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey"
+      ]
+    },
+    "shp": {
+      "value": 2.0,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey"
+      ],
+      "note": "Short-handed goal/assist."
+    },
+    "ppp": {
+      "value": 0.5,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey"
+      ],
+      "note": "Power-play goal/assist."
+    },
+    "win_goalie": {
+      "value": 12.0,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey"
+      ]
+    },
+    "so": {
+      "value": 8.0,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey"
+      ],
+      "note": "Goalie shutout."
+    },
+    "sv": {
+      "value": 0.8,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey"
+      ]
+    },
+    "ga": {
+      "value": -4.0,
+      "verification_status": "single-source",
+      "agreement": 1,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [
+        "https://ftnfantasy.com/nhl/the-basics-of-dfs-fantasy-hockey"
+      ]
+    },
+    "plus_minus": {
+      "value": 0.0,
+      "verification_status": "not-audited",
+      "agreement": 0,
+      "disputed": false,
+      "confirmed_by_operator": false,
+      "sources": [],
+      "note": "FanDuel scores +/- (per the Reddit thread) but no point value was retrieved. Left at 0 and flagged."
+    }
+  }
+}
