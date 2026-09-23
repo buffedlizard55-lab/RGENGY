@@ -310,7 +310,7 @@ class TestLinkIntegrity(unittest.TestCase):
         for path in sorted(SITE.glob("*.html")):
             for m in re.finditer(r'href="([^"]+)"', path.read_text(encoding="utf-8")):
                 url = m.group(1).split("#")[0]
-                if not url or url.startswith(("http://", "https://", "mailto:", "#")):
+                if not url or url.startswith(("http://", "https://", "mailto:", "#", "data:")):
                     continue
                 yield path, url
 
