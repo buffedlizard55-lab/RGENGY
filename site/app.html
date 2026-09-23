@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RGENGY DFS — Projections, Optimizer & Simulator</title>
+<meta name="description" content="An open, auditable DFS projection and lineup-optimization platform — projections, optimizer, simulator, verified data.">
+<link rel="stylesheet" href="css/app.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+</head>
+<body>
+<div class="loader" id="loader"></div>
+
+<header class="topbar">
+  <div class="brand">RGENGY <small>DFS PLATFORM</small></div>
+  <div class="controls">
+    <label for="sportSelect">Sport</label>
+    <select id="sportSelect"></select>
+    <label for="siteSelect">Site</label>
+    <select id="siteSelect"></select>
+    <a class="docs-link" href="index.html" title="Dashboard &amp; audit docs">📚 Audit docs →</a>
+    <a class="docs-link" href="https://github.com/buffedlizard55-lab/RGENGY" target="_blank" rel="noopener noreferrer">⭐ GitHub</a>
+  </div>
+</header>
+
+<div class="status-bar" id="statusBar"></div>
+
+<nav class="tabs" role="tablist">
+  <button class="tab active" data-panel="projections">Projections</button>
+  <button class="tab" data-panel="lineups">Lineup Optimizer</button>
+  <button class="tab" data-panel="simulator">Contest Simulator</button>
+  <button class="tab" data-panel="stages">Pipeline Stages</button>
+  <button class="tab" data-panel="provenance">Provenance &amp; Sources</button>
+</nav>
+
+<main id="app">
+
+<!-- PROJECTIONS -->
+<section class="panel active" id="panel-projections">
+  <div class="banner">
+    <h2>Player Projections</h2>
+    <p>Rate × opportunity × environment engine. <strong>Floor</strong>/<strong>Ceil</strong> from Poisson FPTS variance (±1σ / ±2σ). <strong>FPTS/$</strong> matches RG exactly. <strong>Smash</strong> = P(FPTS > 1.5× projection). Null means unavailable — never invented.</p>
+  </div>
+  <div class="notice">⚠️ The data powering this page is a seeded SYNTHETIC demo (provenance panel explains why). The projection engine, optimizer and simulator are real and audited — connect a live player-stat feed to run on real data.</div>
+
+  <div class="toolbar">
+    <input type="search" id="searchInput" placeholder="Search player, team, position…" aria-label="Search players">
+    <select id="posFilter">
+      <option value="ALL">All positions</option>
+    </select>
+    <button class="btn secondary" id="clearLocksBtn" title="Clear locks and exclusions">Clear</button>
+    <span id="playerCount" style="color:var(--muted);font-size:0.85rem"></span>
+  </div>
+
+  <div class="table-wrap">
+    <table id="playerTable">
+      <thead><tr>
+        <th style="width:70px">✕</th>
+        <th data-key="name">Player</th>
+        <th data-key="position">Pos</th>
+        <th data-key="team">Team/Opp</th>
+        <th data-key="salary" class="num">Salary</th>
+        <th data-key="fpts" class="num">Proj FPTS</th>
+        <th data-key="value" class="num">FPTS/$</th>
+        <th class="num">Floor–Ceil</th>
+        <th data-key="pown" class="num">pOWN</th>
+        <th class="num">Smash</th>
+      </tr></thead>
+      <tbody id="playerTbody"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- LINEUP OPTIMIZER -->
+<section class="panel" id="panel-lineups">
+  <div class="banner">
+    <h2>Lineup Optimizer</h2>
+    <p>Exact grouped-knapsack over the salary cap with slot partitioning — same algorithm as <code>rgengy/optimizer.py</code>. Lock 🔒 or exclude ✕ players on the Projections tab, then build lineups.</p>
+  </div>
+
+  <div class="opt-box">
+    <div class="opt-controls">
+      <label>Lineups: <input type="number" id="nLineups" value="5" min="1" max="25" style="width:60px"></label>
+      <button class="btn" id="runOptBtn">Build Lineups</button>
+    </div>
+    <div class="status-msg" id="optStatus">Lineup 1 is the proven optimum; lineups 2–N are seeded-perturbation variants for GPP diversification.</div>
+  </div>
+
+  <div id="lineupsPanel"><p class="empty">Run the optimizer to generate lineups.</p></div>
+</section>
+
+<!-- SIMULATOR -->
+<section class="panel" id="panel-simulator">
+  <div class="banner">
+    <h2>Contest Simulator</h2>
+    <p>Monte Carlo over your generated lineups: each player is sampled from Normal(mean, sd), sd = √μ from Poisson variance. The synthetic field is a mix of optimizer-built ("sharp") and random entries. Results show projected cash rate, top-10, and ROI.</p>
+  </div>
+
+  <div class="opt-box">
+    <div class="opt-controls">
+      <label>Sims: <input type="number" id="nSims" value="300" min="50" max="2000" style="width:80px"></label>
+      <button class="btn" id="runSimBtn">Run Simulation</button>
+    </div>
+    <div class="status-msg" id="simStatus">Run the optimizer first, then simulate contest outcomes.</div>
+  </div>
+
+  <div class="table-wrap" id="simPanel"><p class="empty">Run the simulator to estimate cash / top-10 / ROI.</p></div>
+</section>
+
+<!-- PIPELINE STAGES -->
+<section class="panel" id="panel-stages">
+  <div class="banner">
+    <h2>Pipeline Stages</h2>
+    <p>Each stage reports its status (<span class="badge ok">complete</span> / <span class="badge warning">degraded</span> / <span class="badge critical">unavailable</span>) and the reason. Nothing is silently dropped.</p>
+  </div>
+  <div class="table-wrap"><table class="stages-tbl" id="stagesPanel"></table></div>
+</section>
+
+<!-- PROVENANCE -->
+<section class="panel" id="panel-provenance">
+  <div class="banner">
+    <h2>Provenance &amp; Sources</h2>
+    <p>Every number on this site has an audited origin. Read the <a href="00-index.html">full documentation</a>, the <a href="02-data-sources.html">data-source register</a>, and the <a href="09-irregularities.html">irregularities register</a>.</p>
+  </div>
+  <div id="provPanel" class="prov-panel"></div>
+  <h3 style="margin-top:30px">Verified public sources used by the pipeline</h3>
+  <div id="sourcesPanel"></div>
+</section>
+
+</main>
+
+<script src="js/app.js" defer></script>
+<script>
+// Tab switching
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll(".tab").forEach(function(t) {
+    t.addEventListener("click", function() {
+      document.querySelectorAll(".tab").forEach(function(x){x.classList.remove("active");});
+      document.querySelectorAll(".panel").forEach(function(x){x.classList.remove("active");});
+      t.classList.add("active");
+      document.getElementById("panel-" + t.dataset.panel).classList.add("active");
+    });
+  });
+});
+</script>
+</body>
+</html>

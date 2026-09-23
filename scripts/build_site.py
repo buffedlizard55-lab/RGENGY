@@ -551,7 +551,9 @@ def _sidebar(current: str, data: Dict[str, Any]) -> str:
 
     explore = ['<a class="navhead" href="index.html"'
                + (' aria-current="page"' if current == "index.html" else "")
-               + '>Dashboard</a>']
+               + '>Dashboard</a>',
+               '<a href="app.html"' + (' aria-current="page"' if current == "app.html" else "")
+               + ' style="color:var(--accent);font-weight:600">▶ DFS Platform</a>']
     for target, label in (("sources.html", "Data sources"),
                           ("scoring.html", "Scoring tables"),
                           ("findings.html", "Findings register"),
@@ -678,6 +680,12 @@ def build_index(data: Dict[str, Any]) -> str:
 
     body: List[str] = []
     body.append("<h1>RGENGY</h1>")
+    body.append('<div style="margin:8px 0 18px;padding:14px 18px;background:var(--accent-soft);'
+                'border:1px solid #c6e0db;border-radius:10px">'
+                '<strong style="font-size:1.05rem">→ <a href="app.html">Launch the RGENGY DFS platform</a></strong>'
+                '<br><span style="color:var(--muted);font-size:0.88rem">'
+                'Working projections, lineup optimizer, and contest simulator — '
+                'powered by the same engines documented below.</span></div>')
     body.append('<p class="lede">An open, auditable rebuild of the <em>data quality</em> behind '
                 '<a href="https://rotogrinders.com/" target="_blank" rel="noopener noreferrer">'
                 'RotoGrinders</a>&rsquo; projection system: what it uses, where that data comes '
